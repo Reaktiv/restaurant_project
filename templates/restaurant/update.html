@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Update Food{% endblock %}
+
+{% block content %}
+    <div style="margin-left: 40px; margin-right: 40px; margin-top: 90px;">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-header text-center fw-bold fs-3" style="color: #CEAF7F; background: rgba(0,0,0,0.6);">
+                Update Food
+            </div>
+            <div class="card-body" style="background: transparent;">
+                <form action="{% url 'update' food.id %}" method="POST" style="background: transparent;">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="button" class="btn btn-outline-danger float-end" data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop">
+                        <i class="bi bi-trash3"></i> Delete
+                    </button>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+    {% include 'restaurant/delete_confirm.html' %}
+{% endblock %}

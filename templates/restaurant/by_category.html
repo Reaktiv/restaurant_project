@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    By category
+{% endblock %}
+
+{% block Categories %}
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarScrollingDropdown"
+           role="button"
+           data-bs-toggle="dropdown" aria-expanded="false">
+            Categories
+        </a>
+        <ul class="dropdown-menu bg-dark" aria-labelledby="navbarScrollingDropdown">
+            <li><a style="color: #CEAF7F" class="dropdown-item" href="{% url 'by_category' 'Meal' %}">Meals</a></li>
+            <li><a style="color: #CEAF7F" class="dropdown-item" href="{% url 'by_category' 'Drink' %}">Drinks</a></li>
+            <li><a style="color: #CEAF7F" class="dropdown-item" href="{% url 'by_category' 'Salads' %}">Salads</a></li>
+            <li><a style="color: #CEAF7F" class="dropdown-item" href="{% url 'by_category' 'Dessert' %}">Desserts</a>
+            </li>
+            <li><a style="color: #CEAF7F" class="dropdown-item" href="{% url 'by_category' 'Seafood' %}">Seafoods</a>
+            </li>
+            <li><a style="color: #CEAF7F" class="dropdown-item"
+                   href="{% url 'by_category' 'Vegetarian' %}">Vegetarian</a></li>
+            <li><a style="color: #CEAF7F" class="dropdown-item" href="{% url 'by_category' 'Healthy food' %}">Healthy
+                foods</a></li>
+
+        </ul>
+    </li>
+{% endblock %}
+
+{% block content %}
+
+    {% if not type %}
+        <div class="card"
+             style="margin-left: 40px; margin-right: 40px; margin-top: 90px; background-color: transparent;">
+        <div id="menu"><h1 class="mt-5"
+                           style="justify-content: center; display: flex; color: #CEAF7F; font-size: 40px">
+            All Foods</h1></div>
+    {% else %}
+        <div class="card"
+             style="margin-left: 40px; margin-right: 40px; margin-top: 90px; background-color: transparent;">
+        <div id="menu"><h1 class="mt-5"
+                           style="justify-content: center; display: flex; color: #CEAF7F; font-size: 40px">
+            {{ type }}</h1></div>
+    {% endif %}
+
+
+<div class="row mt-5">
+    {% for food in foods %}
+        <a href="{% url 'detail' food.id %}" class="col-6 d-flex mb-4" style="text-decoration: none;">
+            <div class="w-100 d-flex"
+                 style="background-color: rgba(37, 42, 43, 0.7); border-radius: 10px; transition: 0.3s;"
+                 onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.4)';"
+                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+
+                <img class="p-2 mt-2" style="width: 150px; height: 120px; border-radius: 20px"
+                     src="{{ food.photo.url }}" alt="">
+
+                <div class="card-body p-2 text-white">
+                    <span style="font-size: 25px" class="fw-bold">{{ food.name_of_food }} </span>
+                    <span class="p-1" style="font-size: 15px; color: #CEAF7F"><i
+                            class="bi bi-hash"></i>{{ food.type }}</span>
+                    <h6>{{ food.description|truncatechars:100 }}</h6>
+                    <form action="#" style="color: #CEAF7F; font-weight: bold;">Narxi: {{ food.price }}$</form>
+                </div>
+            </div>
+        </a>
+
+    {% endfor %}
+</div>
+
+</div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

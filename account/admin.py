@@ -1,24 +1,25 @@
 from django.contrib import admin
+from django.contrib.admin import TabularInline
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser
+
+from account.models import CustomUser, Profile
 
 
+class ProfileInline(TabularInline):
+    model = Profile
+    can_delete = False
+    verbose_name_plural = 'Profiles'
+    fk_name = 'user'
+
+
+@admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
-    model = CustomUser
-    list_display = ('id', 'username', 'email', 'phone', 'is_staff', 'is_active')
-    list_filter = ('is_staff', 'is_active')
-    fieldsets = (
-        (None, {'fields': ('username', 'email', 'phone', 'password')}),
-        ('Permissions', {'fields': ('is_staff', 'is_active', 'groups', 'user_permissions')}),
+    inlines = [ProfileInline]
+    fieldsets = UserAdmin.fieldsets + (
+        ("Additional info", {"fields": ("phone",)}),
     )
-    add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('username', 'email', 'phone', 'password1', 'password2', 'is_staff', 'is_active')}
-        ),
-    )
-    search_fields = ('email', 'username', 'phone')
-    ordering = ('email',)
 
-
-admin.site.register(CustomUser, CustomUserAdmin)
+    def get_inline_instances(self, request, obj=None):
+        if not obj:
+            return []
+        return super().get_inline_instances(request, obj)
