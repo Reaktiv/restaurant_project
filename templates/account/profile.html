@@ -11,8 +11,13 @@
         <div style="display: flex">
 
             <div class="p-3">
-                <img style="height: 300px; width: auto; margin: 50px;border-style: dotted;border-color: #CEAF7F; border-radius: 150px; border-width: 10px; display: flex;"
-                     src="{{ user.profile.image.url }}" alt="">
+                {% if user.profile.image %}
+                    <img style="height: 300px; width: auto; margin: 50px;border-style: dotted;border-color: #CEAF7F; border-radius: 150px; border-width: 10px; display: flex;"
+                         src="{{ user.profile.image.url }}" alt="">
+                {% else %}
+                    <img style="height: 300px; width: auto; margin: 50px;border-style: dotted;border-color: #CEAF7F; border-radius: 150px; border-width: 10px; display: flex;"
+                         src="/media/profile_img/default-profile.jpg" alt="">
+                {% endif %}
                 <h1 class="text-center" style="color: #CEAF7F; font-size: 50px">{{ user.username }}</h1>
             </div>
 
