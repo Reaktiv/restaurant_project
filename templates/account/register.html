@@ -1,4 +1,4 @@
-    {% extends 'base.html' %}
+{% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
 {% block title %}
@@ -7,17 +7,18 @@
 
 
 {% block content %}
-
-    <div class="card div-item" style="margin-top: 90px; margin-right: 40px; margin-left: 40px">
-        <div class="card-header">
-            <p class="fs-3 text-primary">Register</p>
-        </div>
-        <div class="card-body">
-            <form action="{% url 'register' %}" method="POST">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <button type="submit" class="btn btn-outline-success">Register</button>
-            </form>
+    <div class="container">
+        <div class="row div-item" style="margin-top: 90px;">
+            <div class="card-header">
+                <p class="fs-3 text-primary">Register</p>
+            </div>
+            <div class="card-body">
+                <form action="{% url 'register' %}" method="POST">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-outline-success">Register</button>
+                </form>
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -30,7 +30,7 @@
 {% endblock %}
 
 {% block content %}
-
+    <div class="container">
     {% if not type %}
         <div class="card"
              style="margin-left: 40px; margin-right: 40px; margin-top: 90px; background-color: transparent;">
@@ -38,8 +38,8 @@
                            style="justify-content: center; display: flex; color: #CEAF7F; font-size: 40px">
             All Foods</h1></div>
     {% else %}
-        <div class="card"
-             style="margin-left: 40px; margin-right: 40px; margin-top: 90px; background-color: transparent;">
+        <div class="row card"
+             style="margin-top: 90px; background-color: transparent;">
         <div id="menu"><h1 class="mt-5"
                            style="justify-content: center; display: flex; color: #CEAF7F; font-size: 40px">
             {{ type }}</h1></div>
@@ -71,7 +71,7 @@
 </div>
 
 </div>
-
+</div>
 {% endblock %}
 
 

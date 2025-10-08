@@ -7,19 +7,20 @@
 
 
 {% block content %}
-
-    <div class="card div-item" style="margin-top: 90px; margin-right: 40px; margin-left: 40px">
-        <div class="card-header">
-            <p class="fs-3 text-primary">Login</p>
-        </div>
-        <div class="card-body">
-            <form action="{% url 'login' %}" method="POST">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <button type="submit" class="btn btn-outline-success">Login</button>
-            </form>
-            <div class="mt-3">
-                or <a href="{% url 'register' %}" class="p">Register</a>
+    <div class="container">
+        <div class="row div-item" style="margin-top: 90px;">
+            <div class="card-header">
+                <p class="fs-3 text-primary">Login</p>
+            </div>
+            <div class="card-body">
+                <form action="{% url 'login' %}" method="POST">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-outline-success">Login</button>
+                </form>
+                <div class="mt-3">
+                    or <a href="{% url 'register' %}" class="p">Register</a>
+                </div>
             </div>
         </div>
     </div>

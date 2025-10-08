@@ -5,54 +5,54 @@
 {% endblock %}
 
 {% block content %}
+    <div class="container">
+        <div style="margin-top: 90px" class="row">
+            <h1 style="justify-content: center; display: flex; color: #CEAF7F; margin: 30px">Taom ma'lumotlari</h1>
+            <hr style="color: orange; font-weight: bolder;">
+            <div class="col-5" style="display: flex; justify-content: center; margin-top: 50px">
+                <img style="width: auto; height: 300px; border-radius: 30px" src="{{ food.photo.url }}" alt="">
+            </div>
+            <div class="col-7" style="margin-top: 50px;">
+                <div style="background: transparent; padding: 20px; border-radius: 12px; width: 80%; margin: auto; font-size: 20px; font-weight: bold; color: white;">
 
-    <div style="margin-left: 40px; margin-right: 40px; margin-top: 90px" class="row">
-        <h1 style="justify-content: center; display: flex; color: #CEAF7F; margin: 30px">Taom ma'lumotlari</h1>
-        <hr style="color: orange; font-weight: bolder;">
-        <div class="col-5" style="display: flex; justify-content: center; margin-top: 50px">
-            <img style="width: auto; height: 300px; border-radius: 30px" src="{{ food.photo.url }}" alt="">
-        </div>
-        <div class="col-7" style="margin-top: 50px;">
-            <div style="background: transparent; padding: 20px; border-radius: 12px; width: 80%; margin: auto; font-size: 20px; font-weight: bold; color: white;">
+                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                        <span style="white-space: nowrap;">Turi</span>
+                        <span style="flex: 1; border-bottom: 2px dashed #CEAF7F; margin: 0 10px;"></span>
+                        <span style="white-space: nowrap; color: white;">{{ food.type }}</span>
+                    </div>
 
-                <div style="display: flex; align-items: center; margin-bottom: 10px;">
-                    <span style="white-space: nowrap;">Turi</span>
-                    <span style="flex: 1; border-bottom: 2px dashed #CEAF7F; margin: 0 10px;"></span>
-                    <span style="white-space: nowrap; color: white;">{{ food.type }}</span>
-                </div>
+                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                        <span style="white-space: nowrap;">Narxi</span>
+                        <span style="flex: 1; border-bottom: 2px dashed #CEAF7F; margin: 0 10px;"></span>
+                        <span style="white-space: nowrap; color: white;">{{ food.price }} $</span>
+                    </div>
 
-                <div style="display: flex; align-items: center; margin-bottom: 10px;">
-                    <span style="white-space: nowrap;">Narxi</span>
-                    <span style="flex: 1; border-bottom: 2px dashed #CEAF7F; margin: 0 10px;"></span>
-                    <span style="white-space: nowrap; color: white;">{{ food.price }} $</span>
-                </div>
+                    <div style="display: flex; align-items: center;">
+                        <span style="white-space: nowrap;">Nomi</span>
+                        <span style="flex: 1; border-bottom: 2px dashed #CEAF7F; margin: 0 10px;"></span>
+                        <span style="white-space: nowrap; color: white;">{{ food.name_of_food }}</span>
+                    </div>
 
-                <div style="display: flex; align-items: center;">
-                    <span style="white-space: nowrap;">Nomi</span>
-                    <span style="flex: 1; border-bottom: 2px dashed #CEAF7F; margin: 0 10px;"></span>
-                    <span style="white-space: nowrap; color: white;">{{ food.name_of_food }}</span>
-                </div>
-
-                <div style="display: flex; justify-content: end; margin-top: 10px;">
-                    <span style="color: #CEAF7F;">{{ food.created_at|timesince }} ago</span>
+                    <div style="display: flex; justify-content: end; margin-top: 10px;">
+                        <span style="color: #CEAF7F;">{{ food.created_at|timesince }} ago</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        {% if food.description %}
-            <h3 style="justify-content: center; display: flex; color: #CEAF7F;">Description</h3>
-            <div class="text-white mt-3" style="border-radius: 20px; background-color: rgba(37, 42, 43, 0.7);">
-                <h6 class="p-2">{{ food.description }}</h6>
-                <h6 style="justify-content: end; display: flex; margin-right: 30px">{{ food.description|wordcount }}</h6>
+            {% if food.description %}
+                <h3 style="justify-content: center; display: flex; color: #CEAF7F;">Description</h3>
+                <div class="text-white mt-3" style="border-radius: 20px; background-color: rgba(37, 42, 43, 0.7);">
+                    <h6 class="p-2">{{ food.description }}</h6>
+                    <h6 style="justify-content: end; display: flex; margin-right: 30px">{{ food.description|wordcount }}</h6>
+                </div>
+            {% else %}
+            {% endif %}
+            <div style="justify-content: center; display: flex; margin-top: 50px; margin-bottom: 50px">
+                <a href="{% url 'update' food.id %}"
+                   style="background-color: #CEAF7F; color: white; border: none; border-radius: 8px"
+                   class="btn btn-lg">Ma'lumotlarni yangilash</a>
             </div>
-        {% else %}
-        {% endif %}
-        <div style="justify-content: center; display: flex; margin-top: 50px; margin-bottom: 50px">
-            <a href="{% url 'update' food.id %}"
-               style="background-color: #CEAF7F; color: white; border: none; border-radius: 8px"
-               class="btn btn-lg">Ma'lumotlarni yangilash</a>
         </div>
     </div>
-
 
 
 {% endblock %}

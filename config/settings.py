@@ -76,21 +76,21 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': os.getenv("MYSQL_ENGINE"),
-        'NAME': os.getenv("MYSQL_DB"),
-        'USER': os.getenv("MYSQL_USER"),
-        'PASSWORD': os.getenv("MYSQL_PASSWORD"),
-        'HOST': os.getenv("MYSQL_HOST"),
-    }
-}
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+#         'ENGINE': os.getenv("MYSQL_ENGINE"),
+#         'NAME': os.getenv("MYSQL_DB"),
+#         'USER': os.getenv("MYSQL_USER"),
+#         'PASSWORD': os.getenv("MYSQL_PASSWORD"),
+#         'HOST': os.getenv("MYSQL_HOST"),
 #     }
 # }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 
 # Password validation
