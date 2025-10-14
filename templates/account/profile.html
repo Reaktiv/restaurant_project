@@ -5,57 +5,59 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row justify-content-center" style="margin-top: 120px;">
-        <h1 class="text-center fw-bold m-4" style="color: #CEAF7F;">Profile</h1>
+    <div class="container">
+        <div class="row justify-content-center" style="margin-top: 120px;">
+            <h1 class="text-center fw-bold m-4" style="color: #CEAF7F;">Profile</h1>
 
-        <div class="row align-items-center">
-            <!-- Chap tomondagi rasm -->
-            <div class="col-lg-4 col-md-5 col-12 text-center mb-4 mb-md-0">
-                {% if user.profile.image %}
-                    <img class="img-fluid" style="height: 300px; width: auto; margin: 50px;
+            <div class="row align-items-center">
+                <!-- Chap tomondagi rasm -->
+                <div class="col-lg-4 col-md-5 col-12 text-center mb-4 mb-md-0">
+                    {% if user.profile.image %}
+                        <img class="img-fluid rounded-circle"
+                             style="height: 320px; width: 320px; object-fit: cover; margin: 50px;
+                                border-style: dotted; border-color: #CEAF7F;
+                                border-width: 10px;"
+                             src="{{ user.profile.image.url }}" alt="">
+
+                    {% else %}
+                        <img class="img-fluid" style="height: 300px; width: auto; margin: 50px;
                         border-style: dotted; border-color: #CEAF7F;
                         border-radius: 150px; border-width: 10px;"
-                        src="{{ user.profile.image.url }}" alt="">
-                {% else %}
-                    <img class="img-fluid" style="height: 300px; width: auto; margin: 50px;
-                        border-style: dotted; border-color: #CEAF7F;
-                        border-radius: 150px; border-width: 10px;"
-                        src="/media/profile_img/default-profile.jpg" alt="">
-                {% endif %}
-                <h1 class="text-center" style="color: #CEAF7F; font-size: 50px;">{{ user.username }}</h1>
-            </div>
+                             src="/media/profile_img/default-profile.jpg" alt="">
+                    {% endif %}
+                    <h1 class="text-center" style="color: #CEAF7F; font-size: 50px;">{{ user.username }}</h1>
+                </div>
 
-            <!-- O'ng tomondagi ma'lumotlar -->
-            <div class="col-lg-8 col-md-7 col-12"
-                 style="background: transparent; padding: 20px; border-radius: 12px;
+                <!-- O'ng tomondagi ma'lumotlar -->
+                <div class="col-lg-8 col-md-7 col-12"
+                     style="background: transparent; padding: 20px; border-radius: 12px;
                         font-size: 20px; font-weight: bold; color: white;">
 
-                <div class="mt-4 d-flex align-items-center mb-3">
-                    <span style="white-space: nowrap;">Name</span>
-                    <span style="flex: 1; border-bottom: 2px dashed #CEAF7F; margin: 0 10px;"></span>
-                    <span style="white-space: nowrap; color: white;">{{ user.first_name }}</span>
-                </div>
+                    <div class="mt-4 d-flex align-items-center mb-3">
+                        <span style="white-space: nowrap;">Name</span>
+                        <span style="flex: 1; border-bottom: 2px dashed #CEAF7F; margin: 0 10px;"></span>
+                        <span style="white-space: nowrap; color: white;">{{ user.first_name }}</span>
+                    </div>
 
-                <div class="mt-4 d-flex align-items-center mb-3">
-                    <span style="white-space: nowrap;">Surname</span>
-                    <span style="flex: 1; border-bottom: 2px dashed #CEAF7F; margin: 0 10px;"></span>
-                    <span style="white-space: nowrap; color: white;">{{ user.last_name }}</span>
-                </div>
+                    <div class="mt-4 d-flex align-items-center mb-3">
+                        <span style="white-space: nowrap;">Surname</span>
+                        <span style="flex: 1; border-bottom: 2px dashed #CEAF7F; margin: 0 10px;"></span>
+                        <span style="white-space: nowrap; color: white;">{{ user.last_name }}</span>
+                    </div>
 
-                <div class="mt-4 d-flex align-items-center mb-3">
-                    <span style="white-space: nowrap;">Email</span>
-                    <span style="flex: 1; border-bottom: 2px dashed #CEAF7F; margin: 0 10px;"></span>
-                    <span style="white-space: nowrap; color: white;">{{ user.email }}</span>
-                </div>
+                    <div class="mt-4 d-flex align-items-center mb-3">
+                        <span style="white-space: nowrap;">Email</span>
+                        <span style="flex: 1; border-bottom: 2px dashed #CEAF7F; margin: 0 10px;"></span>
+                        <span style="white-space: nowrap; color: white;">{{ user.email }}</span>
+                    </div>
 
-                <div class="mt-4 d-flex align-items-center mb-3">
-                    <span style="white-space: nowrap;">Phone</span>
-                    <span style="flex: 1; border-bottom: 2px dashed #CEAF7F; margin: 0 10px;"></span>
-                    <span style="white-space: nowrap; color: white;">{{ user.phone }}</span>
+                    <div class="mt-4 d-flex align-items-center mb-3">
+                        <span style="white-space: nowrap;">Phone</span>
+                        <span style="flex: 1; border-bottom: 2px dashed #CEAF7F; margin: 0 10px;"></span>
+                        <span style="white-space: nowrap; color: white;">{{ user.phone }}</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
