@@ -12,7 +12,8 @@
            data-bs-toggle="dropdown" aria-expanded="false">
             Categories
         </a>
-        <ul class="dropdown-menu bg-dark" aria-labelledby="navbarScrollingDropdown" style="list-style: none; padding: 0;">
+        <ul class="dropdown-menu bg-dark" aria-labelledby="navbarScrollingDropdown"
+            style="list-style: none; padding: 0;">
             <li><a style="color: #CEAF7F" class="dropdown-item" href="{% url 'by_category' 'Meal' %}">Meals</a></li>
             <li><a style="color: #CEAF7F" class="dropdown-item" href="{% url 'by_category' 'Drink' %}">Drinks</a></li>
             <li><a style="color: #CEAF7F" class="dropdown-item" href="{% url 'by_category' 'Salads' %}">Salads</a></li>
@@ -40,42 +41,42 @@
             </div>
         {% endif %}
 
-         <div class="row mt-5">
-                {% for food in foods %}
-                    <div class="col-12 col-md-6 mb-4">
-                        <div class="d-flex align-items-start"
-                             style="background-color: rgba(37,42,43,0.7); border-radius: 10px; transition: 0.3s; cursor: pointer;"
-                             onclick="window.location.href='{% url 'detail' food.id %}'"
-                             onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.4)';"
-                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+        <div class="row mt-5">
+            {% for food in foods %}
+                <div class="col-12 col-md-6 mb-4">
+                    <div class="d-flex align-items-start"
+                         style="background-color: rgba(37,42,43,0.7); border-radius: 10px; transition: 0.3s; cursor: pointer;"
+                         onclick="window.location.href='{% url 'detail' food.id %}'"
+                         onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.4)';"
+                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
 
-                            <img class="img-fluid p-2 mt-2"
-                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                                 src="{{ food.photo.url }}" alt="">
+                        <img class="img-fluid p-2 mt-2"
+                             style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
+                             src="{{ food.photo.url }}" alt="">
 
-                            <div class="card-body p-2 text-white">
-                                <span class="fw-bold" style="font-size: 25px;">{{ food.name_of_food }}</span>
-                                <span class="p-1" style="font-size: 15px; color: #CEAF7F;">
+                        <div class="card-body p-2 text-white">
+                            <span class="fw-bold" style="font-size: 25px;">{{ food.name_of_food }}</span>
+                            <span class="p-1" style="font-size: 15px; color: #CEAF7F;">
         <i class="bi bi-hash"></i>{{ food.type }}
       </span>
-                                <h6>{{ food.description|truncatechars:50 }}</h6>
-                                <p style="color: #CEAF7F; font-weight: bold;">Narxi: {{ food.price }}$</p>
+                            <h6>{{ food.description|truncatechars:50 }}</h6>
+                            <p style="color: #CEAF7F; font-weight: bold;">Narxi: {{ food.price }}$</p>
 
-                                <form action="{% url 'cart_add' food_id=food.id %}" method="POST"
-                                      style="display: inline;">
-                                    {% csrf_token %}
-                                    <button type="submit"
-                                            style="background: none; border: none; color: #CEAF7F;
+                            <form action="{% url 'cart_add' food_id=food.id %}" method="POST"
+                                  style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        style="background: none; border: none; color: #CEAF7F;
                    font-weight: bold; transition: 0.3s; cursor: pointer;"
-                                            onmouseover="this.style.color='white'"
-                                            onmouseout="this.style.color='#CEAF7F'">
-                                        <i class="bi bi-basket"></i> Add to cart
-                                    </button>
-                                </form>
-                            </div>
+                                        onmouseover="this.style.color='white'"
+                                        onmouseout="this.style.color='#CEAF7F'">
+                                    <i class="bi bi-basket"></i> Add to cart
+                                </button>
+                            </form>
                         </div>
                     </div>
-                {% endfor %}
-            </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
