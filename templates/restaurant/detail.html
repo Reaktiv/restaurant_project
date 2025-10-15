@@ -10,7 +10,8 @@
             <h1 style="justify-content: center; display: flex; color: #CEAF7F; margin: 30px">Taom ma'lumotlari</h1>
             <hr style="color: orange; font-weight: bolder;">
             <div class="col-5" style="display: flex; justify-content: center; margin-top: 50px">
-                <img class="img-fluid" style="width: auto; height: 300px; border-radius: 30px" src="{{ food.photo.url }}" alt="">
+                <img class="img-fluid" style="width: auto; height: 300px; border-radius: 30px"
+                     src="{{ food.photo.url }}" alt="">
             </div>
             <div class="col-7" style="margin-top: 50px;">
                 <div style="background: transparent; padding: 20px; border-radius: 12px; width: 80%; margin: auto; font-size: 20px; font-weight: bold; color: white;">
@@ -46,11 +47,25 @@
                 </div>
             {% else %}
             {% endif %}
-            <div style="justify-content: center; display: flex; margin-top: 50px; margin-bottom: 50px">
+            <div style="display: flex; justify-content: center; gap: 20px; margin: 50px 0;">
+                <a href="{% url 'cart' %}"
+                   style="background-color: #CEAF7F; color: white; border: none; border-radius: 8px; padding: 10px 25px; text-decoration: none; transition: 0.3s;"
+                   class="btn btn-lg"
+                   onmouseover="this.style.backgroundColor='#b8946f'"
+                   onmouseout="this.style.backgroundColor='#CEAF7F'">
+                    Add to cart
+                </a>
+
                 <a href="{% url 'update' food.id %}"
-                   style="background-color: #CEAF7F; color: white; border: none; border-radius: 8px"
-                   class="btn btn-lg">Ma'lumotlarni yangilash</a>
+                   style="background-color: #CEAF7F; color: white; border: none; border-radius: 8px; padding: 10px 25px; text-decoration: none; transition: 0.3s;"
+                   class="btn btn-lg"
+                   onmouseover="this.style.backgroundColor='#b8946f'"
+                   onmouseout="this.style.backgroundColor='#CEAF7F'">
+                    Update informations
+                </a>
             </div>
+
+
         </div>
     </div>
 

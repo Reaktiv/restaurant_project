@@ -1,13 +1,17 @@
 from restaurant import views
 from django.urls import path
 
-
 urlpatterns = [
-    path('',views.home, name='home'),
-    path('<int:food_id>/detail',views.detail, name='detail'),
+    path('', views.home, name='home'),
+    path('<int:food_id>/detail', views.detail, name='detail'),
     path('<int:food_id>/update', views.update, name='update'),
     path('<int:food_id>/delete', views.delete, name='delete'),
     path('create/', views.create, name='create'),
     path('food_page/', views.food_page, name='food_page'),
-    path('<str:food_type>by_category/', views.by_category, name='by_category')
+    path('<str:food_type>by_category/', views.by_category, name='by_category'),
+    path('cart/', views.cart, name='cart'),
+    path('cart_add/<int:food_id>/', views.cart_add, name='cart_add'),
+    path('cart_remove/<int:food_id>/', views.cart_remove, name='cart_remove'),
+    path('payment/', views.payment, name='payment'),
+
 ]
