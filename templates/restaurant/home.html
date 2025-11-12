@@ -26,19 +26,21 @@
                     <i class="bi bi-alarm" style="color: #CEAF7F;"></i> Ish vaqti: 9.00 dan 22.00 gacha
                 </span>
 
-                        <div class="row g-3 mt-3 justify-content-center">
-                            <div class="col-12 col-md-4 col-lg-3">
-                                <button class="btn fw-bold btn-lg w-100"
-                                        style="background-color: #CEAF7F; color: white; border: none; border-radius: 10px;">
-                                    BOOK A TABLE
-                                </button>
-                            </div>
-                            <div class="col-12 col-md-4 col-lg-3">
-                                <a href="#menu" class="btn btn-light fw-bold btn-lg w-100">
-                                    EXPLORE OUR MENU
-                                </a>
-                            </div>
-                        </div>
+                        <div class="row g-3 mt-4 justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+        <button class="btn fw-bold btn-lg w-100 py-3"
+                style="background-color: #CEAF7F; color: white; border: none; border-radius: 12px;">
+            BOOK A TABLE
+        </button>
+    </div>
+    <div class="col-12 col-md-8 col-lg-6">
+        <a href="#menu" class="btn btn-light fw-bold btn-lg w-100 py-3"
+           style="border-radius: 12px;">
+            EXPLORE OUR MENU
+        </a>
+    </div>
+</div>
+
 
                     </div>
                 </div>
@@ -134,7 +136,7 @@
 
                             <img class="img-fluid p-2 mt-2"
                                  style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                                 src="{{ food.photo.url }}" alt="">
+                                 src="{{ food.images.first.image.url }}" alt="">
 
                             <div class="card-body p-2 text-white">
                                 <span class="fw-bold" style="font-size: 25px;">{{ food.name_of_food }}</span>

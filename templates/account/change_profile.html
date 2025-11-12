@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    Change profile
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center" style="margin-top: 120px;">
+            <div style="justify-content: center; display: flex;">
+                <h1 style="color: #CEAF7F">Edit profile</h1>
+            </div>
+            <form enctype="multipart/form-data" action="{% url 'change_profile' %}" method="POST" class="text-white">
+                {% csrf_token %}
+                {{ u_form|crispy }}
+                {{ p_form|crispy }}
+                <div class="text-center">
+                    <button class="btn btn-outline-success">Update</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+{% endblock %}

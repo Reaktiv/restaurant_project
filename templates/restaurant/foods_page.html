@@ -21,6 +21,10 @@
             </li>
             <li><a style="color: #CEAF7F" class="dropdown-item" href="{% url 'by_category' 'Seafood' %}">Seafoods</a>
             </li>
+            <li><a style="color: #CEAF7F" class="dropdown-item" href="{% url 'by_category' 'Icecream' %}">Icecream</a>
+            </li>
+            <li><a style="color: #CEAF7F" class="dropdown-item" href="{% url 'by_category' 'FastFood' %}">FastFood</a>
+            </li>
             <li><a style="color: #CEAF7F" class="dropdown-item"
                    href="{% url 'by_category' 'Vegetarian' %}">Vegetarian</a></li>
             <li><a style="color: #CEAF7F" class="dropdown-item" href="{% url 'by_category' 'Healthy food' %}">Healthy
@@ -40,6 +44,7 @@
                 <h1 class="mt-5 text-center" style="color: #CEAF7F; font-size: 40px;">{{ type }}</h1>
             </div>
         {% endif %}
+  <hr style="border: 2px solid #CEAF7F; width: 100%;margin: 25px; opacity: 1;">
 
         <div class="row mt-5">
             {% for food in foods %}
@@ -52,7 +57,7 @@
 
                         <img class="img-fluid p-2 mt-2"
                              style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                             src="{{ food.photo.url }}" alt="">
+                             src="{{ food.images.first.image.url }}" alt="">
 
                         <div class="card-body p-2 text-white">
                             <span class="fw-bold" style="font-size: 25px;">{{ food.name_of_food }}</span>

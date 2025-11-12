@@ -56,6 +56,9 @@
                         <span style="flex: 1; border-bottom: 2px dashed #CEAF7F; margin: 0 10px;"></span>
                         <span style="white-space: nowrap; color: white;">{{ user.phone }}</span>
                     </div>
+                    <form action="{% url 'change_profile' %}" style="justify-content: center; display:flex;">
+                        <button class="btn btn-lg" style="background-color: #CEAF7F;">Edit profile</button>
+                    </form>
                 </div>
             </div>
         </div>

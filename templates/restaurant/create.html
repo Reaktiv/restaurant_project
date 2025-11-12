@@ -7,25 +7,17 @@
 
 {% block content %}
     <div class="container">
-
         <div style="margin-top: 90px; color: white;" class="row">
             <div class="card-header">
-                <h3 style="justify-content: center; display: flex; color: #CEAF7F"> Yangi ovqat qo'shish</h3>
+                <h3 style="justify-content: center; display: flex; color: #CEAF7F">Yangi ovqat qo'shish</h3>
             </div>
             <div class="card-body">
-
-                <form method="POST" action="{% url 'create' %}" enctype="multipart/form-data" class="mb-5">
+                <form method="POST" action="{% url 'create' %}" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form|crispy }}
-                    <button class="btn btn-outline-success" type="submit">Yaratish</button>
+                    <button class="btn btn-outline-success w-100 mt-3" type="submit">💾 Yaratish</button>
                 </form>
-
             </div>
-
         </div>
-
-
     </div>
 {% endblock %}
-
-

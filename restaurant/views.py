@@ -1,10 +1,14 @@
+import os
 import random
+from venv import logger
 
+from django.core.files.storage import default_storage
 from django.db.models import Q
 from django.http import HttpResponseBadRequest
+from django.utils.text import get_valid_filename
 
 from config.settings import AUTH_USER_MODEL
-from restaurant.models import Food
+from restaurant.models import Food, FoodImage
 from django.shortcuts import render, get_object_or_404, redirect
 from restaurant.forms import FoodForm
 from django.contrib.auth.decorators import login_required
@@ -60,21 +64,27 @@ def delete(request, food_id):
     return redirect('home')
 
 
+import re
+
+
 @login_required
 def create(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         form = FoodForm(request.POST, request.FILES)
         if form.is_valid():
-            food = form.save(commit=False)
-            food.added_by = request.user
-            food.save()
+            food = form.save()  # Food object yaratildi
+
+            # Rasm fayllar ro‘yxatini olish
+            images = request.FILES.getlist('images')
+
+            for img in images:
+                FoodImage.objects.create(food=food, image=img)
+
             return redirect('home')
     else:
         form = FoodForm()
-    context = {
-        'form': form,
-    }
-    return render(request, 'restaurant/create.html', context=context)
+
+    return render(request, 'restaurant/create.html', {'form': form})
 
 
 def food_page(request):
@@ -119,6 +129,7 @@ def cart(request):
 
     return render(request, 'restaurant/cart.html', context=context)
 
+
 def cart_add(request, food_id):
     if request.method == 'POST':
         try:
@@ -151,5 +162,4 @@ def cart_remove(request, food_id):
 
 
 def payment(request):
-    return HttpResponseBadRequest("To'landi")
-
+    return HttpResponseBadRequest("To'landi😁")

@@ -10,16 +10,19 @@
             <h2 class="text-md-start m-4 justify-content-center d-flex" style="color: #CEAF7F;">
                 {{ food.name_of_food }}
             </h2>
+           <hr style="border: 2px solid #CEAF7F; width: 100%;margin: 25px; opacity: 0.8;">
+
             <!-- Chap taraf: rasm -->
             <div class="col-12 col-md-6 d-flex justify-content-center mb-5 mb-md-0">
+                {% for image in food.images.all %}
                 <img class="img-fluid shadow-lg"
                      style="width: 100%; max-width: 400px; height: auto; border-radius: 30px; transition: 0.4s;"
-                     src="{{ food.photo.url }}" alt="Food photo"
+                     src="{{ image.image.url }}" alt="Food photo"
                      onmouseover="this.style.transform='scale(1.03)'"
                      onmouseout="this.style.transform='scale(1)'">
+                {% endfor %}
             </div>
 
-            <!-- O'ng taraf: ma'lumot -->
             <div class="col-12 col-md-6">
                 <div style="background: rgba(37, 42, 43, 0.7);
                         padding: 40px;
