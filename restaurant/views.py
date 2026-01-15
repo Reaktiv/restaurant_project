@@ -72,14 +72,15 @@ def create(request):
     if request.method == 'POST':
         form = FoodForm(request.POST, request.FILES)
         if form.is_valid():
-            food = form.save()  # Food object yaratildi
+            food = form.save(commit=False)
+
 
             # Rasm fayllar ro‘yxatini olish
             images = request.FILES.getlist('images')
 
             for img in images:
                 FoodImage.objects.create(food=food, image=img)
-
+            food.save()
             return redirect('home')
     else:
         form = FoodForm()
