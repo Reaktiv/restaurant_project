@@ -4,25 +4,35 @@
 {% block title %}Update Food{% endblock %}
 
 {% block content %}
-    <div style="margin-left: 40px; margin-right: 40px; margin-top: 90px;">
-        <div class="card shadow-lg border-0 rounded-4">
-            <div class="card-header text-center fw-bold fs-3" style="color: #CEAF7F; background: rgba(0,0,0,0.6);">
-                Update Food
-            </div>
-            <div class="card-body" style="background: transparent;">
-                <form action="{% url 'update' food.id %}" method="POST" style="background: transparent;">
-                    {% csrf_token %}
-                    {{ form|crispy }}
-                    <button type="submit" class="btn btn-primary">Update</button>
-                    <button type="button" class="btn btn-outline-danger float-end" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop">
-                        <i class="bi bi-trash3"></i> Delete
-                    </button>
+<style>
+    .form-control { color: #aaa !important; background: #1a1a1a !important; }
+</style>
 
-                </form>
+<div class="container">
+    <div class="row justify-content-center" style="margin-top: 90px;">
+        <div class="col-md-7">
+            <div class="card border-0" style="background: #111; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.6);">
+                <div class="card-header border-0 text-center py-4" style="background: rgba(206,175,127,0.08); border-bottom: 1px solid rgba(206,175,127,0.2) !important;">
+                    <h4 style="color: #CEAF7F; margin: 0;">✏️ Update Food</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form action="{% url 'update' food.id %}" method="POST" enctype="multipart/form-data" style="color: #CEAF7F">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <div class="d-flex gap-2 mt-3">
+                            <button type="submit" class="btn w-100" style="background: rgba(206,175,127,0.15); border: 1px solid #CEAF7F; color: #CEAF7F;">
+                                💾 Update
+                            </button>
+                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                <i class="bi bi-trash3"></i> Delete
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-
         </div>
     </div>
-    {% include 'restaurant/delete_confirm.html' %}
+</div>
+
+{% include 'restaurant/delete_confirm.html' %}
 {% endblock %}

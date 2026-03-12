@@ -1,23 +1,31 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %}
-    Create
-{% endblock %}
+{% block title %}Add Food{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div style="margin-top: 90px; color: white;" class="row">
-            <div class="card-header">
-                <h3 style="justify-content: center; display: flex; color: #CEAF7F">Yangi ovqat qo'shish</h3>
-            </div>
-            <div class="card-body">
-                <form method="POST" action="{% url 'create' %}" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ form|crispy }}
-                    <button class="btn btn-outline-success w-100 mt-3" type="submit">💾 Yaratish</button>
-                </form>
+<style>
+    .form-control { color: #aaa !important; background: #1a1a1a !important; }
+</style>
+
+<div class="container">
+    <div class="row justify-content-center" style="margin-top: 90px;">
+        <div class="col-md-7">
+            <div class="card border-0" style="background: #111; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.6);">
+                <div class="card-header border-0 text-center py-4" style="background: rgba(206,175,127,0.08); border-bottom: 1px solid rgba(206,175,127,0.2) !important;">
+                    <h4 style="color: #CEAF7F; margin: 0;">🍽 Yangi ovqat qo'shish</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" action="{% url 'create' %}" enctype="multipart/form-data" style="color: #CEAF7F">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button type="submit" class="btn w-100 mt-3" style="background: rgba(206,175,127,0.15); border: 1px solid #CEAF7F; color: #CEAF7F;">
+                            💾 Yaratish
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}

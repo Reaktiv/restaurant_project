@@ -44,7 +44,7 @@
                 <h1 class="mt-5 text-center" style="color: #CEAF7F; font-size: 40px;">{{ type }}</h1>
             </div>
         {% endif %}
-  <hr style="border: 2px solid #CEAF7F; width: 100%;margin: 25px; opacity: 1;">
+        <hr style="border: 2px solid #CEAF7F; width: 100%;margin: 25px; opacity: 1;">
 
         <div class="row mt-5">
             {% for food in foods %}
@@ -54,10 +54,16 @@
                          onclick="window.location.href='{% url 'detail' food.id %}'"
                          onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.4)';"
                          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                        {% if food.images.first %}
+                            <img class="img-fluid p-2 mt-2"
+                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
+                                 src="{{ food.images.first.image.url }}" alt="">
+                        {% else %}
+                            <img class="img-fluid p-2 mt-2"
+                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
+                                 src="{{ food.image.url }}" alt="">
+                        {% endif %}
 
-                        <img class="img-fluid p-2 mt-2"
-                             style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                             src="{{ food.images.first.image.url }}" alt="">
 
                         <div class="card-body p-2 text-white">
                             <span class="fw-bold" style="font-size: 25px;">{{ food.name_of_food }}</span>

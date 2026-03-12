@@ -19,6 +19,7 @@ class Food(models.Model):
     name_of_food = models.CharField(max_length=200)
     description = models.TextField(max_length=10000, blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    image = models.ImageField(upload_to='food_photos/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     published = models.BooleanField(default=False)
     type = models.CharField(max_length=50, choices=TYPES)

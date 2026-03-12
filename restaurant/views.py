@@ -73,20 +73,13 @@ def create(request):
         form = FoodForm(request.POST, request.FILES)
         if form.is_valid():
             food = form.save(commit=False)
-
-
-            # Rasm fayllar ro‘yxatini olish
-            images = request.FILES.getlist('images')
-
-            for img in images:
-                FoodImage.objects.create(food=food, image=img)
+            food.added_by = request.user
             food.save()
-            return redirect('home')
+            return redirect('food_page')
     else:
         form = FoodForm()
 
     return render(request, 'restaurant/create.html', {'form': form})
-
 
 def food_page(request):
     foods = Food.objects.filter(published=True)

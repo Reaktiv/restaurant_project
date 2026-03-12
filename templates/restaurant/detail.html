@@ -10,17 +10,25 @@
             <h2 class="text-md-start m-4 justify-content-center d-flex" style="color: #CEAF7F;">
                 {{ food.name_of_food }}
             </h2>
-           <hr style="border: 2px solid #CEAF7F; width: 100%;margin: 25px; opacity: 0.8;">
+            <hr style="border: 2px solid #CEAF7F; width: 100%;margin: 25px; opacity: 0.8;">
 
             <!-- Chap taraf: rasm -->
             <div class="col-12 col-md-6 d-flex justify-content-center mb-5 mb-md-0">
-                {% for image in food.images.all %}
-                <img class="img-fluid shadow-lg"
-                     style="width: 100%; max-width: 400px; height: auto; border-radius: 30px; transition: 0.4s;"
-                     src="{{ image.image.url }}" alt="Food photo"
-                     onmouseover="this.style.transform='scale(1.03)'"
-                     onmouseout="this.style.transform='scale(1)'">
-                {% endfor %}
+
+                {% if food.images.first %}
+                    <img class="img-fluid shadow-lg"
+                         style="width: 100%; max-width: 400px; height: auto; border-radius: 30px; transition: 0.4s;"
+                         src="{{ food.images.first.image.url }}" alt="Food photo"
+                         onmouseover="this.style.transform='scale(1.03)'"
+                         onmouseout="this.style.transform='scale(1)'">
+                {% else %}
+                    <img class="img-fluid shadow-lg"
+                         style="width: 100%; max-width: 400px; height: auto; border-radius: 30px; transition: 0.4s;"
+                         src="{{ food.image.url }}" alt="Food photo"
+                         onmouseover="this.style.transform='scale(1.03)'"
+                         onmouseout="this.style.transform='scale(1)'">
+                {% endif %}
+
             </div>
 
             <div class="col-12 col-md-6">

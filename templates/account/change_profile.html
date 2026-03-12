@@ -1,24 +1,32 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-{% block title %}
-    Change profile
-{% endblock %}
+
+{% block title %}Change profile{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="row justify-content-center" style="margin-top: 120px;">
-            <div style="justify-content: center; display: flex;">
-                <h1 style="color: #CEAF7F">Edit profile</h1>
-            </div>
-            <form enctype="multipart/form-data" action="{% url 'change_profile' %}" method="POST" class="text-white">
-                {% csrf_token %}
-                {{ u_form|crispy }}
-                {{ p_form|crispy }}
-                <div class="text-center">
-                    <button class="btn btn-outline-success">Update</button>
-                </div>
-            </form>
+<style>
+    .form-control { color: #aaa !important; background: #1a1a1a !important; }
+</style>
 
+<div class="container">
+    <div class="row justify-content-center" style="margin-top: 90px;">
+        <div class="col-md-7">
+            <div class="card border-0" style="background: #111; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.6);">
+                <div class="card-header border-0 text-center py-4" style="background: rgba(206,175,127,0.08); border-bottom: 1px solid rgba(206,175,127,0.2) !important;">
+                    <h4 style="color: #CEAF7F; margin: 0;">✏️ Edit profile</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form enctype="multipart/form-data" action="{% url 'change_profile' %}" method="POST" style="color: #CEAF7F">
+                        {% csrf_token %}
+                        {{ u_form|crispy }}
+                        {{ p_form|crispy }}
+                        <button class="btn w-100 mt-3" style="background: rgba(206,175,127,0.15); border: 1px solid #CEAF7F; color: #CEAF7F;">
+                            💾 Update
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
+</div>
 {% endblock %}
