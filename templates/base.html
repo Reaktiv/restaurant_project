@@ -17,33 +17,29 @@
 
 {% if user.is_authenticated %}
 <style>
-    @media (max-width: 991px) {
-        .navbar-nav { text-align: center; }
-        .navbar-nav .nav-link { justify-content: center; display: flex; }
-        .navbar-nav.ms-auto { margin-left: 0 !important; }
-        .logout-form { display: flex; justify-content: center; }
-        .logout-form button { text-align: center; width: 100%; }
+    .navbar-nav-scroll {
+        overflow-x: auto;
+        white-space: nowrap;
+        scrollbar-width: none;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
     }
+    .navbar-nav-scroll::-webkit-scrollbar { display: none; }
 </style>
 
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: rgba(37, 42, 43, 0.7);">
-    <div class="container-fluid">
+<nav class="navbar navbar-dark fixed-top" style="background-color: rgba(37, 42, 43, 0.7); margin-bottom: 10px">
+    <div class="container-fluid d-flex align-items-center" style="overflow: hidden;">
         <a href="https://bootstrapmade.com/demo/NiceRestaurant/"
-           class="d-flex align-items-center text-decoration-none p-3" style="color: white">
-            <i class="bi bi-fork-knife fs-3 me-2" style="color: #CEAF7F"></i>
-            <span class="fs-3 fw-lighter">NiceRestaurant</span>
+           class="d-flex align-items-center text-decoration-none p-2 flex-shrink-0" style="color: white">
+            <i class="bi bi-fork-knife fs-4 me-2" style="color: #CEAF7F"></i>
+            <span class="fs-5 fw-lighter">NiceRestaurant</span>
         </a>
 
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false"
-                aria-label="Toggle navigation" style="color: white;">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarScroll">
-            <ul class="navbar-nav me-auto my-2 my-lg-0">
+        <div class="navbar-nav-scroll flex-grow-1">
+            <ul class="navbar-nav flex-row">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home' %}"
+                    <a class="nav-link px-3" href="{% url 'home' %}"
                        style="color: white; transition: 0.3s;"
                        onmouseover="this.style.color='#CEAF7F'"
                        onmouseout="this.style.color='white'">
@@ -51,7 +47,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'create' %}"
+                    <a class="nav-link px-3" href="{% url 'create' %}"
                        style="color: white; transition: 0.3s;"
                        onmouseover="this.style.color='#CEAF7F'"
                        onmouseout="this.style.color='white'">
@@ -59,7 +55,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'food_page' %}"
+                    <a class="nav-link px-3" href="{% url 'food_page' %}"
                        style="color: white; transition: 0.3s;"
                        onmouseover="this.style.color='#CEAF7F'"
                        onmouseout="this.style.color='white'">
@@ -67,20 +63,16 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'cart' %}"
+                    <a class="nav-link px-3" href="{% url 'cart' %}"
                        style="color: white; transition: 0.3s;"
                        onmouseover="this.style.color='#CEAF7F'"
                        onmouseout="this.style.color='white'">
                         <i class="bi bi-basket-fill"></i> Cart
                     </a>
                 </li>
-
                 {% block Categories %}{% endblock %}
-            </ul>
-
-            <ul class="navbar-nav ms-auto my-2 my-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'profile' %}"
+                    <a class="nav-link px-3" href="{% url 'profile' %}"
                        style="color: white; transition: 0.3s;"
                        onmouseover="this.style.color='#CEAF7F'"
                        onmouseout="this.style.color='white'">
@@ -88,9 +80,9 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <form action="{% url 'logout' %}" method="POST" class="logout-form">
+                    <form action="{% url 'logout' %}" method="POST">
                         {% csrf_token %}
-                        <button type="submit" class="nav-link border-0"
+                        <button type="submit" class="nav-link border-0 px-3"
                                 style="color: white; background: none; transition: 0.3s; cursor: pointer;"
                                 onmouseover="this.style.color='#CEAF7F'"
                                 onmouseout="this.style.color='white'">
@@ -99,8 +91,6 @@
                     </form>
                 </li>
             </ul>
-
-            {% block search %}{% endblock %}
         </div>
     </div>
 </nav>
