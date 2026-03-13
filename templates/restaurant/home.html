@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
+
 {% block title %}
     Home
 {% endblock %}
@@ -138,10 +139,14 @@
                                 <img class="img-fluid p-2 mt-2"
                                      style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
                                      src="{{ food.images.first.image.url }}" alt="">
-                            {% else %}
+                            {% elif food.image %}
                                 <img class="img-fluid p-2 mt-2"
                                      style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
                                      src="{{ food.image.url }}" alt="">
+                            {% else %}
+                                <img class="img-fluid p-2 mt-2"
+                                     style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
+                                     src="/media/spoon-and-fork.jpg" alt="">
                             {% endif %}
 
                             <div class="card-body p-2 text-white">
@@ -202,7 +207,7 @@
                 <div class="col-12 col-md-4 p-3 m-3"
                      style="background-color: rgba(37,42,43,0.7); border-radius: 20px;">
                     <i class="bi bi-people d-flex justify-content-center" style="font-size: 80px; color: #CEAF7F;"></i>
-                    <h3 style="color: #CEAF7F; justify-content: center; display: flexx`">Shaxsiy yig'inlar</h3>
+                    <h3 style="color: #CEAF7F; justify-content: center; display: flex">Shaxsiy yig'inlar</h3>
                     <h6 class="text-white">Do‘stlaringiz yoki yaqinlaringiz bilan sokin muhitda...</h6>
                     <span class="p-2 mt-3 d-block text-center"
                           style="background-color: black; border-radius: 30px; color: antiquewhite;">50 tagacha mehmon</span>
