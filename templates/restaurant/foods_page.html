@@ -1,35 +1,8 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-
 {% block title %}By category{% endblock %}
 
 {% block content %}
-    <style>
-        .category-link {
-            display: inline-block;
-            color: #aaa;
-            text-decoration: none;
-            padding: 6px 18px;
-            margin-right: 4px;
-            font-size: 15px;
-            font-weight: 500;
-            border-bottom: 2px solid transparent;
-            transition: 0.3s;
-        }
-
-        .category-link:hover {
-            color: #CEAF7F;
-            border-bottom: 2px solid #CEAF7F;
-        }
-
-        .category-scroll::-webkit-scrollbar {
-            display: none;
-        }
-
-        .category-scroll {
-            scrollbar-width: none;
-        }
-    </style>
 
     <div class="container" style="margin-top: 90px;">
         {% if not type %}
