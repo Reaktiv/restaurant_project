@@ -14,97 +14,96 @@
 
 <body class="bg-dark"
       style="background: url('/media/bacground_photo1.jpg') no-repeat center center fixed; background-size: cover;">
+
 {% if user.is_authenticated %}
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: rgba(37, 42, 43, 0.7);">
-        <div class="container-fluid">
-            <a href="https://bootstrapmade.com/demo/NiceRestaurant/"
-               class="d-flex align-items-center text-decoration-none p-3" style="color: white">
-                <i class="bi bi-fork-knife fs-3 me-2" style="color: #CEAF7F"></i>
-                <span class="fs-3 fw-lighter">NiceRestaurant</span>
-            </a>
+<style>
+    @media (max-width: 991px) {
+        .navbar-nav { text-align: center; }
+        .navbar-nav .nav-link { justify-content: center; display: flex; }
+        .navbar-nav.ms-auto { margin-left: 0 !important; }
+        .logout-form { display: flex; justify-content: center; }
+        .logout-form button { text-align: center; width: 100%; }
+    }
+</style>
 
-            <!-- Toggle -->
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false"
-                    aria-label="Toggle navigation" style="color: white;">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: rgba(37, 42, 43, 0.7);">
+    <div class="container-fluid">
+        <a href="https://bootstrapmade.com/demo/NiceRestaurant/"
+           class="d-flex align-items-center text-decoration-none p-3" style="color: white">
+            <i class="bi bi-fork-knife fs-3 me-2" style="color: #CEAF7F"></i>
+            <span class="fs-3 fw-lighter">NiceRestaurant</span>
+        </a>
 
-            <div class="collapse navbar-collapse" id="navbarScroll">
-                <!-- Asosiy linklar -->
-                <ul class="navbar-nav me-auto my-2 my-lg-0" style="list-style: none; padding: 0;">
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           href="{% url 'home' %}"
-                           style="color: white; cursor: pointer; transition: 0.3s;"
-                           onmouseover="this.style.color='#CEAF7F'"
-                           onmouseout="this.style.color='white'"><i class="bi bi-houses-fill"></i>
-                            Home
-                        </a>
-                    </li>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false"
+                aria-label="Toggle navigation" style="color: white;">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           href="{% url 'create' %}"
-                           style="color: white; cursor: pointer; transition: 0.3s;"
-                           onmouseover="this.style.color='#CEAF7F'"
-                           onmouseout="this.style.color='white'">
-                            <i class="bi bi-plus"></i> Add
-                        </a>
-                    </li>
+        <div class="collapse navbar-collapse" id="navbarScroll">
+            <ul class="navbar-nav me-auto my-2 my-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}"
+                       style="color: white; transition: 0.3s;"
+                       onmouseover="this.style.color='#CEAF7F'"
+                       onmouseout="this.style.color='white'">
+                        <i class="bi bi-houses-fill"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'create' %}"
+                       style="color: white; transition: 0.3s;"
+                       onmouseover="this.style.color='#CEAF7F'"
+                       onmouseout="this.style.color='white'">
+                        <i class="bi bi-plus"></i> Add
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'food_page' %}"
+                       style="color: white; transition: 0.3s;"
+                       onmouseover="this.style.color='#CEAF7F'"
+                       onmouseout="this.style.color='white'">
+                        <i class="bi bi-egg-fried"></i> All
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cart' %}"
+                       style="color: white; transition: 0.3s;"
+                       onmouseover="this.style.color='#CEAF7F'"
+                       onmouseout="this.style.color='white'">
+                        <i class="bi bi-basket-fill"></i> Cart
+                    </a>
+                </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           href="{% url 'food_page' %}"
-                           style="color: white; cursor: pointer; transition: 0.3s;"
-                           onmouseover="this.style.color='#CEAF7F'"
-                           onmouseout="this.style.color='white'"><i class="bi bi-egg-fried"></i>
-                            All
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           href="{% url 'cart' %}"
-                           style="color: white; cursor: pointer; transition: 0.3s;"
-                           onmouseover="this.style.color='#CEAF7F'"
-                           onmouseout="this.style.color='white'"><i class="bi bi-basket-fill"></i>
-                            Cart
-                        </a>
-                    </li>
+                {% block Categories %}{% endblock %}
+            </ul>
 
-                    {% block Categories %}{% endblock %}
-                </ul>
+            <ul class="navbar-nav ms-auto my-2 my-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'profile' %}"
+                       style="color: white; transition: 0.3s;"
+                       onmouseover="this.style.color='#CEAF7F'"
+                       onmouseout="this.style.color='white'">
+                        Profile
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <form action="{% url 'logout' %}" method="POST" class="logout-form">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-link border-0"
+                                style="color: white; background: none; transition: 0.3s; cursor: pointer;"
+                                onmouseover="this.style.color='#CEAF7F'"
+                                onmouseout="this.style.color='white'">
+                            Logout
+                        </button>
+                    </form>
+                </li>
+            </ul>
 
-                <!-- Profile & Logout -->
-                <ul class="navbar-nav ms-auto my-2 my-lg-0">
-                    <li class="nav-item mb-2 mb-lg-0" style="width: 100%; text-align: center; margin-bottom: 10px;">
-                        <a href="{% url 'profile' %}" class="nav-link px-3 py-1"
-                           style="color: white; width: 80%; transition: 0.3s; cursor: pointer;"
-                           onmouseover="this.style.color='#CEAF7F'"
-                           onmouseout="this.style.color='white'">
-                            Profile
-                        </a>
-                    </li>
-
-                    <li class="nav-item" style="width: 100%; text-align: center; margin-bottom: 10px;">
-                        <form action="{% url 'logout' %}" method="POST" class="d-inline">
-                            {% csrf_token %}
-                            <button type="submit"
-                                    class="nav-link px-3 py-1 border-0"
-                                    style="color: white; width: 80%; transition: 0.3s; background: none; cursor: pointer;"
-                                    onmouseover="this.style.color='#CEAF7F'"
-                                    onmouseout="this.style.color='white'">
-                                Logout
-                            </button>
-                        </form>
-                    </li>
-                </ul>
-
-
-                {% block search %}{% endblock %}
-            </div>
+            {% block search %}{% endblock %}
         </div>
-    </nav>
+    </div>
+</nav>
 {% endif %}
 
 {% block content %}{% endblock %}
