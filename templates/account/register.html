@@ -1,30 +1,34 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
-{% block title %}
-    Register
-{% endblock %}
 
+{% block title %}Register{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="row div-item" style="margin-top: 90px;">
-            <div class="card-header">
-                <p class="fs-3 text-primary">Register</p>
-            </div>
-            <div class="card-body">
-                <form action="{% url 'register' %}" method="POST">
-                    {% csrf_token %}
-                    {{ form|crispy }}
-                    <button type="submit" class="btn btn-outline-success">Register</button>
-                </form>
+<style>
+    .form-control { color: #aaa !important; background: #1a1a1a !important; }
+    .form-text, .helptext, small { color: #aaa !important; }
+
+</style>
+
+<div class="container">
+    <div class="row justify-content-center" style="margin-top: 90px;">
+        <div class="col-md-7">
+            <div class="card border-0" style="background: #111; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.6);">
+                <div class="card-header border-0 text-center py-4" style="background: rgba(206,175,127,0.08); border-bottom: 1px solid rgba(206,175,127,0.2) !important;">
+                    <h4 style="color: #CEAF7F; margin: 0;">📝 Register</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form action="{% url 'register' %}" method="POST" style="color: #CEAF7F">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button type="submit" class="btn w-100 mt-3" style="background: rgba(206,175,127,0.15); border: 1px solid #CEAF7F; color: #CEAF7F;">
+                            📝 Register
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
-
-
-
-
-
-
