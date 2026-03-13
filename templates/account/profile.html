@@ -1,64 +1,47 @@
 {% extends 'base.html' %}
-
-{% block title %}
-    Profile
-{% endblock %}
-
+{% block title %}Profile{% endblock %}
 {% block content %}
-    <div class="container">
-        <div class="row justify-content-center" style="margin-top: 120px;">
-            <h1 class="text-center fw-bold m-4" style="color: #CEAF7F;">Profile</h1>
-
-            <div class="row align-items-center">
-                <!-- Chap tomondagi rasm -->
-                <div class="col-lg-4 col-md-5 col-12 text-center mb-4 mb-md-0">
+    <div class="container" style="margin-top: 100px; padding-bottom: 60px;">
+        <h1 class="text-center fw-bold mb-4" style="color: #CEAF7F;">Profile</h1>
+<hr style="border: 2px solid #CEAF7F; width: 80%; margin: 25px auto; opacity: 1;">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6">
+                <div class="text-center mb-4">
                     {% if user.profile.image %}
-                        <img class="img-fluid rounded-circle"
-                             style="height: 320px; width: 320px; object-fit: cover; margin: 50px;
-                                border-style: dotted; border-color: #CEAF7F;
-                                border-width: 10px;"
-                             src="{{ user.profile.image.url }}" alt="">
-
+                        <img src="{{ user.profile.image.url }}" class="rounded-circle"
+                             style="width: 160px; height: 160px; object-fit: cover; border: 6px dotted #CEAF7F;">
                     {% else %}
-                        <img class="img-fluid" style="height: 300px; width: auto; margin: 50px;
-                        border-style: dotted; border-color: #CEAF7F;
-                        border-radius: 150px; border-width: 10px;"
-                             src="/media/profile_img/default-profile.jpg" alt="">
+                        <img src="/media/profile_img/default-profile.jpg" class="rounded-circle"
+                             style="width: 160px; height: 160px; object-fit: cover; border: 6px dotted #CEAF7F;">
                     {% endif %}
-                    <h1 class="text-center" style="color: #CEAF7F; font-size: 50px;">{{ user.username }}</h1>
+                    <h4 class="mt-3" style="color: #CEAF7F;">{{ user.username }}</h4>
                 </div>
 
-                <!-- O'ng tomondagi ma'lumotlar -->
-                <div class="col-lg-8 col-md-7 col-12"
-                     style="background: transparent; padding: 20px; border-radius: 12px;
-                        font-size: 20px; font-weight: bold; color: white;">
-
-                    <div class="mt-4 d-flex align-items-center mb-3">
-                        <span style="white-space: nowrap;">Name</span>
-                        <span style="flex: 1; border-bottom: 2px dashed #CEAF7F; margin: 0 10px;"></span>
-                        <span style="white-space: nowrap; color: white;">{{ user.first_name }}</span>
+                <div style="background: rgba(37,42,43,0.7); border-radius: 20px; padding: 32px; color: white;">
+                    <div class="d-flex align-items-center mb-3">
+                        <span style="font-weight: bold; white-space: nowrap;">Name</span>
+                        <span style="flex:1; border-bottom: 2px dashed #CEAF7F; margin: 0 12px;"></span>
+                        <span>{{ user.first_name }}</span>
                     </div>
-
-                    <div class="mt-4 d-flex align-items-center mb-3">
-                        <span style="white-space: nowrap;">Surname</span>
-                        <span style="flex: 1; border-bottom: 2px dashed #CEAF7F; margin: 0 10px;"></span>
-                        <span style="white-space: nowrap; color: white;">{{ user.last_name }}</span>
+                    <div class="d-flex align-items-center mb-3">
+                        <span style="font-weight: bold; white-space: nowrap;">Surname</span>
+                        <span style="flex:1; border-bottom: 2px dashed #CEAF7F; margin: 0 12px;"></span>
+                        <span>{{ user.last_name }}</span>
                     </div>
-
-                    <div class="mt-4 d-flex align-items-center mb-3">
-                        <span style="white-space: nowrap;">Email</span>
-                        <span style="flex: 1; border-bottom: 2px dashed #CEAF7F; margin: 0 10px;"></span>
-                        <span style="white-space: nowrap; color: white;">{{ user.email }}</span>
+                    <div class="d-flex align-items-center mb-3">
+                        <span style="font-weight: bold; white-space: nowrap;">Email</span>
+                        <span style="flex:1; border-bottom: 2px dashed #CEAF7F; margin: 0 12px;"></span>
+                        <span>{{ user.email }}</span>
                     </div>
-
-                    <div class="mt-4 d-flex align-items-center mb-3">
-                        <span style="white-space: nowrap;">Phone</span>
-                        <span style="flex: 1; border-bottom: 2px dashed #CEAF7F; margin: 0 10px;"></span>
-                        <span style="white-space: nowrap; color: white;">{{ user.phone }}</span>
+                    <div class="d-flex align-items-center mb-4">
+                        <span style="font-weight: bold; white-space: nowrap;">Phone</span>
+                        <span style="flex:1; border-bottom: 2px dashed #CEAF7F; margin: 0 12px;"></span>
+                        <span>{{ user.phone }}</span>
                     </div>
-                    <form action="{% url 'change_profile' %}" style="justify-content: center; display:flex;">
-                        <button class="btn btn-lg" style="background-color: #CEAF7F;">Edit profile</button>
-                    </form>
+                    <a href="{% url 'change_profile' %}" class="btn w-100"
+                       style="background: rgba(206,175,127,0.15); border: 1px solid #CEAF7F; color: #CEAF7F;">
+                        ✏️ Edit profile
+                    </a>
                 </div>
             </div>
         </div>

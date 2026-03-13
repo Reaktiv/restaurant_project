@@ -1,33 +1,52 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
-{% block title %}
-    Login
-{% endblock %}
 
+{% block title %}Login{% endblock %}
 
 {% block content %}
-    <div class="container text-white">
-        <div class="row div-item" style="margin-top: 90px;">
-            <div class="card-header">
-                <p class="fs-3 text-primary">Login</p>
-            </div>
-            <div class="card-body">
-                <form action="{% url 'login' %}" method="POST">
-                    {% csrf_token %}
-                    {{ form|crispy }}
-                    <button type="submit" class="btn btn-outline-success">Login</button>
-                </form>
-                <div class="mt-3">
-                    or create new account!<a href="{% url 'register' %}" style="text-decoration: none"> Register</a>
+    <style>
+        .form-control {
+            color: #aaa !important;
+            background: #1a1a1a !important;
+        }
+
+        .form-control {
+            color: #aaa !important;
+            background: #1a1a1a !important;
+        }
+
+        label {
+            color: white !important;
+        }
+
+    </style>
+
+    <div class="container">
+        <div class="row justify-content-center" style="margin-top: 90px;">
+            <div class="col-md-7">
+                <div class="card border-0"
+                     style="background: #111; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.6);">
+                    <div class="card-header border-0 text-center py-4"
+                         style="background: rgba(206,175,127,0.08); border-bottom: 1px solid rgba(206,175,127,0.2) !important;">
+                        <h4 style="color: #CEAF7F; margin: 0;">🔐 Login</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <form action="{% url 'login' %}" method="POST">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <button type="submit" class="btn w-100 mt-3"
+                                    style="background: rgba(206,175,127,0.15); border: 1px solid #CEAF7F; color: #CEAF7F;">
+                                🔐 Login
+                            </button>
+                        </form>
+                        <div class="mt-3 text-center" style="color: #aaa;">
+                            Create new account! <a href="{% url 'register' %}"
+                                                   style="color: #CEAF7F; text-decoration: none;">Register</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 {% endblock %}
-
-
-
-
-
-
