@@ -20,13 +20,17 @@
                              onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
 
                             {% if item.food.images.first %}
-                            <img class="img-fluid p-2 mt-2"
-                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                                 src="{{ item.food.images.first.image.url }}" alt="">
-                            {% else %}
+                                <img class="img-fluid p-2 mt-2"
+                                     style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
+                                     src="{{ item.food.images.first.image.url }}" alt="">
+                            {% elif item.food.image %}
                                 <img class="img-fluid p-2 mt-2"
                                      style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
                                      src="{{ item.food.image.url }}" alt="">
+                            {% else %}
+                                <img class="img-fluid p-2 mt-2"
+                                     style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
+                                     src="/media/spoon-and-fork.jpg" alt="">
                             {% endif %}
 
 

@@ -54,15 +54,20 @@
                          onclick="window.location.href='{% url 'detail' food.id %}'"
                          onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.4)';"
                          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-                        {% if food.images.first %}
-                            <img class="img-fluid p-2 mt-2"
-                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                                 src="{{ food.images.first.image.url }}" alt="">
-                        {% else %}
-                            <img class="img-fluid p-2 mt-2"
-                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                                 src="{{ food.image.url }}" alt="">
-                        {% endif %}
+
+                            {% if food.images.first %}
+                                <img class="img-fluid p-2 mt-2"
+                                     style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
+                                     src="{{ food.images.first.image.url }}" alt="">
+                            {% elif food.image %}
+                                <img class="img-fluid p-2 mt-2"
+                                     style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
+                                     src="{{ food.image.url }}" alt="">
+                            {% else %}
+                                <img class="img-fluid p-2 mt-2"
+                                     style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
+                                     src="/media/spoon-and-fork.jpg" alt="">
+                            {% endif %}
 
 
                         <div class="card-body p-2 text-white">
