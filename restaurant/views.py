@@ -35,9 +35,11 @@ def home(request):
 
 def detail(request, food_id):
     food = get_object_or_404(Food, id=food_id)
+    foods = Food.objects.filter(published=True, type=food.type)
 
     context = {
         'food': food,
+        'foods': foods,
     }
     return render(request, 'restaurant/detail.html', context=context)
 

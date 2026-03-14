@@ -87,10 +87,12 @@
             </div>
         </div>
     </nav>
+
 {% endif %}
 
 {% block content %}{% endblock %}
-{% block footer %}
+{% if user.is_authenticated %}
+    {% block footer %}
     <footer class="py-5 mt-auto"
             style="background-color: rgba(15, 17, 18, 0.1); backdrop-filter: blur(14px); border-top: 1px solid rgba(206, 175, 127, 0.2);">
         <div class="container">
@@ -162,6 +164,7 @@
         </div>
     </footer>
 {% endblock footer %}
+{% endif %}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
