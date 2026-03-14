@@ -8,7 +8,7 @@ from django.http import HttpResponseBadRequest
 from django.utils.text import get_valid_filename
 
 from config.settings import AUTH_USER_MODEL
-from restaurant.models import Food, FoodImage
+from restaurant.models import Food, FoodImage, Favourite
 from django.shortcuts import render, get_object_or_404, redirect
 from restaurant.forms import FoodForm
 from django.contrib.auth.decorators import login_required
@@ -157,3 +157,57 @@ def cart_remove(request, food_id):
 
 def payment(request):
     return HttpResponseBadRequest("To'landi😁")
+
+
+@login_required()
+def add_favourite(request, food_id):
+    food = get_object_or_404(Food, id=food_id)
+    Favourite.objects.get_or_create(user=request.user,
+                                    food=food)
+
+    return redirect(request.META.get('HTTP_REFERER'))
+
+@login_required()
+def remove_favourite(request, food_id):
+    food = get_object_or_404(Food, id=food_id)
+    Favourite.objects.filter(user=request.user, food=food).delete()
+
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

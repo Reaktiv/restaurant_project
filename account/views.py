@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from account.forms import CustomUserCreationForm, CustomUserChangeForm, ProfileChangeForm
-from restaurant.models import Food
+from restaurant.models import Food, Favourite
 from .models import Profile
 
 # Create your views here.
@@ -22,9 +22,9 @@ def register(request):
     return render(request, 'account/register.html', context=context)
 
 def profile(request):
-    foods = Food.objects.filter(published=True)
+    favourite_foods = Food.objects.filter(favourite_by__user=request.user)
     context = {
-        "foods": foods
+        "foods": favourite_foods
     }
     return render(request, 'account/profile.html', context=context)
 

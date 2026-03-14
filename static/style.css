@@ -80,3 +80,9 @@
     }
 }
 /* ----------------------------------- */
+.cart-transition{
+    background-color: rgba(37,42,43,0.7);
+    border-radius: 10px;
+    transition: 0.3s; cursor: pointer;
+}
+/**/

@@ -33,3 +33,18 @@ class FoodImage(models.Model):
 
     def __str__(self):
         return f"{self.food.name_of_food} rasmi"
+
+
+class Favourite(models.Model):
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="favourites")
+    food = models.ForeignKey(Food, on_delete=models.CASCADE, related_name="favourite_by")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'food')
+
+    def __str__(self):
+        return f"{self.user} -> {self.food}"
+
+
+
