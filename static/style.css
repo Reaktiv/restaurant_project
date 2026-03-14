@@ -26,6 +26,7 @@
     margin-top: 90px;
 }
 
+/* ------------------ for food category -------------- */
 .category-link {
     display: inline-block;
     color: #aaa;
@@ -50,3 +51,32 @@
 .category-scroll {
     scrollbar-width: none;
 }
+
+/* ---------------------------------- */
+/* navbar */
+
+@media (max-width: 991px) {
+    .navbar-nav {
+        text-align: center;
+    }
+
+    .navbar-nav .nav-link {
+        justify-content: center;
+        display: flex;
+    }
+
+    .navbar-nav.ms-auto {
+        margin-left: 0 !important;
+    }
+
+    .logout-form {
+        display: flex;
+        justify-content: center;
+    }
+
+    .logout-form button {
+        text-align: center;
+        width: 100%;
+    }
+}
+/* ----------------------------------- */

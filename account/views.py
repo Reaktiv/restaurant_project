@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from account.forms import CustomUserCreationForm, CustomUserChangeForm, ProfileChangeForm
+from restaurant.models import Food
 from .models import Profile
 
 # Create your views here.
@@ -21,7 +22,11 @@ def register(request):
     return render(request, 'account/register.html', context=context)
 
 def profile(request):
-    return render(request, 'account/profile.html')
+    foods = Food.objects.filter(published=True)
+    context = {
+        "foods": foods
+    }
+    return render(request, 'account/profile.html', context=context)
 
 def change_profile(request):
 
@@ -50,12 +55,6 @@ def change_profile(request):
     }
 
     return render(request, 'account/change_profile.html', context)
-
-
-
-
-
-
 
 def password_reset(request):
     pass

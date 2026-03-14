@@ -3,7 +3,7 @@
 {% block content %}
     <div class="container" style="margin-top: 100px; padding-bottom: 60px;">
         <h1 class="text-center fw-bold mb-4" style="color: #CEAF7F;">Profile</h1>
-<hr style="border: 2px solid #CEAF7F; width: 80%; margin: 25px auto; opacity: 1;">
+        <hr style="border: 2px solid #CEAF7F; width: 80%; margin: 25px auto; opacity: 1;">
         <div class="row justify-content-center">
             <div class="col-12 col-md-6">
                 <div class="text-center mb-4">
@@ -45,5 +45,54 @@
                 </div>
             </div>
         </div>
+        <h1 class="mt-5 text-center" style="color: #CEAF7F; font-size: 40px;">Favourites</h1>
+        <hr style="border: 2px solid #CEAF7F; opacity: 1; margin: 10px;">
+        <div class="row mt-2">
+            {% for food in foods %}
+                <div class="col-12 col-md-6 mb-4">
+                    <div class="d-flex align-items-start"
+                         style="background-color: rgba(37,42,43,0.7); border-radius: 10px; transition: 0.3s; cursor: pointer;"
+                         onclick="window.location.href='{% url 'detail' food.id %}'"
+                         onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.4)';"
+                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+
+                        {% if food.images.first %}
+                            <img class="img-fluid p-2 mt-2"
+                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
+                                 src="{{ food.images.first.image.url }}" alt="">
+                        {% elif food.image %}
+                            <img class="img-fluid p-2 mt-2"
+                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
+                                 src="{{ food.image.url }}" alt="">
+                        {% else %}
+                            <img class="img-fluid p-2 mt-2"
+                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
+                                 src="/media/spoon-and-fork.jpg" alt="">
+                        {% endif %}
+
+                        <div class="card-body p-2 text-white">
+                            <span class="fw-bold" style="font-size: 25px;">{{ food.name_of_food }}</span>
+                            <span class="p-1" style="font-size: 15px; color: #CEAF7F;">
+                            <i class="bi bi-hash"></i>{{ food.type }}
+                        </span>
+                            <h6>{{ food.description|truncatechars:50 }}</h6>
+                            <p style="color: #CEAF7F; font-weight: bold;">Narxi: {{ food.price }}$</p>
+
+                            <form action="{% url 'cart_add' food_id=food.id %}" method="POST" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        style="background: none; border: none; color: #CEAF7F; font-weight: bold; transition: 0.3s; cursor: pointer;"
+                                        onmouseover="this.style.color='white'"
+                                        onmouseout="this.style.color='#CEAF7F'">
+                                    <i class="bi bi-basket"></i> Add to cart
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+
     </div>
 {% endblock %}
