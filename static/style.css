@@ -79,10 +79,63 @@
         width: 100%;
     }
 }
+
 /* ----------------------------------- */
-.cart-transition{
-    background-color: rgba(37,42,43,0.7);
+.cart-transition {
+    background-color: rgba(37, 42, 43, 0.7);
     border-radius: 10px;
-    transition: 0.3s; cursor: pointer;
+    transition: 0.3s;
+    cursor: pointer;
 }
+
+/**/
+
+/* Form inputs */
+.form-control {
+    color: #aaa !important;
+    background: #1a1a1a !important;
+}
+
+.form-text,
+.helptext,
+small {
+    color: #aaa !important;
+}
+
+/* Page wrapper */
+.add-food-wrapper {
+    margin-top: 90px;
+}
+
+/* Card */
+.add-food-card {
+    background: #111;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+/* Card header */
+.add-food-card-header {
+    background: rgba(206, 175, 127, 0.08);
+    border-bottom: 1px solid rgba(206, 175, 127, 0.2) !important;
+}
+
+/* Card title */
+.add-food-title {
+    color: #CEAF7F;
+    margin: 0;
+}
+
+/* Form color */
+.add-food-form {
+    color: #CEAF7F;
+}
+
+/* Submit button */
+.add-food-btn {
+    background: rgba(206, 175, 127, 0.15);
+    border: 1px solid #CEAF7F;
+    color: #CEAF7F;
+}
+
 /**/

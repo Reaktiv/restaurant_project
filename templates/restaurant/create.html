@@ -10,14 +10,14 @@
 
 </style>
 
-<div class="container">
+<div class="container ">
     <div class="row justify-content-center" style="margin-top: 90px;">
         <div class="col-md-7">
-            <div class="card border-0" style="background: #111; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.6);">
+            <div class="card border-0 " style="background: #111; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.6);">
                 <div class="card-header border-0 text-center py-4" style="background: rgba(206,175,127,0.08); border-bottom: 1px solid rgba(206,175,127,0.2) !important;">
                     <h4 style="color: #CEAF7F; margin: 0;">🍽 Yangi ovqat qo'shish</h4>
                 </div>
-                <div class="card-body p-4">
+                <div class="card-body p-4 ">
                     <form method="POST" action="{% url 'create' %}" enctype="multipart/form-data" style="color: #CEAF7F">
                         {% csrf_token %}
                         {{ form|crispy }}
