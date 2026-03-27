@@ -107,6 +107,7 @@ def cart(request):
 
     food_ids = [key for key in basket.keys() if key.isdigit()]
     foods = Food.objects.filter(id__in=food_ids).select_related()
+    favourite_foods = Food.objects.filter(favourite_by__user=request.user)
     basket_items = []
     total_price = 0
 
@@ -120,7 +121,8 @@ def cart(request):
         total_price += food.price * quantity
     context = {
         'basket_items': basket_items,
-        'total_price': total_price
+        'total_price': total_price,
+        'foods': favourite_foods,
     }
 
     return render(request, 'restaurant/cart.html', context=context)
