@@ -46,6 +46,10 @@ def detail(request, food_id):
 
 def update(request, food_id):
     food = get_object_or_404(Food, id=food_id)
+    if request.user.is_superuser and request.user.is_staff:
+        user_perm = False
+    else:
+        user_perm = True
     if request.method == 'POST':
         form = FoodForm(request.POST, request.FILES, instance=food)
         if form.is_valid():
@@ -56,6 +60,7 @@ def update(request, food_id):
     context = {
         'form': form,
         'food': food,
+        'user_perm': user_perm
     }
     return render(request, 'restaurant/update.html', context=context)
 
@@ -122,7 +127,7 @@ def cart(request):
     context = {
         'basket_items': basket_items,
         'total_price': total_price,
-        'foods': favourite_foods,
+        'x`foods': favourite_foods,
     }
 
     return render(request, 'restaurant/cart.html', context=context)
