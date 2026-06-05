@@ -23,7 +23,7 @@ def register(request):
 
 def profile(request):
     favourite_foods = Food.objects.filter(favourite_by__user=request.user)
-    orders = Reservations.objects.filter(customer=request.user).select_related('table')
+    orders = Reservations.objects.filter(customer=request.user).select_related('table').order_by('-date', '-time')
     context = {
         "foods": favourite_foods,
         'orders': orders
