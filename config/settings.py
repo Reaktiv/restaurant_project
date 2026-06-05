@@ -39,9 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'restaurant',
     'account',
+    'orders',
+    'reservations',
+    
     'django_cleanup',
     "crispy_forms",
     "crispy_bootstrap5",
+
 ]
 
 MIDDLEWARE = [

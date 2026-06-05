@@ -1,14 +1,8 @@
-import os
-import random
-from venv import logger
 
-from django.core.files.storage import default_storage
 from django.db.models import Q
-from django.http import HttpResponseBadRequest
-from django.utils.text import get_valid_filename
+from django.http import HttpResponseBadRequest, HttpResponseForbidden
 
-from config.settings import AUTH_USER_MODEL
-from restaurant.models import Food, FoodImage, Favourite
+from restaurant.models import Food, Favourite
 from django.shortcuts import render, get_object_or_404, redirect
 from restaurant.forms import FoodForm
 from django.contrib.auth.decorators import login_required
@@ -20,8 +14,8 @@ def home(request):
     search_food = request.GET.get('search_published_foods')
     if search_food:
         foods = Food.objects.filter(
-            Q(name_of_food__icontains=search_food) | Q(description__icontains=search_food), published=True).order_by(
-            '?')[:8]
+            Q(name_of_food__icontains=search_food) | Q(description__icontains=search_food),
+            published=True).order_by('?')[:8]
     else:
         foods = Food.objects.filter(published=True).order_by('?')[:8]
 
@@ -45,6 +39,11 @@ def detail(request, food_id):
 
 
 def update(request, food_id):
+    role = request.user.role
+    if role not in ['admin', 'manager']:
+        return HttpResponseForbidden("Kirish huquqi yo'q")
+
+
     food = get_object_or_404(Food, id=food_id)
     if request.user.is_superuser and request.user.is_staff:
         user_perm = False
@@ -76,6 +75,9 @@ import re
 
 @login_required
 def create(request):
+    role = request.user.role
+    if role not in ['admin', 'manager']:
+        return HttpResponseForbidden("Kirish huquqi yo'q")
     if request.method == 'POST':
         form = FoodForm(request.POST, request.FILES)
         if form.is_valid():
@@ -86,7 +88,8 @@ def create(request):
     else:
         form = FoodForm()
 
-    return render(request, 'restaurant/create.html', {'form': form})
+    return render(request, 'restaurant/create.html', {'form': form,
+                                                                           'role': role})
 
 def food_page(request):
     foods = Food.objects.filter(published=True)
@@ -127,7 +130,7 @@ def cart(request):
     context = {
         'basket_items': basket_items,
         'total_price': total_price,
-        'x`foods': favourite_foods,
+        'favourite_foods': favourite_foods,
     }
 
     return render(request, 'restaurant/cart.html', context=context)

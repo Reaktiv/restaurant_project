@@ -1,9 +1,9 @@
-from django.db.models.fields import return_None
-from django.http import HttpResponse
+
 from django.shortcuts import render, redirect
 
 from account.forms import CustomUserCreationForm, CustomUserChangeForm, ProfileChangeForm
-from restaurant.models import Food, Favourite
+from reservations.models import Reservations
+from restaurant.models import Food
 from .models import Profile
 
 # Create your views here.
@@ -23,8 +23,10 @@ def register(request):
 
 def profile(request):
     favourite_foods = Food.objects.filter(favourite_by__user=request.user)
+    orders = Reservations.objects.filter(customer=request.user).select_related('table')
     context = {
-        "foods": favourite_foods
+        "foods": favourite_foods,
+        'orders': orders
     }
     return render(request, 'account/profile.html', context=context)
 

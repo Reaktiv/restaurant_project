@@ -8,9 +8,9 @@ from account.models import CustomUser, Profile
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ('username' ,'phone', 'email', )
+        fields = ('username' ,'phone', 'email')
         labels = {'email': 'Elektron pochta', 'phone':'Telefoningiz'}
-        help_texts = {'username': 'Noyob text kiriting'}
+        help_texts = {'username': 'Must be unique!'}
         widgets = {'phone': forms.TextInput(attrs={'placeholder':'+998 .. ... .. ..'})}
 
 class CustomUserChangeForm(UserChangeForm):

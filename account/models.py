@@ -5,6 +5,14 @@ from config.settings import AUTH_USER_MODEL
 
 
 class CustomUser(AbstractUser):
+    ROLES = (
+        ('customer', 'Customer'),
+        ('waiter', 'Waiter'),
+        ('admin', 'Admin'),
+        ('manager', 'Manager'),
+    )
+
+    role = models.CharField(max_length=15, choices=ROLES, default='customer')
     phone = models.CharField(max_length=20, blank=True, null=True)
     email = models.EmailField(unique=True)
 

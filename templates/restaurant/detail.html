@@ -63,13 +63,13 @@
                                 🛒 Add to Cart
                             </button>
                         </form>
-                        {% if user_perm %}
-
-                        {% else %}
+                        {% if request.user.role == 'admin' or request.user.role == 'manager' %}
                             <a href="{% url 'update' food.id %}" class="btn w-100"
                                style="background: rgba(206,175,127,0.08); border: 1px solid rgba(206,175,127,0.4); color: #CEAF7F;">
                                 ✏️ Update Info
                             </a>
+                        {% else %}
+
                         {% endif %}
 
                     </div>

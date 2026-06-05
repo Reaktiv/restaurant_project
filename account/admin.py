@@ -16,7 +16,7 @@ class ProfileInline(TabularInline):
 class CustomUserAdmin(UserAdmin):
     inlines = [ProfileInline]
     fieldsets = UserAdmin.fieldsets + (
-        ("Additional info", {"fields": ("phone",)}),
+        ("Additional info", {"fields": ("phone", "role")}),
     )
 
     def get_inline_instances(self, request, obj=None):
