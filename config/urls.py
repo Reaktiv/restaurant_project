@@ -11,6 +11,8 @@ urlpatterns = [
     path('', include('restaurant.urls') ),
     path('account/', include('account.urls')),
     path('reservations/', include('reservations.urls')),
+    path('notification/', include('notification.urls')),
+    path('order/', include('order.urls')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)

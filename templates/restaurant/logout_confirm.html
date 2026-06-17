@@ -1,0 +1,39 @@
+<div class="modal fade" id="logoutConfirm" data-bs-backdrop="static" data-bs-keyboard="false"
+     tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color: #1a1a1a; border: 1px solid #CEAF7F; color: #CEAF7F;">
+
+            <div class="modal-header" style="border-bottom: 1px solid rgba(206, 175, 127, 0.2);">
+                <h5 class="modal-title" id="logoutModalLabel">
+                    Confirm Logout
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body" style="color: #e0e0e0; font-size: 1.1rem;">
+                Are you sure you want to <span style="color: #CEAF7F; font-weight: bold;">LOGOUT</span> from your
+                account?
+            </div>
+
+            <div class="modal-header modal-footer"
+                 style="border-top: 1px solid rgba(206, 175, 127, 0.2); border-bottom: none;">
+                <form method="post" action="{% url 'logout' %}" class="w-100 d-flex gap-2">
+                    {% csrf_token %}
+
+                    <button type="button" class="btn w-100" data-bs-dismiss="modal"
+                            style="border: 1px solid rgba(255,255,255,0.3); color: #fff; background: transparent;">
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="btn btn-danger w-100"
+                            style="background: rgba(206,175,127,0.15); border: 1px solid #CEAF7F; color: #CEAF7F;">
+                        Yes, Logout
+                    </button>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

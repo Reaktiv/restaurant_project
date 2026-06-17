@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Yangi Buyurtma Yaratish | NiceRestaurant{% endblock %}
+
+{% block content %}
+<div class="container" style="margin-top: 90px; margin-bottom: 50px;">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg" style="background-color: rgba(26, 29, 30, 0.85); backdrop-filter: blur(15px); border: 1px solid rgba(206, 175, 127, 0.2) !important;">
+                <div class="card-header text-center py-4" style="border-bottom: 1px solid rgba(206, 175, 127, 0.15);">
+                    <i class="bi bi-receipt fs-1" style="color: #CEAF7F"></i>
+                    <h2 class="text-white fw-light mt-2">Yangi Buyurtma Shakllantirish</h2>
+                    <p class="text-secondary small mb-0">Stol va taomlarni tanlab buyurtmani tasdiqlang</p>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <form method="post" id="order-form">
+                        {% csrf_token %}
+
+                        <h5 class="text-white mb-3 fw-light" style="letter-spacing: 1px;"><i class="bi bi-table me-2" style="color: #CEAF7F"></i>Asosiy ma'lumotlar</h5>
+                        <div class="row g-3 mb-5 p-3 rounded" style="background-color: rgba(15, 17, 18, 0.4); border: 1px solid rgba(255,255,255,0.05)">
+                            <div class="col-md-6">
+                                <label class="text-secondary small mb-1">Stolni tanlang</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-hash"></i></span>
+                                    {% if order_form.table.errors %}
+                                        <div class="invalid-feedback d-block">{{ order_form.table.errors }}</div>
+                                    {% endif %}
+                                    <select name="{{ order_form.table.name }}" id="{{ order_form.table.id_for_label }}" class="form-select bg-dark text-white border-secondary">
+                                        {% for choice in order_form.table.field.choices %}
+                                            <option value="{{ choice.0 }}" {% if order_form.table.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="text-white mb-0 fw-light" style="letter-spacing: 1px;">
+                                <i class="bi bi-egg-fried me-2" style="color: #CEAF7F"></i>Taomlar roʻyxati
+                            </h5>
+                        </div>
+
+                        {{ formset.management_form }}
+
+                        <div id="item-form-container">
+                            {% for form in formset %}
+                                <div class="formset-row row g-3 mb-3 p-3 rounded align-items-end position-relative" style="background-color: rgba(15, 17, 18, 0.2); border: 1px solid rgba(206, 175, 127, 0.1); transition: all 0.3s ease;">
+
+                                    {% for hidden in form.hidden_fields %}
+                                        {{ hidden }}
+                                    {% endfor %}
+
+                                    <div class="col-md-7">
+                                        <label class="text-secondary small mb-1">Taom / Ichimlik</label>
+                                        <select name="{{ form.food_item.html_name }}" class="form-select bg-dark text-white border-secondary food-select">
+                                            {% for choice in form.food_item.field.choices %}
+                                                <option value="{{ choice.0 }}" {% if form.food_item.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="text-secondary small mb-1">Soni</label>
+                                        <input type="number" name="{{ form.quantity.html_name }}" value="{{ form.quantity.value|default:1 }}" min="1" class="form-control bg-dark text-white border-secondary quantity-input">
+                                    </div>
+
+                                    <div class="col-md-2 text-end">
+                                        {% if formset.can_delete %}
+                                            <div class="d-none">
+                                                {{ form.DELETE }}
+                                            </div>
+                                            <button type="button" class="btn btn-outline-danger w-100 delete-row-btn" title="O'chirish">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="text-start mb-4">
+                            <button type="button" id="add-item-btn" class="btn btn-sm btn-outline-secondary" style="color: #CEAF7F; border-color: rgba(206, 175, 127, 0.4);">
+                                <i class="bi bi-plus-circle me-1"></i> Yana taom qo'shish
+                            </button>
+                        </div>
+
+                        <hr style="border-color: rgba(206, 175, 127, 0.15);" class="my-4">
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'home' %}" class="btn btn-outline-secondary px-4 text-white border-secondary">Bekor qilish</a>
+                            <button type="submit" class="btn px-5" style="background-color: #CEAF7F; color: #1a1a1a; font-weight: 600;">
+                                <i class="bi bi-check2-circle me-1"></i> Buyurtmani saqlash
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const addBtn = document.getElementById('add-item-btn');
+        const container = document.getElementById('item-form-container');
+        const totalForms = document.getElementById('id_items-TOTAL_FORMS'); // 'items' bu FormSet'ning related_name prefiksi
+
+        // 1. Yangi qator qo'shish mantiqi
+        addBtn.addEventListener('click', function() {
+            const currentFormCount = parseInt(totalForms.value);
+            const rows = container.getElementsByClassName('formset-row');
+
+            if(rows.length === 0) return;
+
+            // Birinchi qatordan nusxa olamiz
+            const cloneRow = rows[0].cloneNode(true);
+
+            // Nusxa ichidagi name va id atributlarini yangi indeks bilan yangilaymiz
+            const regex = new RegExp(`-0-`, 'g');
+            cloneRow.innerHTML = cloneRow.innerHTML.replace(regex, `-${currentFormCount}-`);
+
+            // Input qiymatlarini tozalaymiz
+            const select = cloneRow.querySelector('select');
+            if(select) select.selectedIndex = 0;
+
+            const input = cloneRow.querySelector('input[type="number"]');
+            if(input) input.value = 1;
+
+            // O'chirish yashirin chekboxini tozalaymiz (agar u nusxalangan bo'lsa)
+            const deleteCheck = cloneRow.querySelector('input[type="checkbox"]');
+            if(deleteCheck) deleteCheck.checked = false;
+
+            // Yangi qatorni konteynerga joylaymiz va umumiy sonini bittaga oshiramiz
+            container.appendChild(cloneRow);
+            totalForms.value = currentFormCount + 1;
+
+            // Yangi qator uchun o'chirish tugmasi hodisasini bog'laymiz
+            bindDeleteEvent(cloneRow);
+        });
+
+        // 2. Qatorni o'chirish mantiqi
+        function bindDeleteEvent(row) {
+            const deleteBtn = row.querySelector('.delete-row-btn');
+            if(deleteBtn) {
+                deleteBtn.addEventListener('click', function() {
+                    const rows = container.getElementsByClassName('formset-row');
+                    // Agar faqat bitta qator qolgan bo'lsa, o'chirishga ruxsat bermaymiz
+                    if (rows.length > 1) {
+                        const deleteCheckbox = row.querySelector('input[type="checkbox"]');
+                        if (deleteCheckbox) {
+                            // Agar u bazadan kelgan eski qator bo'lsa, uni Django o'chirishi uchun belgilaymiz va vizual yashiramiz
+                            deleteCheckbox.checked = true;
+                            row.style.display = 'none';
+                        } else {
+                            // Agar yangi qo'shilgan qator bo'lsa, shunchaki DOM'dan o'chiramiz
+                            row.remove();
+                            // Jami formalar sonini yangilaymiz
+                            totalForms.value = container.getElementsByClassName('formset-row').length;
+                        }
+                    } else {
+                        alert("Kamida bitta taom buyurtma qilinishi shart!");
+                    }
+                });
+            }
+        }
+
+        // Dastlabki mavjud barcha qatorlarga o'chirish hodisasini biriktirib chiqamiz
+        const initialRows = container.getElementsByClassName('formset-row');
+        for (let row of initialRows) {
+            bindDeleteEvent(row);
+        }
+    });
+</script>
+
+<style>
+    /* Chiroyli vizual effektlar uchun */
+    .formset-row:hover {
+        background-color: rgba(206, 175, 127, 0.05) !important;
+        border-color: rgba(206, 175, 127, 0.3) !important;
+    }
+    .form-select, .form-control {
+        box-shadow: none !important;
+    }
+    .form-select:focus, .form-control:focus {
+        border-color: #CEAF7F !important;
+    }
+</style>
+{% endblock %}

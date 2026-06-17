@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block content %}
+    <style>
+        /* Umumiy ranglar va fon uslubi */
+        .notif-container {
+            margin-top: 90px;
+            margin-bottom: 90px;
+        }
+
+        .notif-card {
+            background-color: rgba(37, 42, 43, 0.7) !important;
+            border: 1px solid rgba(206, 175, 127, 0.2) !important;
+            border-radius: 12px !important;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        /* Bitta ustunli list elementlari */
+        .notif-item {
+            background-color: rgba(30, 34, 32, 0.8) !important;
+            border: 1px solid rgba(206, 175, 127, 0.15) !important;
+            border-radius: 8px !important;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .notif-item:hover {
+            border-color: #CEAF7F !important;
+            background-color: rgba(30, 34, 32, 0.95) !important;
+            transform: translateY(-2px);
+        }
+
+        /* Yangi o'qilmagan bildirishnoma uchun maxsus chap chiziq va stil */
+        .notif-unread {
+            border-left: 4px solid #CEAF7F !important;
+        }
+
+        .notif-read {
+            opacity: 0.65;
+        }
+
+        /* Matn va tugma stillari */
+        .notif-title {
+            color: #CEAF7F !important;
+            font-size: 18px;
+        }
+
+        .notif-message {
+            color: rgba(206, 175, 127, 0.85) !important;
+            font-size: 15px;
+        }
+
+        .notif-time {
+            color: rgba(206, 175, 127, 0.5) !important;
+            font-size: 13px;
+        }
+
+        /* O'qildi tugmasi */
+        .btn-read-status {
+            border: 1px solid #CEAF7F !important;
+            color: #CEAF7F !important;
+            background: transparent !important;
+            border-radius: 50px !important;
+            padding: 6px 16px !important;
+            font-size: 13px !important;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .btn-read-status:hover {
+            background-color: #CEAF7F !important;
+            color: #1e2220 !important;
+        }
+
+        /* "Yangi" yorlig'i (Badge) */
+        .badge-new {
+            background-color: #CEAF7F !important;
+            color: #1e2220 !important;
+            font-weight: 700;
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <div class="container notif-container">
+        <h1 style="text-align: center; color: #CEAF7F;" class="fw-bold m-3">Notifications</h1>
+        <hr style="border: 2px solid #CEAF7F; width: 60%; margin: 25px auto; opacity: 1;">
+
+        <p class="text-center" style="color: rgba(206,175,127,0.6); margin-bottom: 40px; font-size: 16px;">
+            {% if unread_count > 0 %}
+                Sizda <span class="fw-bold" style="color: #CEAF7F;">{{ unread_count }}</span> ta o'qilmagan yangi
+                bildirishnoma bor
+            {% else %}
+                Hozircha barcha bildirishnomalar o'qilgan
+            {% endif %}
+        </p>
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-9">
+                <div class="card notif-card p-4 p-md-5">
+
+                    <div class="notif-list">
+                        {% for notification in notifications %}
+
+                            <div class="notif-item p-3 d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center {% if not notification.is_Read %}notif-unread{% else %}notif-read{% endif %}">
+
+                                <div class="pe-0 pe-sm-3 mb-3 mb-sm-0">
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                        <h5 class="notif-title fw-bold m-0">{{ notification.title }}</h5>
+
+                                        {% if not notification.is_Read %}
+                                            <span class="badge badge-new">YANGI</span>
+                                        {% endif %}
+                                    </div>
+                                    <p class="notif-message mb-2">{{ notification.message }}</p>
+                                    <div class="notif-time">
+                                        <i class="bi bi-clock me-1"></i> {{ notification.created_at|date:"d-M, H:i" }}
+                                    </div>
+                                </div>
+
+                                {% if not notification.is_Read %}
+                                    <div class="flex-shrink-0 align-self-end align-self-sm-center">
+                                        <a href="{% url 'mark_as_read' notification.pk %}"
+                                           class="btn btn-read-status fw-bold">
+                                            <i class="bi bi-check2-all me-1"></i> O'qildi
+                                        </a>
+                                    </div>
+                                {% endif %}
+
+                            </div>
+
+                        {% empty %}
+                            <div class="text-center py-5">
+                                <i class="bi bi-bell-slash text-muted mb-3"
+                                   style="font-size: 4rem; color: rgba(206,175,127,0.3) !important;"></i>
+                                <h5 style="color: rgba(206,175,127,0.6);" class="mt-3">Hozircha hech qanday
+                                    bildirishnoma yo'q.</h5>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

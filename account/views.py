@@ -2,6 +2,7 @@
 from django.shortcuts import render, redirect
 
 from account.forms import CustomUserCreationForm, CustomUserChangeForm, ProfileChangeForm
+from order.models import Order
 from reservations.models import Reservations
 from restaurant.models import Food
 from .models import Profile
@@ -23,10 +24,17 @@ def register(request):
 
 def profile(request):
     favourite_foods = Food.objects.filter(favourite_by__user=request.user)
-    orders = Reservations.objects.filter(customer=request.user).select_related('table').order_by('-date', '-time')
+    reservation_tables = Reservations.objects.filter(customer=request.user).select_related('table').order_by('-date', '-time')
+    all_reservation_tables = Reservations.objects.filter().select_related('table').order_by('-date', '-time')
+    old_orders = Order.objects.filter(is_paid=True, customer=request.user).prefetch_related('items')
+
+    role = request.user.role
+    if role in ['manager', 'admin']:
+        reservation_tables = all_reservation_tables
     context = {
         "foods": favourite_foods,
-        'orders': orders
+        'reservation_tables': reservation_tables,
+        'old_orders': old_orders,
     }
     return render(request, 'account/profile.html', context=context)
 

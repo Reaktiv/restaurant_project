@@ -2,6 +2,8 @@
 from django.db.models import Q
 from django.http import HttpResponseBadRequest, HttpResponseForbidden
 
+from notification.models import Notification
+from reservations.forms import ReservationsForm
 from restaurant.models import Food, Favourite
 from django.shortcuts import render, get_object_or_404, redirect
 from restaurant.forms import FoodForm
@@ -19,8 +21,23 @@ def home(request):
     else:
         foods = Food.objects.filter(published=True).order_by('?')[:8]
 
+    if request.method == 'POST':
+        form = ReservationsForm(request.POST)
+        if form.is_valid():
+            reservation = form.save(commit=False)
+            reservation.customer = request.user
+            reservation.save()
+            return redirect('home')
+    else:
+        form = ReservationsForm()
+
+    notifications = Notification.objects.all().order_by('-created_at')
+    unread_count = notifications.filter(is_Read=False).count()
+
     context = {
         'foods': foods,
+        'unread_count':unread_count,
+        'form': form
 
     }
 
@@ -68,9 +85,6 @@ def delete(request, food_id):
     food = get_object_or_404(Food, id=food_id)
     food.delete()
     return redirect('home')
-
-
-import re
 
 
 @login_required
@@ -146,7 +160,7 @@ def cart_add(request, food_id):
             request.session.modified = True
         except Food.DoesNotExist:
             pass
-        return redirect('cart')
+        return redirect('food_page')
     return HttpResponseBadRequest("Invalid request method")
 
 

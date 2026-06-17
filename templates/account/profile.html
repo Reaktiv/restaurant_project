@@ -1,6 +1,45 @@
 {% extends 'base.html' %}
 {% block title %}Profile{% endblock %}
 {% block content %}
+    <style>
+        .table-actions {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-table-action {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(206, 175, 127, 0.4);
+            color: #CEAF7F;
+            background: transparent;
+            transition: 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-table-action:hover {
+            background: #CEAF7F;
+            color: #1e2220;
+        }
+
+        .status-confirmed {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+
+        .status-cancelled {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+        }
+
+        .status-pending {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+    </style>
     <div class="container" style="margin-top: 100px; padding-bottom: 60px;">
         <h1 class="text-center fw-bold mb-4" style="color: #CEAF7F;">Profile</h1>
         <hr style="border: 2px solid #CEAF7F; width: 80%; margin: 25px auto; opacity: 1;">
@@ -8,10 +47,10 @@
             <div class="col-12 col-md-6">
                 <div class="text-center mb-4">
                     {% if user.profile.image %}
-                        <img src="{{ user.profile.image.url }}" class="rounded-circle"
+                        <img src="{{ user.profile.image.url }}" class="rounded-circle" alt=""
                              style="width: 160px; height: 160px; object-fit: cover; border: 6px dotted #CEAF7F;">
                     {% else %}
-                        <img src="/media/profile_img/default-profile.jpg" class="rounded-circle"
+                        <img src="/media/profile_img/default-profile.jpg" class="rounded-circle" alt=""
                              style="width: 160px; height: 160px; object-fit: cover; border: 6px dotted #CEAF7F;">
                     {% endif %}
                     <h4 class="mt-3" style="color: #CEAF7F;">{{ user.username }}</h4>
@@ -52,11 +91,86 @@
             </div>
         </div>
 
-        <h1 class="mt-5 text-center fw-bold" style="color: #CEAF7F; font-size: 40px;">Your Booking Tables</h1>
+        {% if old_orders %}
+            <h1 class="mt-5 text-center" style="color: #CEAF7F; font-size: 40px;">Old Orders</h1>
+            <hr style="border: 2px solid #CEAF7F; opacity: 1; margin-bottom: 30px;">
+            <div class="container" style="margin-bottom: 50px; color: white;">
+                <div class="table-responsive rounded shadow-sm"
+                     style="background-color: rgba(26, 29, 30, 0.85); backdrop-filter: blur(10px); border: 1px solid rgba(206, 175, 127, 0.2);">
+                    <table class="table table-dark table-hover mb-0 text-center align-middle"
+                           style="--bs-table-bg: transparent;">
+                        <thead style="border-bottom: 2px solid #CEAF7F;">
+                        <tr class="text-secondary small" style="letter-spacing: 1px; text-transform: uppercase;">
+                            <th>Table</th>
+                            <th>Waiter</th>
+                            <th>Picked foods</th>
+                            <th>Overall sum</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for order in old_orders %}
+                            <tr class="clickable-row" data-href="{% url 'order_detail' order.id %}"
+                                style="border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer;">
+
+                                <td><span class="badge bg-secondary p-2 fw-light">{{ order.table }}</span></td>
+                                <td>
+                                    {% if order.waiter %}
+                                        <span class="small text-light">{{ order.waiter.username }}</span>
+                                    {% else %}
+                                        <span class="small text-white italic">Mijoz o'zi</span>
+                                    {% endif %}
+                                </td>
+
+                                <td class="text-start py-3">
+                                    <ul class="list-unstyled mb-0 small">
+                                        {% for item in order.items.all %}
+                                            <li class="mb-1 text-light">
+                                                <i class="bi bi-dot" style="color: #CEAF7F;"></i>
+                                                {{ item.food_item.name_of_food }} — <span
+                                                    class="text-secondary">{{ item.quantity }} ta</span>
+                                            </li>
+                                        {% empty %}
+                                            <li class="text-muted small">Taom tanlanmagan</li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
+
+                                <td style="color: #CEAF7F; font-weight: 500;">{{ order.total_price }} $</td>
+                                <td>
+                            <span class="badge px-3 py-2 text-capitalize
+                                {% if order.status == 'pending' %}bg-warning text-dark
+                                {% elif order.status == 'preparing' %}bg-info text-dark
+                                {% elif order.status == 'ready' %}bg-primary
+                                {% elif order.status == 'delivered' %}bg-success
+                                {% else %}bg-danger{% endif %}">
+                                {{ order.get_status_display }}
+                            </span>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-muted py-5">Hozircha hech qanday buyurtma mavjud emas.</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        {% else %}
+        {% endif %}
+
+
+        {% if request.user.role == 'manager' or request.user.role == 'admin' %}
+            <h1 class="mt-5 text-center fw-bold" style="color: #CEAF7F; font-size: 40px;">Booking Tables</h1>
+        {% else %}
+            <h1 class="mt-5 text-center fw-bold" style="color: #CEAF7F; font-size: 40px;">Your Booking Tables</h1>
+        {% endif %}
         <hr style="border: 2px solid #CEAF7F; width: 80%; margin: 25px auto; opacity: 1;">
         <div class="row mt-4 justify-content-center">
-            {% if orders %}
-                {% for order in orders %}
+            {% if reservation_tables %}
+                {% for table in reservation_tables %}
                     <div class="col-12 col-md-6 col-lg-5 mb-4">
                         <div class="p-4 h-100"
                              style="background-color: rgba(37,42,43,0.7); border-radius: 12px; border: 1px solid rgba(206, 175, 127, 0.2); transition: 0.3s; cursor: pointer;"
@@ -65,19 +179,21 @@
 
                             <div class="d-flex justify-content-between align-items-start mb-3">
                                 <div>
-                                    <h4 style="color: #CEAF7F; margin: 0; margin-bottom: 8px;">{{ order.name }}</h4>
+                                    <h4 style="color: #CEAF7F; margin-bottom: 8px;">{{ table.name }}</h4>
 
                                     <span style="color: #f5f0e8; background-color: rgba(206, 175, 127, 0.15); padding: 5px 12px; border-radius: 6px; font-size: 14px; border: 1px solid rgba(206,175,127,0.3);">
                 <i class="bi bi-geo-alt-fill" style="color: #CEAF7F; margin-right: 4px;"></i>
-                Your place: <strong style="color: #CEAF7F;">{{ order.table|default:"Not assigned" }}</strong>
+                Your place: <strong style="color: #CEAF7F;">{{ table.table|default:"Not assigned" }}</strong>
             </span>
                                 </div>
-
-                                <span class="badge"
-                                      style="font-size: 13px; padding: 6px 12px; border-radius: 20px;
-                                              background-color: {% if order.status == 'Confirmed' %}rgba(40,167,69,0.2); color: #28a745;{% elif order.status == 'Cancelled' %}rgba(220,53,69,0.2); color: #dc3545;{% else %}rgba(255,193,7,0.2); color: #ffc107;{% endif %};">
-            {{ order.status|default:"Pending" }}
-        </span>
+                                <!-- Badge -->
+                                <span class="badge status-badge
+                                    {% if table.status == 'confirmed' %}status-confirmed
+                                    {% elif table.status == 'cancelled' %}status-cancelled
+                                    {% else %}status-pending{% endif %}"
+                                      style="font-size: 13px; padding: 6px 12px; border-radius: 20px;">
+                                {{ table.status }}
+                                </span>
                             </div>
 
                             <hr style="border-color: rgba(206, 175, 127, 0.3); margin: 15px 0 10px 0;">
@@ -85,26 +201,33 @@
                             <div style="color: #f5f0e8; font-size: 15px; line-height: 1.8;">
                                 <p class="mb-1">
                                     <i class="bi bi-calendar3" style="color: #CEAF7F; margin-right: 8px;"></i>
-                                    <strong>Date:</strong> {{ order.date|date:"F d, Y" }}
+                                    <strong>Date:</strong> {{ table.date|date:"F d, Y" }}
                                 </p>
                                 <p class="mb-1">
                                     <i class="bi bi-clock" style="color: #CEAF7F; margin-right: 8px;"></i>
-                                    <strong>Time:</strong> {{ order.time|time:"H:i" }}
+                                    <strong>Time:</strong> {{ table.time|time:"H:i" }}
                                 </p>
                                 <p class="mb-1">
                                     <i class="bi bi-people" style="color: #CEAF7F; margin-right: 8px;"></i>
-                                    <strong>Guests:</strong> {{ order.number_of_guests }} people
+                                    <strong>Guests:</strong> {{ table.number_of_guests }} people
                                 </p>
                             </div>
 
-                            {% if order.special_requests %}
+                            {% if table.special_requests %}
                                 <div class="mt-3 p-3"
                                      style="background-color: rgba(206, 175, 127, 0.05); border-radius: 8px; border-left: 3px solid #CEAF7F;">
                                     <small style="color: rgba(206, 175, 127, 0.8);">
                                         <strong>Special Request:</strong><br>
-                                        {{ order.special_requests|truncatechars:60 }}
+                                        {{ table.special_requests|truncatechars:60 }}
                                     </small>
                                 </div>
+                            {% endif %}
+                            {% if request.user.role == 'manager' or request.user.role == 'admin' %}
+                                <div class="table-actions">
+                                    <a href="{% url 'edit_reservation_table' pk=table.id %}" class="btn-table-action"><i
+                                            class="bi bi-pencil"></i></a>
+                                </div>
+
                             {% endif %}
 
                         </div>
@@ -123,8 +246,12 @@
             {% endif %}
         </div>
 
-        <h1 class="mt-5 text-center" style="color: #CEAF7F; font-size: 40px;">Favourites</h1>
-        <hr style="border: 2px solid #CEAF7F; opacity: 1; margin: 10px;">
+        {% if foods %}
+            <h1 class="mt-5 text-center" style="color: #CEAF7F; font-size: 40px;">Favourites</h1>
+            <hr style="border: 2px solid #CEAF7F; opacity: 1; margin: 10px;">
+        {% else %}
+        {% endif %}
+
         <div class="row mt-2">
             {% for food in foods %}
                 <div class="col-12 col-md-6 mb-4">
@@ -153,7 +280,7 @@
                             <span class="p-1" style="font-size: 15px; color: #CEAF7F;">
                             <i class="bi bi-hash"></i>{{ food.type }}
                         </span>
-                            <h6>{{ food.description|truncatechars:50 }}</h6>
+                            <h6>{{ food.description|truncatechars:25 }}</h6>
                             <p style="color: #CEAF7F; font-weight: bold;">Narxi: {{ food.price }}$</p>
 
                             <form action="{% url 'cart_add' food_id=food.id %}" method="POST" style="display: inline;">
@@ -183,4 +310,23 @@
 
 
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // barcha 'clickable-row' klasiga ega qatorlarni ushlab olamiz
+            const rows = document.querySelectorAll(".clickable-row");
+
+            rows.forEach(row => {
+                row.addEventListener("click", function (e) {
+                    // Agar foydalanuvchi aynan ID ichidagi biron bir ichki havolani (link) bossa,
+                    // JS o'tishni to'xtatib turadi, aks holda ikkala link bir vaqtda ishlab ketadi.
+                    if (e.target.classList.contains('row-link') || e.target.closest('.row-link')) {
+                        return;
+                    }
+
+                    // Qatorda yozilgan url manziliga yo'naltiramiz
+                    window.location = this.dataset.href;
+                });
+            });
+        });
+    </script>
 {% endblock %}

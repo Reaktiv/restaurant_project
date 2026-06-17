@@ -58,7 +58,7 @@
                             <span class="p-1" style="font-size: 15px; color: #CEAF7F;">
                             <i class="bi bi-hash"></i>{{ food.type }}
                         </span>
-                            <h6>{{ food.description|truncatechars:50 }}</h6>
+                            <h6>{{ food.description|truncatechars:25 }}</h6>
                             <p style="color: #CEAF7F; font-weight: bold;">Narxi: {{ food.price }}$</p>
 
                             <form action="{% url 'cart_add' food_id=food.id %}" method="POST" style="display: inline;">

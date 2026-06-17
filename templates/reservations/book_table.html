@@ -4,115 +4,115 @@
 {% block title %}Book A Table{% endblock %}
 
 {% block content %}
-<style>
-    .book-form .form-control,
-    .book-form .form-select {
-        color: #CEAF7F !important;
-        background-color: rgba(30, 34, 32, 0.9) !important;
-        border: 1px solid rgba(206, 175, 127, 0.3) !important;
-        border-radius: 8px !important;
-        padding: 12px 16px !important;
-        font-size: 15px !important;
-        transition: border-color 0.2s, box-shadow 0.2s !important;
-    }
-    .book-form .form-control::placeholder { color: rgba(206, 175, 127, 0.45) !important; }
-    .book-form .form-control:focus,
-    .book-form .form-select:focus {
-        border-color: #CEAF7F !important;
-        box-shadow: 0 0 0 3px rgba(206, 175, 127, 0.15) !important;
-        background-color: rgba(30, 34, 32, 0.95) !important;
-        color: #CEAF7F !important;
-    }
-    .book-form label { color: #CEAF7F !important; font-size: 13px !important; font-weight: 500 !important; letter-spacing: 0.4px !important; margin-bottom: 6px !important; }
-    .book-form .asteriskField { color: #CEAF7F !important; }
-    .book-form .form-text, .book-form small, .book-form .helptext { color: rgba(206, 175, 127, 0.6) !important; }
-    .book-form .invalid-feedback, .book-form .errorlist li { color: #e8a87c !important; font-size: 13px !important; }
-    .book-form select option { background-color: #1e2220 !important; color: #CEAF7F !important; }
-    .book-form textarea.form-control { resize: vertical; }
+    <style>
+        .book-form .form-control,
+        .book-form .form-select {
+            color: #CEAF7F !important;
+            background-color: rgba(30, 34, 32, 0.9) !important;
+            border: 1px solid rgba(206, 175, 127, 0.3) !important;
+            border-radius: 8px !important;
+            padding: 12px 16px !important;
+            font-size: 15px !important;
+            transition: border-color 0.2s, box-shadow 0.2s !important;
+        }
+        .book-form .form-control::placeholder { color: rgba(206, 175, 127, 0.45) !important; }
+        .book-form .form-control:focus,
+        .book-form .form-select:focus {
+            border-color: #CEAF7F !important;
+            box-shadow: 0 0 0 3px rgba(206, 175, 127, 0.15) !important;
+            background-color: rgba(30, 34, 32, 0.95) !important;
+            color: #CEAF7F !important;
+        }
+        .book-form label { color: #CEAF7F !important; font-size: 13px !important; font-weight: 500 !important; letter-spacing: 0.4px !important; margin-bottom: 6px !important; }
+        .book-form .asteriskField { color: #CEAF7F !important; }
+        .book-form .form-text, .book-form small, .book-form .helptext { color: rgba(206, 175, 127, 0.6) !important; }
+        .book-form .invalid-feedback, .book-form .errorlist li { color: #e8a87c !important; font-size: 13px !important; }
+        .book-form select option { background-color: #1e2220 !important; color: #CEAF7F !important; }
+        .book-form textarea.form-control { resize: vertical; }
 
-    /* === Date/Time picker trigger buttons === */
-    .picker-wrapper { position: relative; }
-    .picker-trigger {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 4px;
-        color: rgba(206, 175, 127, 0.7);
-        font-size: 18px;
-        transition: color 0.2s;
-        z-index: 5;
-    }
-    .picker-trigger:hover { color: #CEAF7F; }
-    .picker-wrapper .form-control { padding-right: 42px !important; cursor: pointer; }
+        /* === Date/Time picker trigger buttons === */
+        .picker-wrapper { position: relative; }
+        .picker-trigger {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            color: rgba(206, 175, 127, 0.7);
+            font-size: 18px;
+            transition: color 0.2s;
+            z-index: 5;
+        }
+        .picker-trigger:hover { color: #CEAF7F; }
+        .picker-wrapper .form-control { padding-right: 42px !important; cursor: pointer; }
 
-    /* === Flatpickr custom dark theme === */
-    .flatpickr-calendar {
-        background: #1e2422 !important;
-        border: 1px solid rgba(206, 175, 127, 0.3) !important;
-        border-radius: 12px !important;
-        box-shadow: 0 12px 40px rgba(0,0,0,0.5) !important;
-        font-family: inherit !important;
-    }
-    .flatpickr-months { padding: 8px 0 4px !important; }
-    .flatpickr-month { color: #CEAF7F !important; }
-    .flatpickr-current-month .numInputWrapper input,
-    .flatpickr-current-month .flatpickr-monthDropdown-months {
-        color: #CEAF7F !important;
-        background: transparent !important;
-        font-weight: 600 !important;
-    }
-    .flatpickr-current-month .flatpickr-monthDropdown-months option { background: #1e2422 !important; }
-    .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: #CEAF7F !important; }
-    .flatpickr-prev-month:hover svg, .flatpickr-next-month:hover svg { fill: #fff !important; }
-    .flatpickr-weekday { color: rgba(206, 175, 127, 0.5) !important; font-size: 12px !important; }
-    .flatpickr-day {
-        color: rgba(206, 175, 127, 0.8) !important;
-        border-radius: 6px !important;
-    }
-    .flatpickr-day:hover {
-        background: rgba(206, 175, 127, 0.15) !important;
-        border-color: transparent !important;
-    }
-    .flatpickr-day.selected, .flatpickr-day.selected:hover {
-        background: #CEAF7F !important;
-        border-color: #CEAF7F !important;
-        color: #1e2220 !important;
-        font-weight: 700 !important;
-    }
-    .flatpickr-day.today {
-        border-color: rgba(206, 175, 127, 0.5) !important;
-        color: #CEAF7F !important;
-    }
-    .flatpickr-day.today:hover { background: rgba(206, 175, 127, 0.15) !important; }
-    .flatpickr-day.flatpickr-disabled, .flatpickr-day.prevMonthDay, .flatpickr-day.nextMonthDay {
-        color: rgba(206, 175, 127, 0.2) !important;
-    }
-    /* Time picker */
-    .flatpickr-time {
-        background: #1e2422 !important;
-        border-top: 1px solid rgba(206, 175, 127, 0.2) !important;
-        border-radius: 0 0 12px 12px !important;
-    }
-    .flatpickr-time input, .flatpickr-time .flatpickr-am-pm {
-        color: #CEAF7F !important;
-        background: transparent !important;
-        font-size: 18px !important;
-        font-weight: 600 !important;
-    }
-    .flatpickr-time input:hover, .flatpickr-time .flatpickr-am-pm:hover,
-    .flatpickr-time input:focus, .flatpickr-time .flatpickr-am-pm:focus {
-        background: rgba(206, 175, 127, 0.1) !important;
-    }
-    .flatpickr-time .arrowUp:after { border-bottom-color: #CEAF7F !important; }
-    .flatpickr-time .arrowDown:after { border-top-color: #CEAF7F !important; }
-    .numInputWrapper:hover { background: rgba(206,175,127,0.05) !important; }
-    .numInputWrapper span.arrowUp:after { border-bottom-color: rgba(206,175,127,0.7) !important; }
-    .numInputWrapper span.arrowDown:after { border-top-color: rgba(206,175,127,0.7) !important; }
-</style>
+        /* === Flatpickr custom dark theme === */
+        .flatpickr-calendar {
+            background: #1e2422 !important;
+            border: 1px solid rgba(206, 175, 127, 0.3) !important;
+            border-radius: 12px !important;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.5) !important;
+            font-family: inherit !important;
+        }
+        .flatpickr-months { padding: 8px 0 4px !important; }
+        .flatpickr-month { color: #CEAF7F !important; }
+        .flatpickr-current-month .numInputWrapper input,
+        .flatpickr-current-month .flatpickr-monthDropdown-months {
+            color: #CEAF7F !important;
+            background: transparent !important;
+            font-weight: 600 !important;
+        }
+        .flatpickr-current-month .flatpickr-monthDropdown-months option { background: #1e2422 !important; }
+        .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: #CEAF7F !important; }
+        .flatpickr-prev-month:hover svg, .flatpickr-next-month:hover svg { fill: #fff !important; }
+        .flatpickr-weekday { color: rgba(206, 175, 127, 0.5) !important; font-size: 12px !important; }
+        .flatpickr-day {
+            color: rgba(206, 175, 127, 0.8) !important;
+            border-radius: 6px !important;
+        }
+        .flatpickr-day:hover {
+            background: rgba(206, 175, 127, 0.15) !important;
+            border-color: transparent !important;
+        }
+        .flatpickr-day.selected, .flatpickr-day.selected:hover {
+            background: #CEAF7F !important;
+            border-color: #CEAF7F !important;
+            color: #1e2220 !important;
+            font-weight: 700 !important;
+        }
+        .flatpickr-day.today {
+            border-color: rgba(206, 175, 127, 0.5) !important;
+            color: #CEAF7F !important;
+        }
+        .flatpickr-day.today:hover { background: rgba(206, 175, 127, 0.15) !important; }
+        .flatpickr-day.flatpickr-disabled, .flatpickr-day.prevMonthDay, .flatpickr-day.nextMonthDay {
+            color: rgba(206, 175, 127, 0.2) !important;
+        }
+        /* Time picker */
+        .flatpickr-time {
+            background: #1e2422 !important;
+            border-top: 1px solid rgba(206, 175, 127, 0.2) !important;
+            border-radius: 0 0 12px 12px !important;
+        }
+        .flatpickr-time input, .flatpickr-time .flatpickr-am-pm {
+            color: #CEAF7F !important;
+            background: transparent !important;
+            font-size: 18px !important;
+            font-weight: 600 !important;
+        }
+        .flatpickr-time input:hover, .flatpickr-time .flatpickr-am-pm:hover,
+        .flatpickr-time input:focus, .flatpickr-time .flatpickr-am-pm:focus {
+            background: rgba(206, 175, 127, 0.1) !important;
+        }
+        .flatpickr-time .arrowUp:after { border-bottom-color: #CEAF7F !important; }
+        .flatpickr-time .arrowDown:after { border-top-color: #CEAF7F !important; }
+        .numInputWrapper:hover { background: rgba(206,175,127,0.05) !important; }
+        .numInputWrapper span.arrowUp:after { border-bottom-color: rgba(206,175,127,0.7) !important; }
+        .numInputWrapper span.arrowDown:after { border-top-color: rgba(206,175,127,0.7) !important; }
+    </style>
 
 <!-- Flatpickr CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -131,7 +131,7 @@
                     {% csrf_token %}
                     {% crispy form %}
 
-                    <div class="text-center mt-5">
+                    <div class="text-center mt-2">
                         <button type="submit" class="btn fw-bold px-5 py-3"
                                 style="background-color: #CEAF7F; color: #1e2220; border-radius: 50px; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;"
                                 onmouseover="this.style.backgroundColor='white'; this.style.color='#CEAF7F';"
