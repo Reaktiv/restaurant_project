@@ -125,7 +125,7 @@ def all_orders(request):
     if role not in ['admin', 'manager', 'waiter']:
         return HttpResponseForbidden("Kirish huquqi yo'q")
 
-    all_orders = Order.objects.all().prefetch_related('items').order_by('-created_at')
+    all_orders = Order.objects.filter(status__in=['pending', 'ready', 'preparing']).prefetch_related('items').order_by('-created_at')
     context = {
         "all_orders": all_orders,
     }
@@ -165,7 +165,7 @@ def edit_order(request, pk):
                 order.table.is_active = False
                 order.table.save()
             order.save()
-            return redirect('all_orders')
+            return redirect('home')
     else:
         order_form = OrderForm(instance=order)
         formset = OrderFormSet(instance=order)

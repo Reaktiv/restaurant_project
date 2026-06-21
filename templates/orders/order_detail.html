@@ -15,7 +15,7 @@
                         <i class="bi bi-arrow-left me-1"></i> Back
                     </a>
                     <div>
-                        {% if request.user.role == 'manager' or request.user.role == 'admin' %}
+                        {% if request.user.role == 'manager' or request.user.role == 'admin' or request.user.role == 'waiter' %}
 
                             <a href="{% url 'edit_order' pk=order.id %}"
                                class="btn btn-sm btn-outline-secondary text-white border-secondary"

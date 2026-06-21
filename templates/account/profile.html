@@ -91,8 +91,8 @@
             </div>
         </div>
 
-        {% if old_orders %}
-            <h1 class="mt-5 text-center" style="color: #CEAF7F; font-size: 40px;">Old Orders</h1>
+        {% if new_orders %}
+            <h1 class="mt-5 text-center" style="color: #CEAF7F; font-size: 40px;">Your Orders</h1>
             <hr style="border: 2px solid #CEAF7F; opacity: 1; margin-bottom: 30px;">
             <div class="container" style="margin-bottom: 50px; color: white;">
                 <div class="table-responsive rounded shadow-sm"
@@ -105,12 +105,13 @@
                             <th>Waiter</th>
                             <th>Picked foods</th>
                             <th>Overall sum</th>
+                            <th>Created Date</th>
                             <th>Status</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for order in old_orders %}
-                            <tr class="clickable-row" data-href="{% url 'order_detail' order.id %}"
+                        {% for order in new_orders %}
+                            <tr class="clickable-row" data-href="{% url 'edit_order' order.id %}"
                                 style="border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer;">
 
                                 <td><span class="badge bg-secondary p-2 fw-light">{{ order.table }}</span></td>
@@ -137,6 +138,77 @@
                                 </td>
 
                                 <td style="color: #CEAF7F; font-weight: 500;">{{ order.total_price }} $</td>
+                                <td style="color: #CEAF7F; font-weight: 500;">{{ order.created_at }} </td>
+                                <td>
+                            <span class="badge px-3 py-2 text-capitalize
+                                {% if order.status == 'pending' %}bg-warning text-dark
+                                {% elif order.status == 'preparing' %}bg-info text-dark
+                                {% elif order.status == 'ready' %}bg-primary
+                                {% elif order.status == 'delivered' %}bg-success
+                                {% else %}bg-danger{% endif %}">
+                                {{ order.get_status_display }}
+                            </span>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-muted py-5">Hozircha hech qanday buyurtma mavjud emas.</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        {% else %}
+        {% endif %}
+        {% if old_orders %}
+            <h1 class="mt-5 text-center" style="color: #CEAF7F; font-size: 40px;">Old Orders</h1>
+            <hr style="border: 2px solid #CEAF7F; opacity: 1; margin-bottom: 30px;">
+            <div class="container" style="margin-bottom: 50px; color: white;">
+                <div class="table-responsive rounded shadow-sm"
+                     style="background-color: rgba(26, 29, 30, 0.85); backdrop-filter: blur(10px); border: 1px solid rgba(206, 175, 127, 0.2);">
+                    <table class="table table-dark table-hover mb-0 text-center align-middle"
+                           style="--bs-table-bg: transparent;">
+                        <thead style="border-bottom: 2px solid #CEAF7F;">
+                        <tr class="text-secondary small" style="letter-spacing: 1px; text-transform: uppercase;">
+                            <th>Table</th>
+                            <th>Waiter</th>
+                            <th>Picked foods</th>
+                            <th>Overall sum</th>
+                            <th>Created Date</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for order in old_orders %}
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer;">
+
+                                <td><span class="badge bg-secondary p-2 fw-light">{{ order.table }}</span></td>
+                                <td>
+                                    {% if order.waiter %}
+                                        <span class="small text-light">{{ order.waiter.username }}</span>
+                                    {% else %}
+                                        <span class="small text-white italic">Mijoz o'zi</span>
+                                    {% endif %}
+                                </td>
+
+                                <td class="text-start py-3">
+                                    <ul class="list-unstyled mb-0 small">
+                                        {% for item in order.items.all %}
+                                            <li class="mb-1 text-light">
+                                                <i class="bi bi-dot" style="color: #CEAF7F;"></i>
+                                                {{ item.food_item.name_of_food }} — <span
+                                                    class="text-secondary">{{ item.quantity }} ta</span>
+                                            </li>
+                                        {% empty %}
+                                            <li class="text-muted small">Taom tanlanmagan</li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
+
+                                <td style="color: #CEAF7F; font-weight: 500;">{{ order.total_price }} $</td>
+                                <td style="color: #CEAF7F; font-weight: 500;">{{ order.created_at }} </td>
                                 <td>
                             <span class="badge px-3 py-2 text-capitalize
                                 {% if order.status == 'pending' %}bg-warning text-dark

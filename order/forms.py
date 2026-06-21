@@ -8,7 +8,7 @@ from reservations.models import Table
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['table']
+        fields = ['table', 'status']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

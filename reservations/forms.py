@@ -8,7 +8,7 @@ from django.db.models import Q
 class TableForm(forms.ModelForm):
     class Meta:
         model = Table
-        fields = ['number', 'capacity']
+        fields = ['number', 'capacity', 'is_active']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -18,7 +18,7 @@ class TableForm(forms.ModelForm):
         self.helper.layout = Layout(
             Field('number', css_class="form-control mb-3", placeholder="Stol nomeri"),
             Field('capacity', css_class="form-control mb-3", placeholder="Stol sig'imi"),
-        )
+            Field('is_active', css_class="form-check-input", wrapper_class="form-check form-switch mb-3"),        )
 
 
 class ReservationsForm(forms.ModelForm):

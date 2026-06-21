@@ -19,9 +19,11 @@
                 </thead>
                 <tbody>
                 {% for order in all_orders %}
-                    <tr class="clickable-row" data-href="{% url 'order_detail' order.id %}" style="border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer;">
+                    <tr class="clickable-row" data-href="{% url 'order_detail' order.id %}"
+                        style="border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer;">
                         <td class="fw-bold">
-                            <a href="{% url 'order_detail' order.pk %}" class="text-decoration-none row-link" style="color: #CEAF7F;">
+                            <a href="{% url 'order_detail' order.pk %}" class="text-decoration-none row-link"
+                               style="color: #CEAF7F;">
                                 #{{ order.id }}
                             </a>
                         </td>
@@ -70,5 +72,24 @@
         </div>
     </div>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // barcha 'clickable-row' klasiga ega qatorlarni ushlab olamiz
+            const rows = document.querySelectorAll(".clickable-row");
+
+            rows.forEach(row => {
+                row.addEventListener("click", function (e) {
+                    // Agar foydalanuvchi aynan ID ichidagi biron bir ichki havolani (link) bossa,
+                    // JS o'tishni to'xtatib turadi, aks holda ikkala link bir vaqtda ishlab ketadi.
+                    if (e.target.classList.contains('row-link') || e.target.closest('.row-link')) {
+                        return;
+                    }
+
+                    // Qatorda yozilgan url manziliga yo'naltiramiz
+                    window.location = this.dataset.href;
+                });
+            });
+        });
+    </script>
 
 {% endblock %}
