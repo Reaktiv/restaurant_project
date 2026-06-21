@@ -13,14 +13,15 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required
 def home(request):
-    search_food = request.GET.get('search_published_foods')
-    if search_food:
-        foods = Food.objects.filter(
-            Q(name_of_food__icontains=search_food) | Q(description__icontains=search_food),
-            published=True).order_by('?')[:8]
-    else:
-        foods = Food.objects.filter(published=True).order_by('?')[:8]
-
+    # search_food = request.GET.get('search_published_foods')
+    # if search_food:
+    #     foods = Food.objects.filter(
+    #         Q(name_of_food__icontains=search_food) | Q(description__icontains=search_food),
+    #         published=True).order_by('?')[:8]
+    # else:
+    #     foods = Food.objects.filter(published=True).order_by('?')[:8]
+    #
+    foods = Food.objects.filter(published=True).prefetch_related('images')[:8]
     if request.method == 'POST':
         form = ReservationsForm(request.POST)
         if form.is_valid():
@@ -31,8 +32,7 @@ def home(request):
     else:
         form = ReservationsForm()
 
-    notifications = Notification.objects.all().order_by('-created_at')
-    unread_count = notifications.filter(is_Read=False).count()
+    unread_count = Notification.objects.filter(is_Read=False).count()
 
     context = {
         'foods': foods,
