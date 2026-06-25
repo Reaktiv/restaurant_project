@@ -201,39 +201,10 @@ def remove_favourite(request, food_id):
     return redirect(request.META.get('HTTP_REFERER'))
 
 
+def favourite_foods(request):
+    favourite_foods = Food.objects.filter(favourite_by__user=request.user)
+    context = {
+        'favourite_foods': favourite_foods
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    return render(request, 'restaurant/favourite_foods.html', context=context)

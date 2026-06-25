@@ -112,3 +112,14 @@ def edit_reservation_table(request, pk):
     }
     return render(request, 'reservations/edit_reservation_table.html', context=context)
 
+
+def reservation_tables(request):
+    reservation_tables = Reservations.objects.filter(customer=request.user).select_related('table').order_by('date')
+    if request.user.role in ['admin', 'manager']:
+        reservation_tables = Reservations.objects.filter().select_related('table').order_by('date')
+
+    context = {
+        'reservation_tables': reservation_tables
+    }
+
+    return render(request, 'reservations/reservation_table.html', context=context)

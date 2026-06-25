@@ -4,11 +4,26 @@
 {% block title %}Buyurtma Tafsilotlari #{{ order.id }} | NiceRestaurant{% endblock %}
 
 {% block content %}
-    <div class="container" style="margin-top: 100px; margin-bottom: 70px; color: white;">
+    <style>
+        @media (min-width: 768px) {
+            /* Kompyuterda faqat o'rtadagi elementlarga yon chiziq tortamiz */
+            #meta-table, #meta-waiter {
+                border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+            }
+        }
+
+        @media (max-width: 767px) {
+            /* Telefonda bir-biriga yopishib ketmasligi uchun pastidan xira chiziq tortamiz */
+            #meta-table, #meta-waiter {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+            }
+        }
+    </style>
+    <div class="container" style="margin-top: 130px; margin-bottom: 70px; color: white;">
         <div class="row justify-content-center">
             <div class="col-lg-7 col-md-9">
 
-                <div class="mb-3" style="display: flex; justify-content: space-between">
+                <div class="mb-3 d-flex justify-content-between align-items-center">
                     <a href="{% url 'all_orders' %}"
                        class="btn btn-sm btn-outline-secondary text-white border-secondary"
                        style="transition: all 0.3s;">
@@ -16,14 +31,12 @@
                     </a>
                     <div>
                         {% if request.user.role == 'manager' or request.user.role == 'admin' or request.user.role == 'waiter' %}
-
                             <a href="{% url 'edit_order' pk=order.id %}"
-                               class="btn btn-sm btn-outline-secondary text-white border-secondary"
-                               style="transition: all 0.3s;"><i
-                                    class="bi bi-pencil"></i></a>
-
+                               class="btn btn-sm btn-outline-secondary text-white border-secondary px-3"
+                               style="transition: all 0.3s;" title="Edit Order">
+                                <i class="bi bi-pencil me-1"></i> Edit
+                            </a>
                         {% endif %}
-
                     </div>
                 </div>
 
@@ -39,37 +52,41 @@
 
                     <div class="card-body p-4 p-md-5">
 
-                        <div class="row g-3 mb-4 p-3 rounded text-center"
+                        <div class="row g-3 mb-4 p-3 rounded text-center align-items-center"
                              style="background-color: rgba(15, 17, 18, 0.5); border: 1px solid rgba(255,255,255,0.05)">
-                            <div class="col-4 border-end border-secondary border-opacity-25">
+
+                            <div class="col-12 col-md-4 mb-2 mb-md-0 border-sm-bottom pb-2 pb-md-0" id="meta-table">
                                 <span class="text-secondary small d-block mb-1">Table</span>
-                                <span class="badge bg-secondary px-3 py-2 fs-6 fw-light">{{ order.table }}</span>
+                                <span class="badge bg-secondary px-3 py-2 fs-6 fw-light d-inline-block">{{ order.table }}</span>
                             </div>
-                            <div class="col-4 border-end border-secondary border-opacity-25">
+
+                            <div class="col-12 col-md-4 mb-2 mb-md-0 pb-2 pb-md-0" id="meta-waiter">
                                 <span class="text-secondary small d-block mb-1">Waiter</span>
                                 <span class="text-white d-block pt-1 small fw-bold">
-                                {% if order.waiter %}
-                                    <i class="bi bi-person-badge me-1" style="color: #CEAF7F"></i>
-                                    {{ order.waiter.username }}
-                                {% else %}
-                                    <span class="text-muted italic">None</span>
-                                {% endif %}
-                            </span>
+            {% if order.waiter %}
+                <i class="bi bi-person-badge me-1" style="color: #CEAF7F"></i>
+                {{ order.waiter.username }}
+            {% else %}
+                <span class="text-white-50 italic">Mijoz o'zi</span>
+            {% endif %}
+        </span>
                             </div>
-                            <div class="col-4">
+
+                            <div class="col-12 col-md-4" id="meta-status">
                                 <span class="text-secondary small d-block mb-1">Status</span>
                                 <div class="pt-1">
-                                    <span class="badge px-3 py-2 text-capitalize
-                                {% if order.status == 'pending' %}bg-warning text-dark
-                                {% elif order.status == 'preparing' %}bg-info text-dark
-                                {% elif order.status == 'ready' %}bg-primary
-                                {% elif order.status == 'delivered' %}bg-success
-                                {% else %}bg-danger{% endif %}">
-                                {{ order.get_status_display }}
-                            </span>
+            <span class="badge px-3 py-2 text-capitalize d-inline-block
+                {% if order.status == 'pending' %}bg-warning text-dark
+                {% elif order.status == 'preparing' %}bg-info text-dark
+                {% elif order.status == 'ready' %}bg-primary
+                {% elif order.status == 'delivered' %}bg-success
+                {% else %}bg-danger{% endif %}">
+                {{ order.get_status_display }}
+            </span>
                                 </div>
                             </div>
                         </div>
+
 
                         <h5 class="text-white mb-3 fw-light" style="letter-spacing: 1px;">
                             <i class="bi bi-egg-fried me-2" style="color: #CEAF7F"></i> Includes
@@ -132,7 +149,7 @@
     </div>
 
     <style>
-        /* Orqaga qaytish tugmasi hover bo'lganda tillarang effekt berish */
+        /* Tugmalar hover bo'lganda tillarang effekt berish */
         .btn-outline-secondary:hover {
             background-color: #CEAF7F !important;
             border-color: #CEAF7F !important;

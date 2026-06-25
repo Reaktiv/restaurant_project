@@ -7,4 +7,5 @@ urlpatterns = [
     path('all_tables/', views.all_tables, name='all_tables'),
     path('edit-table/<int:pk>/', views.edit_table, name='edit_table'),
     path('edit-reservation-table/<int:pk>/', views.edit_reservation_table, name='edit_reservation_table'),
+    path('your-reservation-tables', views.reservation_tables, name='reservation_tables'),
 ]

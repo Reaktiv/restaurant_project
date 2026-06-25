@@ -8,7 +8,6 @@
 
 {% block content %}
     <style>
-
         .book-form label {
             color: #CEAF7F !important;
             font-size: 13px !important;
@@ -17,12 +16,10 @@
             margin-bottom: 6px !important;
         }
 
-
         .book-form select option {
             background-color: #1e2220 !important;
             color: #CEAF7F !important;
         }
-
 
         .flatpickr-current-month .numInputWrapper input,
         .flatpickr-current-month .flatpickr-monthDropdown-months {
@@ -70,204 +67,29 @@
         .numInputWrapper span.arrowDown:after {
             border-top-color: rgba(206, 175, 127, 0.7) !important;
         }
-
-        /* Mobil hamburger menyusi: matn ikkilanishi va Logout chetga chiqib ketishini tuzatish */
-        @media (max-width: 991.98px) {
-            .navbar-nav .nav-link,
-            .navbar-nav button.nav-link {
-                display: block !important;
-                width: 100% !important;
-                text-align: center !important;
-                text-shadow: none !important;
-                box-shadow: none !important;
-                float: none !important;
-                margin: 0 !important;
-                background: none !important;
-            }
-
-            .navbar-nav .nav-link::before,
-            .navbar-nav .nav-link::after,
-            .navbar-nav button.nav-link::before,
-            .navbar-nav button.nav-link::after {
-                content: none !important;
-            }
-
-            .navbar-nav {
-                align-items: center !important;
-            }
-
-            .navbar-nav .nav-item {
-                width: 100%;
-                text-align: center;
-            }
-        }
     </style>
+
     <!-- Flatpickr CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     {% if user.is_authenticated %}
         <div class="container" style="margin-top: 92px">
 
-            {% block Navbar %}
-                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false"
-                        aria-label="Toggle navigation" style="color: white;">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarScroll">
-                    <ul class="navbar-nav me-auto my-2 my-lg-0">
-                        {% if request.user.role == 'waiter' or request.user.role == 'admin' or request.user.role == 'manager' %}
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'waiter_create_order' %}"
-                                   style="color: white; transition: 0.3s;"
-                                   onmouseover="this.style.color='#CEAF7F'"
-                                   onmouseout="this.style.color='white'">
-                                    <i class="bi bi-plus"></i> Get Order
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'all_orders' %}"
-                                   style="color: white; transition: 0.3s;"
-                                   onmouseover="this.style.color='#CEAF7F'"
-                                   onmouseout="this.style.color='white'">
-                                    All Orders
-                                </a>
-                            </li>
-                            {% if request.user.role == 'admin' or request.user.role == 'manager' %}
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'create' %}"
-                                       style="color: white; transition: 0.3s;"
-                                       onmouseover="this.style.color='#CEAF7F'"
-                                       onmouseout="this.style.color='white'">
-                                        <i class="bi bi-plus"></i> Add food
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'table_create' %}"
-                                       style="color: white; transition: 0.3s;"
-                                       onmouseover="this.style.color='#CEAF7F'"
-                                       onmouseout="this.style.color='white'">
-                                        <i class="bi bi-plus"></i> Add table
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'all_tables' %}"
-                                       style="color: white; transition: 0.3s;"
-                                       onmouseover="this.style.color='#CEAF7F'"
-                                       onmouseout="this.style.color='white'">
-                                        All table
-                                    </a>
-                                </li>
-
-                            {% else %}{% endif %}
-
-                        {% else %}
-
-                        {% endif %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'food_page' %}"
-                               style="color: white; transition: 0.3s;"
-                               onmouseover="this.style.color='#CEAF7F'"
-                               onmouseout="this.style.color='white'">
-                                <i class="bi bi-egg-fried"></i> All Foods
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'cart' %}"
-                               style="color: white; transition: 0.3s;"
-                               onmouseover="this.style.color='#CEAF7F'"
-                               onmouseout="this.style.color='white'">
-                                <i class="bi bi-basket-fill"></i> Cart
-                            </a>
-                        </li>
-
-                        {% block Categories %}{% endblock %}
-                    </ul>
-                    <ul class="navbar-nav ms-auto my-2 my-lg-0">
-                        {% if request.user.role == 'admin' or request.user.role == 'manager' %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'notification_list' %}"
-                                   style="color: white; transition: 0.3s; position: relative; display: inline-block; padding-right: 25px;"
-                                   onmouseover="this.style.color='#CEAF7F'"
-                                   onmouseout="this.style.color='white'">
-                                    Notifications
-                                    {% if unread_count %}
-                                        <span style="
-                position: absolute;
-                top: 2px;
-                right: 5px;
-                background-color: #E63946; /* Yorqin zamonaviy qizil */
-                color: white;
-                font-size: 11px;
-                font-weight: bold;
-                border-radius: 50%;
-                min-width: 18px;
-                height: 18px;
-                padding: 0 4px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            ">
-                {{ unread_count }}
-            </span>
-                                    {% endif %}
-                                </a>
-                            </li>
-                        {% endif %}
-                        {% if request.user.is_superuser %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/"
-                                   style="color: white; transition: 0.3s;"
-                                   onmouseover="this.style.color='#CEAF7F'"
-                                   onmouseout="this.style.color='white'">
-                                    Admin Panel
-                                </a>
-                            </li>
-                        {% else %}
-                        {% endif %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'profile' %}"
-                               style="color: white; transition: 0.3s;"
-                               onmouseover="this.style.color='#CEAF7F'"
-                               onmouseout="this.style.color='white'">
-                                Profile
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <form class="logout-form" style="margin: 0;">
-                                <button type="button" class="nav-link border-0" data-bs-toggle="modal"
-                                        data-bs-target="#logoutConfirm"
-                                        style="color: white; background: none; transition: 0.3s; cursor: pointer;"
-                                        onmouseover="this.style.color='#CEAF7F'"
-                                        onmouseout="this.style.color='white'">
-                                    Logout
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
-
-                    {% block search %}{% endblock %}
-                </div>
-            {% endblock %}
             <!-- HERO SECTION -->
             <div class="row align-items-center">
                 <div class="col-12 col-md-6 d-flex justify-content-center align-items-center mb-4 mb-md-0"
                      style="height: auto;">
                     <div class="text-center mt-5">
                         <h1 class="mt-4" style="color: #CEAF7F;">Assalomu alaykum, hurmatli mijoz!</h1>
-                        <h1 class="" style="font-size: 70px; color: white;">Mazali lahza hech qachon
-                            unutilmaydi!</h1>
+                        <h1 style="font-size: 70px; color: white;">Mazali lahza hech qachon unutilmaydi!</h1>
                         <h6 class="mt-5" style="color: #CEAF7F;">
-                            Bizning betakror restoranimizda ta’mlar sayohatini kashf eting.
+                            Bizning betakror restoranimizda ta'mlar sayohatini kashf eting.
                             Ishtiyoq va mahorat bilan yaratilgan mazali taomlardan iborat
-                            unutilmas oshxona tajribasiga sho‘ng‘ing.
+                            unutilmas oshxona tajribasiga sho'ng'ing.
                         </h6>
                         <span class="d-block text-start text-white m-3">
-                    <i class="bi bi-alarm" style="color: #CEAF7F;"></i> Ish vaqti: 9.00 dan 22.00 gacha
-                </span>
+                            <i class="bi bi-alarm" style="color: #CEAF7F;"></i> Ish vaqti: 9.00 dan 22.00 gacha
+                        </span>
 
                         <div class="row g-3 mt-4 justify-content-center">
                             <div class="col-12 col-md-8 col-lg-6">
@@ -283,8 +105,6 @@
                                 </a>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
 
@@ -301,13 +121,13 @@
                                 <img src="/media/carousel_photos/carousel3.jpg" class="img-fluid d-block w-100" alt="">
                             </div>
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade"
-                                data-bs-slide="prev">
+                        <button class="carousel-control-prev" type="button"
+                                data-bs-target="#carouselExampleFade" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade"
-                                data-bs-slide="next">
+                        <button class="carousel-control-next" type="button"
+                                data-bs-target="#carouselExampleFade" data-bs-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
@@ -320,7 +140,7 @@
                 <div class="col-12 col-md-6">
                     <h1 class="text-white fw-bold">Bizning oshpazlik sayohatimiz!</h1>
                     <h6 class="text-white fw-light mt-3">
-                        Har bir taom o‘zida bir hikoya yashiradi...
+                        Har bir taom o'zida bir hikoya yashiradi...
                     </h6>
                     <div class="mt-5 p-4 d-flex align-items-center"
                          style="border: 2px solid #CEAF7F; border-radius: 20px;">
@@ -334,7 +154,8 @@
 
                 <div class="col-12 col-md-6 mt-4 mt-md-0 text-center">
                     <div class="position-relative d-inline-block">
-                        <img src="/media/background_photos/ostki.jpg" class="img-fluid rounded shadow" alt="Orqa rasm">
+                        <img src="/media/background_photos/ostki.jpg" class="img-fluid rounded shadow"
+                             alt="Orqa rasm">
                         <img src="/media/background_photos/ustki.jpg"
                              class="img-fluid rounded shadow position-absolute bottom-0 end-0"
                              style="width: 50%; transform: translate(10%, 20%);" alt="Oldingi rasm">
@@ -395,8 +216,8 @@
                             <div class="card-body p-2 text-white">
                                 <span class="fw-bold" style="font-size: 25px;">{{ food.name_of_food }}</span>
                                 <span class="p-1" style="font-size: 15px; color: #CEAF7F;">
-        <i class="bi bi-hash"></i>{{ food.type }}
-      </span>
+                                    <i class="bi bi-hash"></i>{{ food.type }}
+                                </span>
                                 <h6>{{ food.description|truncatechars:25 }}</h6>
                                 <p style="color: #CEAF7F; font-weight: bold;">Narxi: {{ food.price }}$</p>
 
@@ -404,8 +225,7 @@
                                       style="display: inline;">
                                     {% csrf_token %}
                                     <button type="submit"
-                                            style="background: none; border: none; color: #CEAF7F;
-                   font-weight: bold; transition: 0.3s; cursor: pointer;"
+                                            style="background: none; border: none; color: #CEAF7F; font-weight: bold; transition: 0.3s; cursor: pointer;"
                                             onmouseover="this.style.color='white'"
                                             onmouseout="this.style.color='#CEAF7F'">
                                         <i class="bi bi-basket"></i> Add to cart
@@ -421,19 +241,17 @@
                                         <i class="bi bi-heart-fill"></i> Favourite
                                     </button>
                                 </form>
-
                             </div>
                         </div>
                     </div>
-
                 {% endfor %}
             </div>
 
             <!-- EVENTS SECTION -->
             <div class="text-center mt-5">
                 <h1 style="color: #CEAF7F;">Unitilmas lahzalarni biz bilan yarating!!!</h1>
-                <h6 class="text-white">Bu yerda siz faqatgina taom emas, balki samimiy muhit, mehr va quvonchni his
-                    qilasiz.</h6>
+                <h6 class="text-white">Bu yerda siz faqatgina taom emas, balki samimiy muhit, mehr va quvonchni
+                    his qilasiz.</h6>
             </div>
             <hr style="border: 2px solid #CEAF7F; width: 80%; margin: 25px auto; opacity: 1;">
             <div class="row justify-content-center">
@@ -441,10 +259,12 @@
                      style="background-color: rgba(37,42,43,0.7); border-radius: 20px;">
                     <i class="bi bi-calendar-heart-fill d-flex justify-content-center"
                        style="font-size: 80px; color: #CEAF7F;"></i>
-                    <h3 style="color: #CEAF7F; justify-content: center; display: flex">To‘ylar & Marosimlar</h3>
+                    <h3 style="color: #CEAF7F; justify-content: center; display: flex">To'ylar & Marosimlar</h3>
                     <h6 class="text-white">Restoranimiz sizning eng quvonchli kunlaringizni...</h6>
                     <span class="p-2 mt-3 d-block text-center"
-                          style="background-color: black; border-radius: 30px; color: antiquewhite;">150 tagacha mehmon</span>
+                          style="background-color: black; border-radius: 30px; color: antiquewhite;">
+                        150 tagacha mehmon
+                    </span>
                 </div>
 
                 <div class="col-12 col-md-4 p-3 m-3"
@@ -454,22 +274,29 @@
                     <h3 style="color: #CEAF7F; justify-content: center; display: flex">Korporativ tadbirlar</h3>
                     <h6 class="text-white">Biznes uchrashuvlari va korporativ tadbirlaringizni...</h6>
                     <span class="p-2 mt-3 d-block text-center"
-                          style="background-color: black; border-radius: 30px; color: antiquewhite;">100 tagacha mehmon</span>
+                          style="background-color: black; border-radius: 30px; color: antiquewhite;">
+                        100 tagacha mehmon
+                    </span>
                 </div>
 
                 <div class="col-12 col-md-4 p-3 m-3"
                      style="background-color: rgba(37,42,43,0.7); border-radius: 20px;">
-                    <i class="bi bi-people d-flex justify-content-center" style="font-size: 80px; color: #CEAF7F;"></i>
+                    <i class="bi bi-people d-flex justify-content-center"
+                       style="font-size: 80px; color: #CEAF7F;"></i>
                     <h3 style="color: #CEAF7F; justify-content: center; display: flex">Shaxsiy yig'inlar</h3>
-                    <h6 class="text-white">Do‘stlaringiz yoki yaqinlaringiz bilan sokin muhitda...</h6>
+                    <h6 class="text-white">Do'stlaringiz yoki yaqinlaringiz bilan sokin muhitda...</h6>
                     <span class="p-2 mt-3 d-block text-center"
-                          style="background-color: black; border-radius: 30px; color: antiquewhite;">50 tagacha mehmon</span>
+                          style="background-color: black; border-radius: 30px; color: antiquewhite;">
+                        50 tagacha mehmon
+                    </span>
                 </div>
             </div>
-            {#        ============================================================================================= #}
+
+            <!-- BOOK A TABLE SECTION -->
             <h1 style="text-align: center; color: #CEAF7F;" class="fw-bold m-3">Book A Table</h1>
             <hr style="border: 2px solid #CEAF7F; width: 80%; margin: 25px auto; opacity: 1;">
-            <p class="text-center" style="color: rgba(206,175,127,0.6); margin-bottom: 40px; font-size: 16px;">
+            <p class="text-center"
+               style="color: rgba(206,175,127,0.6); margin-bottom: 40px; font-size: 16px;">
                 Please fill the form below to make a reservation
             </p>
 
@@ -480,7 +307,6 @@
                         <form method="POST" action="{% url 'make_reservation' %}" class="book-form">
                             {% csrf_token %}
                             {% crispy form %}
-
                             <div class="text-center mt-5">
                                 <button type="submit" class="btn fw-bold px-5 py-3"
                                         style="background-color: #CEAF7F; color: #1e2220; border-radius: 50px; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;"
@@ -493,8 +319,6 @@
                     </div>
                 </div>
             </div>
-
-            {#        ============================================================================================= #}
 
             <!-- CONTACT SECTION -->
             <div class="container mt-5">
@@ -536,10 +360,13 @@
                     </div>
                 </div>
             </div>
+
         </div>
     {% endif %}
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
-        // Date input ni picker-wrapper ga o'rab, trigger button qo'shamiz
         const dateInput = document.getElementById('id_date');
         const timeInput = document.getElementById('id_time');
 
@@ -556,7 +383,6 @@
             return btn;
         }
 
-        // Date picker
         if (dateInput) {
             const dateBtn = wrapWithTrigger(dateInput, 'bi bi-calendar3');
             const datePicker = flatpickr(dateInput, {
@@ -569,7 +395,6 @@
             dateInput.addEventListener('click', () => datePicker.open());
         }
 
-        // Time picker
         if (timeInput) {
             const timeBtn = wrapWithTrigger(timeInput, 'bi bi-clock');
             const timePicker = flatpickr(timeInput, {
@@ -585,5 +410,6 @@
             timeInput.addEventListener('click', () => timePicker.open());
         }
     </script>
+
     {% include 'restaurant/logout_confirm.html' %}
 {% endblock %}

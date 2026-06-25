@@ -23,22 +23,7 @@ def register(request):
     return render(request, 'account/register.html', context=context)
 
 def profile(request):
-    favourite_foods = Food.objects.filter(favourite_by__user=request.user)
-    reservation_tables = Reservations.objects.filter(customer=request.user).select_related('table').order_by('date')
-    all_reservation_tables = Reservations.objects.filter().select_related('table').order_by('date')
-    new_orders = Order.objects.filter(is_paid=True, customer=request.user, status__in=['pending', 'ready', 'preparing']).prefetch_related('items').order_by('-created_at')
-    old_orders = Order.objects.filter(is_paid=True, customer=request.user, status__in=['delivered', 'cancelled']).prefetch_related('items').order_by('-created_at')
-
-    role = request.user.role
-    if role in ['manager', 'admin']:
-        reservation_tables = all_reservation_tables
-    context = {
-        "foods": favourite_foods,
-        'reservation_tables': reservation_tables,
-        'new_orders': new_orders,
-        'old_orders': old_orders,
-    }
-    return render(request, 'account/profile.html', context=context)
+    return render(request, 'account/profile.html')
 
 def change_profile(request):
 

@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block title %}Favourites | NiceRestaurant{% endblock %}
+
+{% block content %}
+    <div class="container mobile-optimized-container" style="margin-top: 100px; padding-bottom: 60px; color: white;">
+
+        <div class="row">
+            {% if favourite_foods %}
+
+        <h1 class="mt-5 text-center" style="color: #CEAF7F; font-size: 40px;">Favourites</h1>
+        <hr style="border: 2px solid #CEAF7F; opacity: 1; margin: 10px;">
+        <div class="row mt-2">
+            {% for food in favourite_foods %}
+                <div class="col-12 col-md-6 mb-4">
+                    <div class="d-flex align-items-start"
+                         style="background-color: rgba(37,42,43,0.7); border-radius: 10px; transition: 0.3s; cursor: pointer;"
+                         onclick="window.location.href='{% url 'detail' food.id %}'"
+                         onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.4)';"
+                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+
+                        {% if food.images.first %}
+                            <img class="img-fluid p-2 mt-2"
+                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
+                                 src="{{ food.images.first.image.url }}" alt="">
+                        {% elif food.image %}
+                            <img class="img-fluid p-2 mt-2"
+                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
+                                 src="{{ food.image.url }}" alt="">
+                        {% else %}
+                            <img class="img-fluid p-2 mt-2"
+                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
+                                 src="/media/spoon-and-fork.jpg" alt="">
+                        {% endif %}
+
+                        <div class="card-body p-2 text-white">
+                            <span class="fw-bold" style="font-size: 25px;">{{ food.name_of_food }}</span>
+                            <span class="p-1" style="font-size: 15px; color: #CEAF7F;">
+                            <i class="bi bi-hash"></i>{{ food.type }}
+                        </span>
+                            <h6>{{ food.description|truncatechars:25     }}</h6>
+                            <p style="color: #CEAF7F; font-weight: bold;">Narxi: {{ food.price }}$</p>
+
+                            <form action="{% url 'cart_add' food_id=food.id %}" method="POST" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        style="background: none; border: none; color: #CEAF7F; font-weight: bold; transition: 0.3s; cursor: pointer;"
+                                        onmouseover="this.style.color='white'"
+                                        onmouseout="this.style.color='#CEAF7F'">
+                                    <i class="bi bi-basket"></i> Add to cart
+                                </button>
+                            </form>
+                            <form action="{% url 'remove_favourite' food_id=food.id %}" method="POST"
+                                  style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        style="background: none; border: none; color: #CEAF7F; font-weight: bold; transition: 0.3s; cursor: pointer;"
+                                        onmouseover="this.style.color='white'"
+                                        onmouseout="this.style.color='#CEAF7F'">
+                                    <i class="bi bi-heartbreak-fill"></i> Remove
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+            {% else %}
+                <!-- Sevimli taomlar mavjud bo'lmaganda chiqadigan chiroyli oyna -->
+                <div class="col-12 text-center" style="margin-top: 80px; margin-bottom: 80px;">
+                    <i class="bi bi-heart border-0" style="font-size: 70px; color: rgba(206, 175, 127, 0.2);"></i>
+                    <h4 style="color: #a0aba7; margin-top: 20px;" class="fw-light">Sizga yoqqan taomlar hozircha yo'q.</h4>
+                    <a href="{% url 'food_page' %}" class="btn mt-4 px-4 py-2"
+                       style="background-color: #CEAF7F; color: #1e2220; border-radius: 30px; font-weight: bold; transition: 0.3s;">
+                        Menyuni ko'rish
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Mobil moslashuvchanlik va hover stillari -->
+    <style>
+        @media (max-width: 576px) {
+            .mobile-optimized-container {
+                padding-left: 12px !important;
+                padding-right: 12px !important;
+            }
+            .small-line {
+                display: none;
+            }
+        }
+        .action-btn:hover {
+            color: white !important;
+            opacity: 0.9;
+        }
+    </style>
+{% endblock %}

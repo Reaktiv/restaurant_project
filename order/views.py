@@ -176,3 +176,21 @@ def edit_order(request, pk):
         'order': order
     }
     return render(request, 'orders/edit_order.html', context=context)
+
+
+def new_orders(request):
+    new_orders = Order.objects.filter(is_paid=True, customer=request.user, status__in=['pending', 'ready', 'preparing']).prefetch_related('items').order_by('-created_at')
+
+    context = {
+        'new_orders': new_orders
+    }
+    return render(request, 'orders/new_orders.html', context=context)
+
+
+def old_orders(request):
+    old_orders = Order.objects.filter(is_paid=True, customer=request.user, status__in=['delivered', 'cancelled']).prefetch_related('items').order_by('-created_at')
+
+    context = {
+        'old_orders': old_orders
+    }
+    return render(request, 'orders/old_orders.html', context=context)

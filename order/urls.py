@@ -7,4 +7,6 @@ urlpatterns = [
     path('customer-create-orders/', views.customer_create_order, name='customer_create_order'),
     path('order-detail/<int:pk>', views.order_detail, name='order_detail'),
     path('edit-order/<int:pk>', views.edit_order, name='edit_order'),
+    path('your-orders', views.new_orders, name='new_orders'),
+    path('old-orders', views.old_orders, name='old_orders'),
 ]
