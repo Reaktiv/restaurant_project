@@ -16,154 +16,18 @@
       style="background: url('/media/bacground_photo1.jpg') no-repeat center center fixed; background-size: cover;">
 
 {% if user.is_authenticated %}
-
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: rgba(37, 42, 43, 0.7);">
         <div class="container-fluid">
-            <a href="{% url 'home' %}"
-               class="d-flex align-items-center text-decoration-none p-3" style="color: white">
+            <!-- LOGOTIP - barcha sahifalarda ko'rinadi -->
+            <a href="{% url 'home' %}" class="d-flex align-items-center text-decoration-none p-3" style="color: white">
                 <i class="bi bi-fork-knife fs-3 me-2" style="color: #CEAF7F"></i>
                 <span class="fs-3 fw-lighter">NiceRestaurant</span>
             </a>
 
-            <!-- Hamburger toggler -->
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Navbar content -->
-            <div class="collapse navbar-collapse" id="navbarScroll">
-                <ul class="navbar-nav me-auto my-2 my-lg-0">
-                    {% if request.user.role == 'waiter' or request.user.role == 'admin' or request.user.role == 'manager' %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'waiter_create_order' %}"
-                               style="color: white; transition: 0.3s;"
-                               onmouseover="this.style.color='#CEAF7F'"
-                               onmouseout="this.style.color='white'">
-                                <i class="bi bi-plus"></i> Get Order
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'all_orders' %}"
-                               style="color: white; transition: 0.3s;"
-                               onmouseover="this.style.color='#CEAF7F'"
-                               onmouseout="this.style.color='white'">
-                                All Orders
-                            </a>
-                        </li>
-                        {% if request.user.role == 'admin' or request.user.role == 'manager' %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'create' %}"
-                                   style="color: white; transition: 0.3s;"
-                                   onmouseover="this.style.color='#CEAF7F'"
-                                   onmouseout="this.style.color='white'">
-                                    <i class="bi bi-plus"></i> Add food
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'table_create' %}"
-                                   style="color: white; transition: 0.3s;"
-                                   onmouseover="this.style.color='#CEAF7F'"
-                                   onmouseout="this.style.color='white'">
-                                    <i class="bi bi-plus"></i> Add table
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'all_tables' %}"
-                                   style="color: white; transition: 0.3s;"
-                                   onmouseover="this.style.color='#CEAF7F'"
-                                   onmouseout="this.style.color='white'">
-                                    All table
-                                </a>
-                            </li>
-                        {% endif %}
-                    {% endif %}
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'food_page' %}"
-                           style="color: white; transition: 0.3s;"
-                           onmouseover="this.style.color='#CEAF7F'"
-                           onmouseout="this.style.color='white'">
-                            <i class="bi bi-egg-fried"></i> All Foods
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'cart' %}"
-                           style="color: white; transition: 0.3s;"
-                           onmouseover="this.style.color='#CEAF7F'"
-                           onmouseout="this.style.color='white'">
-                            <i class="bi bi-basket-fill"></i> Cart
-                        </a>
-                    </li>
-
-                    {% block Categories %}{% endblock %}
-                </ul>
-
-                <ul class="navbar-nav ms-auto my-2 my-lg-0">
-                    {% if request.user.role == 'admin' or request.user.role == 'manager' %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'notification_list' %}"
-                               style="color: white; transition: 0.3s; position: relative; display: inline-block; padding-right: 25px;"
-                               onmouseover="this.style.color='#CEAF7F'"
-                               onmouseout="this.style.color='white'">
-                                Notifications
-                                {% if unread_count %}
-                                    <span style="
-                                        position: absolute;
-                                        top: 2px;
-                                        right: 5px;
-                                        background-color: #E63946;
-                                        color: white;
-                                        font-size: 11px;
-                                        font-weight: bold;
-                                        border-radius: 50%;
-                                        min-width: 18px;
-                                        height: 18px;
-                                        padding: 0 4px;
-                                        display: flex;
-                                        align-items: center;
-                                        justify-content: center;
-                                        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-                                    ">{{ unread_count }}</span>
-                                {% endif %}
-                            </a>
-                        </li>
-                    {% endif %}
-                    {% if request.user.is_superuser %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="/admin/"
-                               style="color: white; transition: 0.3s;"
-                               onmouseover="this.style.color='#CEAF7F'"
-                               onmouseout="this.style.color='white'">
-                                Admin Panel
-                            </a>
-                        </li>
-                    {% endif %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'profile' %}"
-                           style="color: white; transition: 0.3s;"
-                           onmouseover="this.style.color='#CEAF7F'"
-                           onmouseout="this.style.color='white'">
-                            Profile
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <button type="button" class="nav-link border-0" data-bs-toggle="modal"
-                                data-bs-target="#logoutConfirm"
-                                style="color: white; background: none; transition: 0.3s; cursor: pointer;"
-                                onmouseover="this.style.color='#CEAF7F'"
-                                onmouseout="this.style.color='white'">
-                            Logout
-                        </button>
-                    </li>
-                </ul>
-
-                {% block search %}{% endblock %}
-            </div>
+            <!-- FAQAT BOSHQALAR UCHUN TOGGLER VA KONTENT (Boshqa sahifalarda bo'sh bo'ladi) -->
+            {% block nav_items %}{% endblock %}
         </div>
     </nav>
-
 {% endif %}
 
 {% block content %}{% endblock %}
@@ -183,7 +47,7 @@
                         <div class="d-flex gap-3 mt-3">
                             <a href="https://www.instagram.com/salimovich1505" style="color:#CEAF7F; font-size:1.3rem;"
                                onmouseover="this.style.opacity='0.7'"
-                               onmouseout="this.style.opacity='1'"><i class="bi bi-instagram"></i></a>
+                               onmouseout="this.style.opacity='1'"><i class="bi bi-indigo"></i></a>
                             <a href="https://t.me/salimovich1505" style="color:#CEAF7F; font-size:1.3rem;"
                                onmouseover="this.style.opacity='0.7'"
                                onmouseout="this.style.opacity='1'"><i class="bi bi-telegram"></i></a>
