@@ -22,6 +22,7 @@ def table_create(request):
     return render(request, 'reservations/table_create.html', {'form': form})
 
 
+@login_required
 def make_reservation(request):
     if request.method == 'POST':
         form = ReservationsForm(request.POST)
@@ -45,6 +46,7 @@ def make_reservation(request):
     return render(request, 'reservations/book_table.html', context=context)
 
 
+@login_required
 def all_tables(request):
     if request.user.role not in ['admin', 'manager']:
         return HttpResponseForbidden("Kirish huquqi yo'q")
@@ -59,6 +61,7 @@ def all_tables(request):
     return render(request, 'reservations/all_tables.html', context=context)
 
 
+@login_required
 def edit_table(request, pk):
     if request.user.role not in ['manager', 'admin']:
         return HttpResponseForbidden("Kirish huquqi yo'q")
@@ -79,6 +82,7 @@ def edit_table(request, pk):
     return render(request, 'reservations/edit_table.html', context=context)
 
 
+@login_required
 def edit_reservation_table(request, pk):
 
     if request.user.role not in ['manager', 'admin']:
@@ -113,6 +117,7 @@ def edit_reservation_table(request, pk):
     return render(request, 'reservations/edit_reservation_table.html', context=context)
 
 
+@login_required
 def reservation_tables(request):
     reservation_tables = Reservations.objects.filter(customer=request.user).select_related('table').order_by('date')
     if request.user.role in ['admin', 'manager']:

@@ -78,6 +78,7 @@ def customer_create_order(request):
     return render(request, 'orders/customer_create_order.html', context=context)
 
 
+@login_required
 def waiter_create_order(request):
     role = request.user.role
     if role not in ['admin', 'manager', 'waiter']:
@@ -120,6 +121,7 @@ def waiter_create_order(request):
         return render(request, 'orders/waiter_create_order.html', context=context)
 
 
+@login_required
 def all_orders(request):
     role = request.user.role
     if role not in ['admin', 'manager', 'waiter']:
@@ -132,8 +134,11 @@ def all_orders(request):
     return render(request, 'orders/all_orders.html', context=context)
 
 
+@login_required
 def order_detail(request, pk):
     order = get_object_or_404(Order.objects.all().prefetch_related('items'), id=pk)
+    if order.customer != request.user and request.user.role not in ['admin', 'manager', 'waiter']:
+        return HttpResponseForbidden("Kirish huquqi yo'q")
     context = {
         'order': order,
         'order_items': order.items.all()
@@ -141,7 +146,10 @@ def order_detail(request, pk):
     return render(request, 'orders/order_detail.html', context=context)
 
 
+@login_required
 def edit_order(request, pk):
+    if request.user.role not in ['admin', 'manager', 'waiter']:
+        return HttpResponseForbidden("Kirish huquqi yo'q")
     order = get_object_or_404(Order, id=pk)
     old_table = order.table
     if request.method == "POST":
@@ -178,6 +186,7 @@ def edit_order(request, pk):
     return render(request, 'orders/edit_order.html', context=context)
 
 
+@login_required
 def new_orders(request):
     new_orders = Order.objects.filter(is_paid=True, customer=request.user, status__in=['pending', 'ready', 'preparing']).prefetch_related('items').order_by('-created_at')
 
@@ -187,6 +196,7 @@ def new_orders(request):
     return render(request, 'orders/new_orders.html', context=context)
 
 
+@login_required
 def old_orders(request):
     old_orders = Order.objects.filter(is_paid=True, customer=request.user, status__in=['delivered', 'cancelled']).prefetch_related('items').order_by('-created_at')
 

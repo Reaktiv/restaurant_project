@@ -16,5 +16,6 @@ urlpatterns = [
     path('favourite-foods', views.favourite_foods, name="favourite_foods"),
     path('favourite/<int:food_id>/', views.add_favourite, name="add_favourite"),
     path('unfavourite/<int:food_id>/', views.remove_favourite, name="remove_favourite"),
+    path('dashboard/', views.staff_dashboard, name='staff_dashboard'),
 
 ]

@@ -1,6 +1,6 @@
 
 from django.db.models import Q
-from django.http import HttpResponseBadRequest, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
 
 from notification.models import Notification
 from reservations.forms import ReservationsForm
@@ -13,14 +13,6 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required
 def home(request):
-    # search_food = request.GET.get('search_published_foods')
-    # if search_food:
-    #     foods = Food.objects.filter(
-    #         Q(name_of_food__icontains=search_food) | Q(description__icontains=search_food),
-    #         published=True).order_by('?')[:8]
-    # else:
-    #     foods = Food.objects.filter(published=True).order_by('?')[:8]
-    #
     foods = Food.objects.filter(published=True).prefetch_related('images')[:8]
     if request.method == 'POST':
         form = ReservationsForm(request.POST)
@@ -32,13 +24,9 @@ def home(request):
     else:
         form = ReservationsForm()
 
-    unread_count = Notification.objects.filter(is_Read=False).count()
-
     context = {
         'foods': foods,
-        'unread_count':unread_count,
         'form': form
-
     }
 
     return render(request, 'restaurant/home.html', context=context)
@@ -55,6 +43,7 @@ def detail(request, food_id):
     return render(request, 'restaurant/detail.html', context=context)
 
 
+@login_required
 def update(request, food_id):
     role = request.user.role
     if role not in ['admin', 'manager']:
@@ -81,7 +70,11 @@ def update(request, food_id):
     return render(request, 'restaurant/update.html', context=context)
 
 
+@login_required
 def delete(request, food_id):
+    role = request.user.role
+    if role not in ['admin', 'manager']:
+        return HttpResponseForbidden("Kirish huquqi yo'q")
     food = get_object_or_404(Food, id=food_id)
     food.delete()
     return redirect('home')
@@ -124,6 +117,7 @@ def by_category(request, food_type):
     return render(request, 'restaurant/by_category.html', context=context)
 
 
+@login_required
 def cart(request):
     basket = request.session.get('basket', {})
 
@@ -150,6 +144,7 @@ def cart(request):
     return render(request, 'restaurant/cart.html', context=context)
 
 
+@login_required
 def cart_add(request, food_id):
     if request.method == 'POST':
         try:
@@ -164,6 +159,7 @@ def cart_add(request, food_id):
     return HttpResponseBadRequest("Invalid request method")
 
 
+@login_required
 def cart_remove(request, food_id):
     basket = request.session.get('basket', {})
     food_id_str = str(food_id)
@@ -181,8 +177,9 @@ def cart_remove(request, food_id):
     return redirect('cart')
 
 
+@login_required
 def payment(request):
-    return HttpResponseBadRequest("To'landi😁")
+    return HttpResponse("To'landi😁")
 
 
 @login_required()
@@ -208,3 +205,45 @@ def favourite_foods(request):
     }
 
     return render(request, 'restaurant/favourite_foods.html', context=context)
+
+
+@login_required
+def staff_dashboard(request):
+    role = request.user.role
+    if role not in ['admin', 'manager', 'waiter']:
+        return HttpResponseForbidden("Kirish huquqi yo'q")
+
+    from reservations.models import Table, Reservations
+    from order.models import Order
+    from notification.models import Notification
+
+    total_tables = Table.objects.count()
+    free_tables = Table.objects.filter(is_active=True).count()
+    occupied_tables = total_tables - free_tables
+
+    active_orders = Order.objects.filter(status__in=['pending', 'preparing', 'ready']).prefetch_related('items', 'table', 'waiter').order_by('-created_at')
+    active_orders_count = active_orders.count()
+
+    unread_notifications = Notification.objects.filter(is_Read=False).order_by('-created_at')
+    unread_notifications_count = unread_notifications.count()
+
+    total_foods = Food.objects.count()
+
+    # Get visual data slice
+    recent_orders = active_orders[:5]
+    all_tables = Table.objects.all().order_by('number')
+    recent_notifications = unread_notifications[:5]
+
+    context = {
+        'total_tables': total_tables,
+        'free_tables': free_tables,
+        'occupied_tables': occupied_tables,
+        'active_orders_count': active_orders_count,
+        'unread_notifications_count': unread_notifications_count,
+        'total_foods': total_foods,
+        'recent_orders': recent_orders,
+        'all_tables': all_tables,
+        'recent_notifications': recent_notifications,
+        'role': role,
+    }
+    return render(request, 'restaurant/dashboard.html', context=context)

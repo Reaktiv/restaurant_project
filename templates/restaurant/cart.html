@@ -1,157 +1,184 @@
 {% extends 'base.html' %}
-{% block title %}
-    Cart
-{% endblock %}
+{% load static %}
+
+{% block title %}Cart | NiceRestaurant{% endblock %}
 
 {% block content %}
+<div class="container animate-fade-up" style="margin-top: 130px; margin-bottom: 70px;">
+    
+    <!-- Title and Divider -->
+    <div class="text-center mb-4">
+        <h1 class="display-4 fw-bold text-gold" style="font-family: var(--font-heading);">
+            Savatchangiz <i class="bi bi-cart"></i>
+        </h1>
+        <p class="text-secondary fw-light">Siz buyurtma berish uchun tanlagan taomlar ro'yxati</p>
+    </div>
+    <hr style="border: 1px solid var(--gold-primary); width: 30%; margin: 15px auto 45px; opacity: 0.3;">
 
-    <div class="container" style="margin-top: 90px;">
-        <div class="row mt-5">
-            <h1 style="text-align: center; color: #CEAF7F;" class="fw-bold m-3">Cart <i class="bi bi-basket"></i></h1>
-            <hr style="border: 2px solid #CEAF7F; width: 80%; margin: 25px auto; opacity: 1;">
-            {% if basket_items %}
-                {% for item in basket_items %}
-                    <div class="col-12 col-md-6 mb-4">
-                        <div class="d-flex align-items-start"
-                             style="background-color: rgba(37,42,43,0.7); border-radius: 10px; transition: 0.3s; cursor: pointer;"
-                             onclick="window.location.href='{% url 'detail' item.food.id %}'"
-                             onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.4)';"
-                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+    <div class="row g-4">
+        
+        <!-- Cart Items List (Left Side) -->
+        <div class="col-12 col-lg-8">
+            <div class="glass-panel p-4 h-100">
+                <h4 class="text-white mb-4 fw-light" style="font-family: var(--font-heading); letter-spacing: 1.5px;">
+                    <i class="bi bi-list-stars text-gold me-2"></i> Tanlangan Taomlar
+                </h4>
+                
+                {% if basket_items %}
+                    <div class="row g-3">
+                        {% for item in basket_items %}
+                            <div class="col-12">
+                                <div class="food-card">
+                                    <div class="food-card-img-wrapper" style="width: 120px; min-width: 120px; height: 120px;">
+                                        {% if item.food.images.first %}
+                                            <img class="food-card-img" src="{{ item.food.images.first.image.url }}" alt="{{ item.food.name_of_food }}">
+                                        {% elif item.food.image %}
+                                            <img class="food-card-img" src="{{ item.food.image.url }}" alt="{{ item.food.name_of_food }}">
+                                        {% else %}
+                                            <img class="food-card-img" src="/media/spoon-and-fork.jpg" alt="No image">
+                                        {% endif %}
+                                    </div>
 
-                            {% if item.food.images.first %}
-                                <img class="img-fluid p-2 mt-2"
-                                     style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                                     src="{{ item.food.images.first.image.url }}" alt="">
-                            {% elif item.food.image %}
-                                <img class="img-fluid p-2 mt-2"
-                                     style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                                     src="{{ item.food.image.url }}" alt="">
-                            {% else %}
-                                <img class="img-fluid p-2 mt-2"
-                                     style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                                     src="/media/spoon-and-fork.jpg" alt="">
-                            {% endif %}
+                                    <div class="food-card-body p-3 d-flex flex-column justify-content-between">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h5 class="mb-1 text-white fw-bold" style="font-size: 1.15rem;">{{ item.food.name_of_food }}</h5>
+                                                <span class="food-card-type" style="font-size: 0.75rem;">{{ item.food.type }}</span>
+                                            </div>
+                                            <span class="fw-bold text-gold" style="font-size: 1.1rem;">{{ item.food.price }} $</span>
+                                        </div>
 
+                                        <div class="d-flex justify-content-between align-items-center mt-2">
+                                            <!-- Quantity controls -->
+                                            <div class="d-inline-flex align-items-center gap-2">
+                                                <span class="small text-secondary me-2">Soni:</span>
+                                                <a href="{% url 'cart_remove' food_id=item.food.id %}" class="btn btn-sm btn-outline-gold px-2 py-1" style="font-size: 0.75rem;">
+                                                    <i class="bi bi-dash"></i>
+                                                </a>
+                                                <span class="fw-bold px-2">{{ item.quantity }}</span>
+                                                <form action="{% url 'cart_add' food_id=item.food.id %}" method="post" style="margin: 0;">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-sm btn-outline-gold px-2 py-1" style="font-size: 0.75rem;">
+                                                        <i class="bi bi-plus"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
 
-                            <div class="card-body p-2 text-white">
-                                <span class="fw-bold" style="font-size: 25px;">{{ item.food.name_of_food }}</span>
-                                <span class="p-1" style="font-size: 15px; color: #CEAF7F;">
-                            <i class="bi bi-hash"></i>{{ item.food.type }}
-                             </span>
-                                <h6>{{ item.food.description|truncatechars:25 }}</h6>
-                                <div style="display: flex">
-                                    <p style="color: #CEAF7F; font-weight: bold; margin-right: 15px">
-                                        Narxi: {{ item.food.price }}$</p>
-
-                                    <form action="{% url 'add_favourite' food_id=item.food.id %}" method="POST"
-                                          style="display: inline;">
-                                        {% csrf_token %}
-                                        <button type="submit"
-                                                style="background: none; border: none; color: #CEAF7F; font-weight: bold; transition: 0.3s; cursor: pointer;"
-                                                onmouseover="this.style.color='white'"
-                                                onmouseout="this.style.color='#CEAF7F'">
-                                            <i class="bi bi-heart-fill"></i> Favourite
-                                        </button>
-                                    </form>
+                                            <div class="d-flex gap-2">
+                                                <form action="{% url 'add_favourite' food_id=item.food.id %}" method="POST" style="margin: 0;">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-sm btn-outline-gold py-1 px-2" title="Sevimlilarga qo'shish">
+                                                        <i class="bi bi-heart"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="d-inline-flex align-items-center gap-2">
-                                    <span class="fw-bold">Quantity:</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center py-5 text-secondary">
+                        <i class="bi bi-cart-x display-4 text-gold mb-3 d-inline-block"></i>
+                        <h5>Savatchangiz hozircha bo'sh.</h5>
+                        <a href="{% url 'food_page' %}" class="btn btn-gold mt-3">Taomlar menyusi</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
 
-                                    <form action="{% url 'cart_add' food_id=item.food.id %}" method="post"
-                                          style="display:inline;">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-sm btn-outline-success">
-                                            <i class="bi bi-patch-plus"></i>
-                                        </button>
-                                    </form>
+        <!-- Checkout Summary (Right Side) -->
+        <div class="col-12 col-lg-4">
+            <div class="glass-panel p-4 h-100 d-flex flex-column justify-content-between">
+                <div>
+                    <h4 class="text-white mb-4 fw-light" style="font-family: var(--font-heading); letter-spacing: 1.5px;">
+                        <i class="bi bi-receipt text-gold me-2"></i> Buyurtma Xulosasi
+                    </h4>
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-secondary">Jami taomlar turi:</span>
+                        <span class="fw-bold">{{ basket_items|length }} ta</span>
+                    </div>
 
-                                    <span class="fw-bold">{{ item.quantity }}</span>
+                    <div class="d-flex justify-content-between align-items-center border-top border-secondary pt-3 mt-3">
+                        <span class="fs-5 text-white">Jami summa:</span>
+                        <span class="fs-4 fw-bold text-gold">{{ total_price }} $</span>
+                    </div>
+                </div>
 
-                                    <a href="{% url 'cart_remove' food_id=item.food.id %}"
-                                       class="btn btn-sm btn-outline-danger">
-                                        <i class="bi bi-patch-minus"></i>
-                                    </a>
-                                </div>
+                <div class="mt-4 pt-3">
+                    {% if basket_items %}
+                        <a href="{% url 'customer_create_order' %}" class="btn btn-gold w-100 py-3 text-center">
+                            <i class="bi bi-bag-check me-1"></i> Rasmiylashtirish (Checkout)
+                        </a>
+                    {% else %}
+                        <button class="btn btn-gold w-100 py-3" disabled>
+                            Savatcha bo'sh
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+    </div>
 
+    <!-- Favourites Grid Section -->
+    <div class="mt-5 pt-5 text-center">
+        <h2 class="text-gold display-6 fw-bold" style="font-family: var(--font-heading);">Sizning Sevimlilaringiz</h2>
+        <p class="text-secondary fw-light">Siz yoqtirgan va saqlab qo'ygan sevimli taomlaringiz</p>
+    </div>
+    <hr style="border: 1px solid var(--gold-primary); width: 30%; margin: 15px auto 45px; opacity: 0.3;">
 
+    <div class="row g-4">
+        {% for food in favourite_foods %}
+            <div class="col-12 col-md-6 col-lg-6">
+                <div class="food-card" onclick="window.location.href='{% url 'detail' food.id %}'" style="cursor: pointer;">
+                    <div class="food-card-img-wrapper">
+                        {% if food.images.first %}
+                            <img class="food-card-img" src="{{ food.images.first.image.url }}" alt="{{ food.name_of_food }}">
+                        {% elif food.image %}
+                            <img class="food-card-img" src="{{ food.image.url }}" alt="{{ food.name_of_food }}">
+                        {% else %}
+                            <img class="food-card-img" src="/media/spoon-and-fork.jpg" alt="No image">
+                        {% endif %}
+                    </div>
+
+                    <div class="food-card-body">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h4 class="food-card-title">{{ food.name_of_food }}</h4>
+                                <span class="food-card-type">{{ food.type }}</span>
+                            </div>
+                            <p class="text-secondary small mt-1 mb-0">{{ food.description|truncatechars:85 }}</p>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-secondary" style="border-color: rgba(255,255,255,0.05) !important;">
+                            <span class="food-card-price">{{ food.price }} $</span>
+                            <div class="d-flex gap-2">
+                                <form action="{% url 'cart_add' food_id=food.id %}" method="POST" style="margin:0;" onclick="event.stopPropagation();">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-gold py-2 px-3">
+                                        <i class="bi bi-cart-plus me-1"></i> Savatchaga
+                                    </button>
+                                </form>
+                                <form action="{% url 'remove_favourite' food_id=food.id %}" method="POST" style="margin:0;" onclick="event.stopPropagation();">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-gold py-2 px-3">
+                                        <i class="bi bi-heartbreak-fill"></i> O'chirish
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
-
-                {% endfor %}
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <a class="btn btn-dark" style="color: #CEAF7F;">Total price: {{ total_price }} $</a>
-                    <a href="{% url 'customer_create_order' %}" class="btn btn-outline-info">Checkout</a>
                 </div>
-            {% else %}
-                <div style="color: darkgrey; height: auto">
-                    <h1 style="text-align: center;margin: 150px;">Your cart is empty.</h1>
-                </div>
-
-
-            {% endif %}
-        </div>
-
-        <h1 class="mt-5 text-center" style="color: #CEAF7F; font-size: 40px;">Favourites</h1>
-        <hr style="border: 2px solid #CEAF7F; opacity: 1; margin: 10px;">
-        <div class="row mt-2">
-            {% for food in favourite_foods %}
-                <div class="col-12 col-md-6 mb-4">
-                    <div class="d-flex align-items-start"
-                         style="background-color: rgba(37,42,43,0.7); border-radius: 10px; transition: 0.3s; cursor: pointer;"
-                         onclick="window.location.href='{% url 'detail' food.id %}'"
-                         onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.4)';"
-                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-
-                        {% if food.images.first %}
-                            <img class="img-fluid p-2 mt-2"
-                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                                 src="{{ food.images.first.image.url }}" alt="">
-                        {% elif food.image %}
-                            <img class="img-fluid p-2 mt-2"
-                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                                 src="{{ food.image.url }}" alt="">
-                        {% else %}
-                            <img class="img-fluid p-2 mt-2"
-                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                                 src="/media/spoon-and-fork.jpg" alt="">
-                        {% endif %}
-
-                        <div class="card-body p-2 text-white">
-                            <span class="fw-bold" style="font-size: 25px;">{{ food.name_of_food }}</span>
-                            <span class="p-1" style="font-size: 15px; color: #CEAF7F;">
-                            <i class="bi bi-hash"></i>{{ food.type }}
-                        </span>
-                            <h6>{{ food.description|truncatechars:25     }}</h6>
-                            <p style="color: #CEAF7F; font-weight: bold;">Narxi: {{ food.price }}$</p>
-
-                            <form action="{% url 'cart_add' food_id=food.id %}" method="POST" style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit"
-                                        style="background: none; border: none; color: #CEAF7F; font-weight: bold; transition: 0.3s; cursor: pointer;"
-                                        onmouseover="this.style.color='white'"
-                                        onmouseout="this.style.color='#CEAF7F'">
-                                    <i class="bi bi-basket"></i> Add to cart
-                                </button>
-                            </form>
-                            <form action="{% url 'remove_favourite' food_id=food.id %}" method="POST"
-                                  style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit"
-                                        style="background: none; border: none; color: #CEAF7F; font-weight: bold; transition: 0.3s; cursor: pointer;"
-                                        onmouseover="this.style.color='white'"
-                                        onmouseout="this.style.color='#CEAF7F'">
-                                    <i class="bi bi-heartbreak-fill"></i> Remove
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center text-secondary py-5">
+                <p class="mb-0">Hozircha sevimlilar ro'yxati bo'sh.</p>
+            </div>
+        {% endfor %}
     </div>
 
+</div>
 {% endblock %}
-
-
-

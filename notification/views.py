@@ -24,6 +24,8 @@ def notification_list(request):
 
 @login_required
 def mark_as_read(request, pk):
+    if request.user.role not in ['manager', 'admin']:
+        return HttpResponseForbidden("Kirish huquqi yo'q")
     notification = get_object_or_404(Notification, pk=pk)
     notification.is_Read = True
     notification.save()

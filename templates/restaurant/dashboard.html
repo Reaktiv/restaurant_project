@@ -1,0 +1,432 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard | NiceRestaurant{% endblock %}
+
+{% block content %}
+<style>
+    .dashboard-container {
+        margin-top: 130px;
+        margin-bottom: 70px;
+        color: white;
+    }
+
+    /* Glassmorphism panel */
+    .card-glass {
+        background-color: rgba(37, 42, 43, 0.75);
+        border: 1px solid rgba(206, 175, 127, 0.15);
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(10px);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card-glass:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px rgba(206, 175, 127, 0.1);
+        border-color: rgba(206, 175, 127, 0.3);
+    }
+
+    /* Stat values */
+    .stat-title {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+
+    .stat-number {
+        font-size: 2.2rem;
+        font-weight: 300;
+        color: #CEAF7F;
+    }
+
+    .stat-icon {
+        font-size: 2.5rem;
+        color: rgba(206, 175, 127, 0.25);
+    }
+
+    /* Quick action buttons */
+    .btn-dashboard-action {
+        background: rgba(15, 17, 18, 0.5);
+        border: 1px solid rgba(206, 175, 127, 0.3);
+        border-radius: 10px;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: white;
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .btn-dashboard-action:hover {
+        background: rgba(206, 175, 127, 0.08);
+        border-color: #CEAF7F;
+        transform: translateY(-3px);
+        color: white;
+        box-shadow: 0 5px 15px rgba(206, 175, 127, 0.15);
+    }
+
+    .btn-dashboard-action .action-icon {
+        width: 45px;
+        height: 45px;
+        background: rgba(206, 175, 127, 0.1);
+        border: 1px solid rgba(206, 175, 127, 0.2);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #CEAF7F;
+        font-size: 20px;
+        transition: 0.3s;
+    }
+
+    .btn-dashboard-action:hover .action-icon {
+        background: #CEAF7F;
+        color: #1a1a1a;
+    }
+
+    /* Visual tables grid */
+    .tables-mini-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+        gap: 12px;
+    }
+
+    .circle-table {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 13px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .circle-table span.cap {
+        font-size: 9px;
+        font-weight: normal;
+        opacity: 0.7;
+    }
+
+    .circle-table:hover {
+        transform: scale(1.1);
+        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .circle-free {
+        background: rgba(40, 167, 69, 0.15);
+        border: 2px solid #28a745;
+        color: #28a745;
+    }
+
+    .circle-occupied {
+        background: rgba(220, 53, 69, 0.15);
+        border: 2px solid #dc3545;
+        color: #dc3545;
+    }
+
+    /* Notifications feed */
+    .notif-row {
+        border-left: 3px solid #CEAF7F;
+        background: rgba(255, 255, 255, 0.02);
+        transition: 0.3s;
+    }
+
+    .notif-row:hover {
+        background: rgba(206, 175, 127, 0.05);
+    }
+
+    .row-link {
+        color: #CEAF7F;
+        transition: 0.2s;
+    }
+
+    .row-link:hover {
+        color: white;
+    }
+</style>
+
+<div class="container dashboard-container">
+    
+    <!-- Top Header -->
+    <div class="row align-items-center mb-5">
+        <div class="col-12 col-md-8 text-center text-md-start">
+            <h1 class="fw-light mb-1" style="letter-spacing: 1px;">
+                <i class="bi bi-grid-1x2-fill me-2" style="color: #CEAF7F;"></i>NiceRestaurant
+            </h1>
+            <h5 class="text-secondary fw-light">
+                Boshqaruv va operatsiyalar boshqaruv paneli
+            </h5>
+        </div>
+        <div class="col-12 col-md-4 text-center text-md-end mt-3 mt-md-0">
+            <span class="badge px-4 py-2 border border-warning text-warning text-capitalize rounded-pill fw-medium bg-dark">
+                <i class="bi bi-shield-lock me-1"></i> Rol: {{ role }}
+            </span>
+        </div>
+    </div>
+
+    <!-- Stats Cards Grid -->
+    <div class="row g-4 mb-5">
+        <!-- Card 1: Active Orders -->
+        <div class="col-6 col-lg-3">
+            <div class="card-glass p-4 d-flex justify-content-between align-items-center h-100">
+                <div>
+                    <div class="stat-title mb-1">Aktiv Buyurtmalar</div>
+                    <div class="stat-number">{{ active_orders_count }}</div>
+                </div>
+                <div class="stat-icon"><i class="bi bi-receipt"></i></div>
+            </div>
+        </div>
+
+        <!-- Card 2: Tables status -->
+        <div class="col-6 col-lg-3">
+            <div class="card-glass p-4 d-flex justify-content-between align-items-center h-100">
+                <div>
+                    <div class="stat-title mb-1">Band Stollar</div>
+                    <div class="stat-number">{{ occupied_tables }} <span class="fs-6 text-muted">/ {{ total_tables }}</span></div>
+                </div>
+                <div class="stat-icon"><i class="bi bi-geo-alt"></i></div>
+            </div>
+        </div>
+
+        <!-- Card 3: Food Items -->
+        <div class="col-6 col-lg-3">
+            <div class="card-glass p-4 d-flex justify-content-between align-items-center h-100">
+                <div>
+                    <div class="stat-title mb-1">Menyudagi Taomlar</div>
+                    <div class="stat-number">{{ total_foods }}</div>
+                </div>
+                <div class="stat-icon"><i class="bi bi-egg-fried"></i></div>
+            </div>
+        </div>
+
+        <!-- Card 4: Unread Notifications -->
+        <div class="col-6 col-lg-3">
+            <div class="card-glass p-4 d-flex justify-content-between align-items-center h-100">
+                <div>
+                    <div class="stat-title mb-1">Yangi Buyurtmalar</div>
+                    <div class="stat-number">{{ unread_notifications_count }}</div>
+                </div>
+                <div class="stat-icon"><i class="bi bi-bell"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Shortcuts Grid -->
+    <h4 class="fw-light mb-3 text-secondary" style="letter-spacing: 1px;">
+        <i class="bi bi-lightning-fill me-1" style="color: #CEAF7F;"></i> Tezkor Amallar
+    </h4>
+    <div class="row g-3 mb-5">
+        <!-- Action 1: Get Order -->
+        <div class="col-6 col-md-4 col-lg-2">
+            <a href="{% url 'waiter_create_order' %}" class="btn-dashboard-action">
+                <div class="action-icon me-3"><i class="bi bi-plus-circle"></i></div>
+                <div>
+                    <h6 class="mb-0 fw-bold">Get Order</h6>
+                    <small class="text-secondary small" style="font-size: 11px;">Buyurtma Olish</small>
+                </div>
+            </a>
+        </div>
+
+        <!-- Action 2: Add Food -->
+        {% if role == 'admin' or role == 'manager' %}
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="{% url 'create' %}" class="btn-dashboard-action">
+                    <div class="action-icon me-3"><i class="bi bi-egg"></i></div>
+                    <div>
+                        <h6 class="mb-0 fw-bold">Add Food</h6>
+                        <small class="text-secondary small" style="font-size: 11px;">Taom Qo'shish</small>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Action 3: Add Table -->
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="{% url 'table_create' %}" class="btn-dashboard-action">
+                    <div class="action-icon me-3"><i class="bi bi-calendar-plus"></i></div>
+                    <div>
+                        <h6 class="mb-0 fw-bold">Add Table</h6>
+                        <small class="text-secondary small" style="font-size: 11px;">Stol Qo'shish</small>
+                    </div>
+                </a>
+            </div>
+        {% endif %}
+
+        <!-- Action 4: All Orders -->
+        <div class="col-6 col-md-4 col-lg-2">
+            <a href="{% url 'all_orders' %}" class="btn-dashboard-action">
+                <div class="action-icon me-3"><i class="bi bi-list-check"></i></div>
+                <div>
+                    <h6 class="mb-0 fw-bold">All Orders</h6>
+                    <small class="text-secondary small" style="font-size: 11px;">Buyurtmalar</small>
+                </div>
+            </a>
+        </div>
+
+        <!-- Action 5: All Tables -->
+        <div class="col-6 col-md-4 col-lg-2">
+            <a href="{% url 'all_tables' %}" class="btn-dashboard-action">
+                <div class="action-icon me-3"><i class="bi bi-grid-3x3-gap"></i></div>
+                <div>
+                    <h6 class="mb-0 fw-bold">All Tables</h6>
+                    <small class="text-secondary small" style="font-size: 11px;">Stollar</small>
+                </div>
+            </a>
+        </div>
+
+        <!-- Action 6: Notifications List -->
+        {% if role == 'admin' or role == 'manager' %}
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="{% url 'notification_list' %}" class="btn-dashboard-action">
+                    <div class="action-icon me-3"><i class="bi bi-bell-fill"></i></div>
+                    <div>
+                        <h6 class="mb-0 fw-bold">Notifications</h6>
+                        <small class="text-secondary small" style="font-size: 11px;">Eslatmalar</small>
+                    </div>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Main Content Panels -->
+    <div class="row g-4">
+        
+        <!-- Live Table Grid View -->
+        <div class="col-12 col-lg-5">
+            <div class="card-glass p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-4 border-bottom border-secondary pb-3">
+                    <h5 class="mb-0 fw-light" style="letter-spacing: 1px;">
+                        <i class="bi bi-grid-3x3-gap me-2" style="color: #CEAF7F;"></i>Stollar Bandlik Holati
+                    </h5>
+                    <a href="{% url 'all_tables' %}" class="btn btn-sm btn-outline-warning rounded-pill px-3" style="font-size: 12px;">Barchasi</a>
+                </div>
+
+                <div class="tables-mini-grid mb-4">
+                    {% for table in all_tables %}
+                        <a href="{% url 'edit_table' table.id %}" class="circle-table {% if table.is_active %}circle-free{% else %}circle-occupied{% endif %}" title="Sig'imi: {{ table.capacity }} ta">
+                            <span>T{{ table.number }}</span>
+                            <span class="cap"><i class="bi bi-people"></i>{{ table.capacity }}</span>
+                        </a>
+                    {% empty %}
+                        <p class="text-muted small">Stollar kiritilmagan</p>
+                    {% endfor %}
+                </div>
+
+                <div class="d-flex gap-4 justify-content-center border-top border-secondary pt-3 small">
+                    <div><span class="badge bg-success me-1"> </span> Bo'sh & Tayyor ({{ free_tables }})</div>
+                    <div><span class="badge bg-danger me-1"> </span> Band / Xizmatda ({{ occupied_tables }})</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Orders List -->
+        <div class="col-12 col-lg-7">
+            <div class="card-glass p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-4 border-bottom border-secondary pb-3">
+                    <h5 class="mb-0 fw-light" style="letter-spacing: 1px;">
+                        <i class="bi bi-clock-history me-2" style="color: #CEAF7F;"></i>So'nggi Aktiv Buyurtmalar
+                    </h5>
+                    <a href="{% url 'all_orders' %}" class="btn btn-sm btn-outline-warning rounded-pill px-3" style="font-size: 12px;">Barchasi</a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover mb-0 text-center align-middle" style="--bs-table-bg: transparent; font-size: 0.9rem;">
+                        <thead>
+                            <tr class="text-secondary small border-bottom border-secondary" style="font-size: 0.8rem;">
+                                <th>Buyurtma</th>
+                                <th>Stol</th>
+                                <th>Ofitsiant</th>
+                                <th>Umumiy summa</th>
+                                <th>Holat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in recent_orders %}
+                                <tr onclick="window.location.href='{% url 'order_detail' order.id %}'" style="cursor: pointer;">
+                                    <td class="fw-bold">
+                                        <a href="{% url 'order_detail' order.id %}" class="text-decoration-none row-link">#{{ order.id }}</a>
+                                    </td>
+                                    <td><span class="badge bg-secondary px-2 py-1 fw-light">T{{ order.table.number }}</span></td>
+                                    <td>
+                                        {% if order.waiter %}
+                                            <span class="small text-light">{{ order.waiter.username }}</span>
+                                        {% else %}
+                                            <span class="small text-muted italic">Mijoz o'zi</span>
+                                        {% endif %}
+                                    </td>
+                                    <td style="color: #CEAF7F;">{{ order.total_price }} $</td>
+                                    <td>
+                                        <span class="badge px-2 py-1 text-capitalize small
+                                            {% if order.status == 'pending' %}bg-warning text-dark
+                                            {% elif order.status == 'preparing' %}bg-info text-dark
+                                            {% elif order.status == 'ready' %}bg-primary
+                                            {% elif order.status == 'delivered' %}bg-success
+                                            {% else %}bg-danger{% endif %}">
+                                            {{ order.get_status_display }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-muted text-center py-4">Aktiv buyurtmalar mavjud emas</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Live Bookings/Notifications Panel -->
+    {% if role == 'admin' or role == 'manager' %}
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card-glass p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom border-secondary pb-3">
+                        <h5 class="mb-0 fw-light" style="letter-spacing: 1px;">
+                            <i class="bi bi-envelope-exclamation me-2" style="color: #CEAF7F;"></i>Yangi Kelgan Stol Buyurtmalari
+                        </h5>
+                        <a href="{% url 'notification_list' %}" class="btn btn-sm btn-outline-warning rounded-pill px-3" style="font-size: 12px;">Barcha eslatmalar</a>
+                    </div>
+
+                    <div class="row g-3">
+                        {% for notif in recent_notifications %}
+                            <div class="col-12">
+                                <div class="p-3 rounded notif-row d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-calendar-event fs-3 text-warning me-3"></i>
+                                        <div>
+                                            <h6 class="mb-1 text-white fw-bold">{{ notif.title }}</h6>
+                                            <p class="mb-0 small text-secondary">{{ notif.message }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-3 justify-content-between">
+                                        <span class="small text-muted">{{ notif.created_at|timesince }} oldin</span>
+                                        <a href="{% url 'mark_as_read' notif.id %}" class="btn btn-sm btn-outline-warning rounded-pill px-3" style="font-size: 11px;">
+                                            <i class="bi bi-check2"></i> O'qildi
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="col-12 text-center text-muted py-4">
+                                Yangi xabarlar/bildirishnomalar mavjud emas.
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

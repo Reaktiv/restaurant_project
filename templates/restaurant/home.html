@@ -6,254 +6,54 @@
     Home
 {% endblock %}
 
-{% block nav_items %}
-    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false"
-            aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
 
-    <div class="collapse navbar-collapse" id="navbarScroll">
-        <ul class="navbar-nav me-auto my-2 my-lg-0">
-            {% if request.user.role == 'waiter' or request.user.role == 'admin' or request.user.role == 'manager' %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'waiter_create_order' %}"
-                       style="color: white; transition: 0.3s;"
-                       onmouseover="this.style.color='#CEAF7F'"
-                       onmouseout="this.style.color='white'">
-                        <i class="bi bi-plus"></i> Get Order
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'all_orders' %}"
-                       style="color: white; transition: 0.3s;"
-                       onmouseover="this.style.color='#CEAF7F'"
-                       onmouseout="this.style.color='white'">
-                        All Orders
-                    </a>
-                </li>
-                {% if request.user.role == 'admin' or request.user.role == 'manager' %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'create' %}"
-                           style="color: white; transition: 0.3s;"
-                           onmouseover="this.style.color='#CEAF7F'"
-                           onmouseout="this.style.color='white'">
-                            <i class="bi bi-plus"></i> Add food
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'table_create' %}"
-                           style="color: white; transition: 0.3s;"
-                           onmouseover="this.style.color='#CEAF7F'"
-                           onmouseout="this.style.color='white'">
-                            <i class="bi bi-plus"></i> Add table
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'all_tables' %}"
-                           style="color: white; transition: 0.3s;"
-                           onmouseover="this.style.color='#CEAF7F'"
-                           onmouseout="this.style.color='white'">
-                            All table
-                        </a>
-                    </li>
-                {% endif %}
-            {% endif %}
-
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'food_page' %}"
-                   style="color: white; transition: 0.3s;"
-                   onmouseover="this.style.color='#CEAF7F'"
-                   onmouseout="this.style.color='white'">
-                    <i class="bi bi-egg-fried"></i> All Foods
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'cart' %}"
-                   style="color: white; transition: 0.3s;"
-                   onmouseover="this.style.color='#CEAF7F'"
-                   onmouseout="this.style.color='white'">
-                    <i class="bi bi-basket-fill"></i> Cart
-                </a>
-            </li>
-
-            {% block Categories %}{% endblock %}
-        </ul>
-
-        <ul class="navbar-nav ms-auto my-2 my-lg-0">
-            {% if request.user.role == 'admin' or request.user.role == 'manager' %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'notification_list' %}"
-                       style="color: white; transition: 0.3s; position: relative; display: inline-block; padding-right: 25px;"
-                       onmouseover="this.style.color='#CEAF7F'"
-                       onmouseout="this.style.color='white'">
-                        Notifications
-                        {% if unread_count %}
-                            <span style="
-                                position: absolute;
-                                top: 2px;
-                                right: 5px;
-                                background-color: #E63946;
-                                color: white;
-                                font-size: 11px;
-                                font-weight: bold;
-                                border-radius: 50%;
-                                min-width: 18px;
-                                height: 18px;
-                                padding: 0 4px;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-                            ">{{ unread_count }}</span>
-                        {% endif %}
-                    </a>
-                </li>
-            {% endif %}
-            {% if request.user.is_superuser %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/"
-                       style="color: white; transition: 0.3s;"
-                       onmouseover="this.style.color='#CEAF7F'"
-                       onmouseout="this.style.color='white'">
-                        Admin Panel
-                    </a>
-                </li>
-            {% endif %}
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'profile' %}"
-                   style="color: white; transition: 0.3s;"
-                   onmouseover="this.style.color='#CEAF7F'"
-                   onmouseout="this.style.color='white'">
-                    Profile
-                </a>
-            </li>
-            <li class="nav-item">
-                <button type="button" class="nav-link border-0" data-bs-toggle="modal"
-                        data-bs-target="#logoutConfirm"
-                        style="color: white; background: none; transition: 0.3s; cursor: pointer;"
-                        onmouseover="this.style.color='#CEAF7F'"
-                        onmouseout="this.style.color='white'">
-                    Logout
-                </button>
-            </li>
-        </ul>
-
-        {% block search %}{% endblock %}
-    </div>
-{% endblock %}
 
 {% block content %}
-    <style>
-        .book-form label {
-            color: #CEAF7F !important;
-            font-size: 13px !important;
-            font-weight: 500 !important;
-            letter-spacing: 0.4px !important;
-            margin-bottom: 6px !important;
-        }
 
-        .book-form select option {
-            background-color: #1e2220 !important;
-            color: #CEAF7F !important;
-        }
-
-        .flatpickr-current-month .numInputWrapper input,
-        .flatpickr-current-month .flatpickr-monthDropdown-months {
-            color: #CEAF7F !important;
-            background: transparent !important;
-            font-weight: 600 !important;
-        }
-
-        .flatpickr-current-month .flatpickr-monthDropdown-months option {
-            background: #1e2422 !important;
-        }
-
-        .flatpickr-prev-month svg, .flatpickr-next-month svg {
-            fill: #CEAF7F !important;
-        }
-
-        .flatpickr-prev-month:hover svg, .flatpickr-next-month:hover svg {
-            fill: #fff !important;
-        }
-
-        .flatpickr-time input, .flatpickr-time .flatpickr-am-pm {
-            color: #CEAF7F !important;
-            background: transparent !important;
-            font-size: 18px !important;
-            font-weight: 600 !important;
-        }
-
-        .flatpickr-time input:hover, .flatpickr-time .flatpickr-am-pm:hover,
-        .flatpickr-time input:focus, .flatpickr-time .flatpickr-am-pm:focus {
-            background: rgba(206, 175, 127, 0.1) !important;
-        }
-
-        .flatpickr-time .arrowUp:after {
-            border-bottom-color: #CEAF7F !important;
-        }
-
-        .flatpickr-time .arrowDown:after {
-            border-top-color: #CEAF7F !important;
-        }
-
-        .numInputWrapper span.arrowUp:after {
-            border-bottom-color: rgba(206, 175, 127, 0.7) !important;
-        }
-
-        .numInputWrapper span.arrowDown:after {
-            border-top-color: rgba(206, 175, 127, 0.7) !important;
-        }
-    </style>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     {% if user.is_authenticated %}
-        <div class="container" style="margin-top: 92px">
+        <div class="container animate-fade-up" style="margin-top: 120px">
 
-            <div class="row align-items-center">
-                <div class="col-12 col-md-6 d-flex justify-content-center align-items-center mb-4 mb-md-0"
-                     style="height: auto;">
-                    <div class="text-center mt-5">
-                        <h1 class="mt-4" style="color: #CEAF7F;">Assalomu alaykum, hurmatli mijoz!</h1>
-                        <h1 style="font-size: 70px; color: white;">Mazali lahza hech qachon unutilmaydi!</h1>
-                        <h6 class="mt-5" style="color: #CEAF7F;">
-                            Bizning betakror restoranimizda ta'mlar sayohatini kashf eting.
-                            Ishtiyoq va mahorat bilan yaratilgan mazali taomlardan iborat
-                            unutilmas oshxona tajribasiga sho'ng'ing.
-                        </h6>
-                        <span class="d-block text-start text-white m-3">
-                            <i class="bi bi-alarm" style="color: #CEAF7F;"></i> Ish vaqti: 9.00 dan 22.00 gacha
-                        </span>
+            <div class="row align-items-center mb-5">
+                <div class="col-12 col-md-6 mb-4 mb-md-0 text-center text-md-start">
+                    <h5 class="text-gold text-uppercase fw-bold" style="letter-spacing: 2px;">Assalomu alaykum, hurmatli mijoz!</h5>
+                    <h1 class="display-3 fw-bold text-white mb-4" style="font-family: var(--font-heading); line-height: 1.15;">Mazali lahza hech qachon unutilmaydi!</h1>
+                    <p class="text-secondary mb-4 fs-5 fw-light" style="max-width: 500px;">
+                        Bizning betakror restoranimizda ta'mlar sayohatini kashf eting.
+                        Ishtiyoq va mahorat bilan yaratilgan mazali taomlardan iborat
+                        unutilmas oshxona tajribasiga sho'ng'ing.
+                    </p>
+                    <span class="d-block text-secondary mb-4">
+                        <i class="bi bi-clock-fill text-gold me-2"></i> Ish vaqti: 9:00 dan 22:00 gacha
+                    </span>
 
-                        <div class="row g-3 mt-4 justify-content-center">
-                            <div class="col-12 col-md-8 col-lg-6">
-                                <a href="{% url 'make_reservation' %}" class="btn fw-bold btn-lg w-100 py-3"
-                                   style="background-color: #CEAF7F; color: white; border: none; border-radius: 12px;">
-                                    BOOK A TABLE
-                                </a>
-                            </div>
-                            <div class="col-12 col-md-8 col-lg-6">
-                                <a href="#menu" class="btn btn-light fw-bold btn-lg w-100 py-3"
-                                   style="border-radius: 12px;">
-                                    EXPLORE OUR MENU
-                                </a>
-                            </div>
+                    <div class="row g-3 justify-content-center justify-content-md-start">
+                        <div class="col-12 col-sm-6 col-md-5">
+                            <a href="{% url 'make_reservation' %}" class="btn btn-gold w-100 py-3">
+                                BOOK A TABLE
+                            </a>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-5">
+                            <a href="#menu" class="btn btn-outline-gold w-100 py-3">
+                                EXPLORE OUR MENU
+                            </a>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-12 col-md-6">
-                    <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                    <div id="carouselExampleFade" class="carousel slide carousel-fade rounded shadow-lg overflow-hidden border border-secondary" style="border-color: rgba(206, 175, 127, 0.2) !important;" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             <div class="carousel-item active">
-                                <img src="/media/carousel_photos/carousel1.jpg" class="img-fluid d-block w-100" alt="">
+                                <img src="/media/carousel_photos/carousel1.jpg" class="img-fluid d-block w-100" style="height: 400px; object-fit: cover;" alt="">
                             </div>
                             <div class="carousel-item">
-                                <img src="/media/carousel_photos/carousel2.jpg" class="img-fluid d-block w-100" alt="">
+                                <img src="/media/carousel_photos/carousel2.jpg" class="img-fluid d-block w-100" style="height: 400px; object-fit: cover;" alt="">
                             </div>
                             <div class="carousel-item">
-                                <img src="/media/carousel_photos/carousel3.jpg" class="img-fluid d-block w-100" alt="">
+                                <img src="/media/carousel_photos/carousel3.jpg" class="img-fluid d-block w-100" style="height: 400px; object-fit: cover;" alt="">
                             </div>
                         </div>
                         <button class="carousel-control-prev" type="button"
@@ -270,178 +70,170 @@
                 </div>
             </div>
 
-            <div class="row mt-5 align-items-center">
-                <div class="col-12 col-md-6">
-                    <h1 class="text-white fw-bold">Bizning oshpazlik sayohatimiz!</h1>
-                    <h6 class="text-white fw-light mt-3">
-                        Har bir taom o'zida bir hikoya yashiradi...
-                    </h6>
-                    <div class="mt-5 p-4 d-flex align-items-center"
-                         style="border: 2px solid #CEAF7F; border-radius: 20px;">
-                        <img class="img-fluid" style="width: 80px; height: auto; border-radius: 100px"
-                             src="/media/background_photos/shief.jpg" alt="">
-                        <p class="ms-3 text-white mb-0">
-                            "Pazandachilik - bu barcha quyidagi xususiyatlarni ifodalash mumkin bo'lgan tildir..."
+            <!-- Chef Story -->
+            <div class="row my-5 py-4 align-items-center">
+                <div class="col-12 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-gold text-uppercase fw-bold" style="letter-spacing: 2px;">Tajriba & Mahorat</h5>
+                    <h2 class="text-white fw-bold mb-4" style="font-family: var(--font-heading); font-size: 2.5rem;">Bizning oshpazlik sayohatimiz!</h2>
+                    <p class="text-secondary fw-light fs-5 mb-4">
+                        Har bir taom o'zida bir hikoya yashiradi. Biz eng yangi va sifatli masalliqlardan, 
+                        asrlar davomida shakllangan an'anaviy retseptlar bo'yicha mahoratli oshpazlarimiz tomonidan tayyorlangan taomlarni taqdim etamiz.
+                    </p>
+                    <div class="p-4 d-flex align-items-center glass-panel">
+                        <img class="img-fluid rounded-circle border border-warning" style="width: 70px; height: 70px; object-fit: cover;"
+                             src="/media/background_photos/shief.jpg" alt="Chef photo">
+                        <p class="ms-3 text-secondary mb-0 italic" style="font-size: 0.95rem;">
+                            "Pazandachilik - bu his-tuyg'ular, madaniyat va mehrni birlashtirib, barcha quyidagi xususiyatlarni ifodalash mumkin bo'lgan tildir."
                         </p>
                     </div>
                 </div>
 
-                <div class="col-12 col-md-6 mt-4 mt-md-0 text-center">
+                <div class="col-12 col-md-6 text-center">
                     <div class="position-relative d-inline-block">
-                        <img src="/media/background_photos/ostki.jpg" class="img-fluid rounded shadow"
-                             alt="Orqa rasm">
+                        <img src="/media/background_photos/ostki.jpg" class="img-fluid rounded shadow border border-secondary" style="border-color: rgba(255,255,255,0.05) !important;" alt="Orqa rasm">
                         <img src="/media/background_photos/ustki.jpg"
-                             class="img-fluid rounded shadow position-absolute bottom-0 end-0"
-                             style="width: 50%; transform: translate(10%, 20%);" alt="Oldingi rasm">
+                             class="img-fluid rounded shadow position-absolute bottom-0 end-0 border border-warning"
+                             style="width: 50%; transform: translate(10%, 20%); border-color: rgba(206, 175, 127, 0.4) !important;" alt="Oldingi rasm">
                     </div>
                 </div>
             </div>
 
-            <div class="row text-center text-white mt-5 p-4"
-                 style="border-radius: 20px; background-color: rgba(37, 42, 43, 0.7);">
-                <div class="col-6 col-md-3 mb-3">
-                    <span class="fw-bold fs-3" style="color: #CEAF7F;">15+</span>
-                    <p class="mb-0">Yillik tajriba</p>
+            <!-- Stats -->
+            <div class="row text-center text-white my-5 p-4 glass-panel g-3">
+                <div class="col-6 col-md-3">
+                    <span class="fw-light display-6 text-gold">15+</span>
+                    <p class="mb-0 text-secondary small">Yillik tajriba</p>
                 </div>
-                <div class="col-6 col-md-3 mb-3">
-                    <span class="fw-bold fs-3" style="color: #CEAF7F;">5</span>
-                    <p class="mb-0">Expert oshpazlar</p>
+                <div class="col-6 col-md-3">
+                    <span class="fw-light display-6 text-gold">5</span>
+                    <p class="mb-0 text-secondary small">Expert oshpazlar</p>
                 </div>
-                <div class="col-6 col-md-3 mb-3">
-                    <span class="fw-bold fs-3" style="color: #CEAF7F;">3</span>
-                    <p class="mb-0">Xalqaro mukofotlar</p>
+                <div class="col-6 col-md-3">
+                    <span class="fw-light display-6 text-gold">3</span>
+                    <p class="mb-0 text-secondary small">Xalqaro mukofotlar</p>
                 </div>
-                <div class="col-6 col-md-3 mb-3">
-                    <span class="fw-bold fs-3" style="color: #CEAF7F;">15000+</span>
-                    <p class="mb-0">Mamnun mijozlar</p>
+                <div class="col-6 col-md-3">
+                    <span class="fw-light display-6 text-gold">15000+</span>
+                    <p class="mb-0 text-secondary small">Mamnun mijozlar</p>
                 </div>
             </div>
 
-            <div id="menu" class="text-center mt-5">
-                <h1 style="height: 90px;"></h1>
-                <h1 style="color: #CEAF7F; font-size: 40px;">Menu</h1>
+            <!-- Menu Catalog -->
+            <div id="menu" class="text-center mt-5 pt-5">
+                <h2 class="text-gold display-5 fw-bold" style="font-family: var(--font-heading);">Bizning Menyuyimiz</h2>
+                <p class="text-secondary fw-light">Siz uchun tayyorlangan eng tansiq taomlar va ichimliklar ro'yxati</p>
             </div>
-            <hr style="border: 2px solid #CEAF7F; width: 80%; margin: 25px auto; opacity: 1;">
-            <div class="row mt-5">
+            <hr style="border: 1px solid var(--gold-primary); width: 40%; margin: 15px auto 45px; opacity: 0.3;">
+            
+            <div class="row g-4">
                 {% for food in foods %}
-                    <div class="col-12 col-md-6 mb-4">
-                        <div class="d-flex align-items-start"
-                             style="background-color: rgba(37,42,43,0.7); border-radius: 10px; transition: 0.3s; cursor: pointer;"
-                             onclick="window.location.href='{% url 'detail' food.id %}'"
-                             onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.4)';"
-                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                    <div class="col-12 col-md-6">
+                        <div class="food-card" onclick="window.location.href='{% url 'detail' food.id %}'" style="cursor: pointer;">
+                            <div class="food-card-img-wrapper">
+                                {% if food.images.first %}
+                                    <img class="food-card-img" src="{{ food.images.first.image.url }}" alt="{{ food.name_of_food }}">
+                                {% elif food.image %}
+                                    <img class="food-card-img" src="{{ food.image.url }}" alt="{{ food.name_of_food }}">
+                                {% else %}
+                                    <img class="food-card-img" src="/media/spoon-and-fork.jpg" alt="No image">
+                                {% endif %}
+                            </div>
 
-                            {% if food.images.first %}
-                                <img class="img-fluid p-2 mt-2"
-                                     style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                                     src="{{ food.images.first.image.url }}" alt="">
-                            {% elif food.image %}
-                                <img class="img-fluid p-2 mt-2"
-                                     style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                                     src="{{ food.image.url }}" alt="">
-                            {% else %}
-                                <img class="img-fluid p-2 mt-2"
-                                     style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                                     src="/media/spoon-and-fork.jpg" alt="">
-                            {% endif %}
-
-                            <div class="card-body p-2 text-white">
-                                <span class="fw-bold" style="font-size: 25px;">{{ food.name_of_food }}</span>
-                                <span class="p-1" style="font-size: 15px; color: #CEAF7F;">
-                                    <i class="bi bi-hash"></i>{{ food.type }}
-                                </span>
-                                <h6>{{ food.description|truncatechars:25 }}</h6>
-                                <p style="color: #CEAF7F; font-weight: bold;">Narxi: {{ food.price }}$</p>
-
-                                <form action="{% url 'cart_add' food_id=food.id %}" method="POST"
-                                      style="display: inline;">
-                                    {% csrf_token %}
-                                    <button type="submit"
-                                            style="background: none; border: none; color: #CEAF7F; font-weight: bold; transition: 0.3s; cursor: pointer;"
-                                            onmouseover="this.style.color='white'"
-                                            onmouseout="this.style.color='#CEAF7F'">
-                                        <i class="bi bi-basket"></i> Add to cart
-                                    </button>
-                                </form>
-                                <form action="{% url 'add_favourite' food_id=food.id %}" method="POST"
-                                      style="display: inline;">
-                                    {% csrf_token %}
-                                    <button type="submit"
-                                            style="background: none; border: none; color: #CEAF7F; font-weight: bold; transition: 0.3s; cursor: pointer;"
-                                            onmouseover="this.style.color='white'"
-                                            onmouseout="this.style.color='#CEAF7F'">
-                                        <i class="bi bi-heart-fill"></i> Favourite
-                                    </button>
-                                </form>
+                            <div class="food-card-body">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <h4 class="food-card-title">{{ food.name_of_food }}</h4>
+                                        <span class="food-card-type">{{ food.type }}</span>
+                                    </div>
+                                    <p class="text-secondary small mt-1 mb-0">{{ food.description|truncatechars:75 }}</p>
+                                </div>
+                                
+                                <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-secondary" style="border-color: rgba(255,255,255,0.05) !important;">
+                                    <span class="food-card-price">{{ food.price }} $</span>
+                                    <div class="d-flex gap-2">
+                                        <form action="{% url 'cart_add' food_id=food.id %}" method="POST" style="margin:0;" onclick="event.stopPropagation();">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-sm btn-gold py-2 px-3">
+                                                <i class="bi bi-cart-plus me-1"></i> Savatchaga
+                                            </button>
+                                        </form>
+                                        <form action="{% url 'add_favourite' food_id=food.id %}" method="POST" style="margin:0;" onclick="event.stopPropagation();">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-sm btn-outline-gold py-2 px-3">
+                                                <i class="bi bi-heart"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 {% endfor %}
             </div>
 
-            <div class="text-center mt-5">
-                <h1 style="color: #CEAF7F;">Unitilmas lahzalarni biz bilan yarating!!!</h1>
-                <h6 class="text-white">Bu yerda siz faqatgina taom emas, balki samimiy muhit, mehr va quvonchni
-                    his qilasiz.</h6>
+            <!-- Service Categories -->
+            <div class="text-center mt-5 pt-5">
+                <h2 class="text-gold display-5 fw-bold" style="font-family: var(--font-heading);">Xizmatlarimiz va Marosimlar</h2>
+                <p class="text-secondary fw-light">Sizning maxsus kunlaringizni unutilmas lahzaga aylantiramiz</p>
             </div>
-            <hr style="border: 2px solid #CEAF7F; width: 80%; margin: 25px auto; opacity: 1;">
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-3 p-3 m-3"
-                     style="background-color: rgba(37,42,43,0.7); border-radius: 20px;">
-                    <i class="bi bi-calendar-heart-fill d-flex justify-content-center"
-                       style="font-size: 80px; color: #CEAF7F;"></i>
-                    <h3 style="color: #CEAF7F; justify-content: center; display: flex">To'ylar & Marosimlar</h3>
-                    <h6 class="text-white">Restoranimiz sizning eng quvonchli kunlaringizni...</h6>
-                    <span class="p-2 mt-3 d-block text-center"
-                          style="background-color: black; border-radius: 30px; color: antiquewhite;">
-                        150 tagacha mehmon
-                    </span>
+            <hr style="border: 1px solid var(--gold-primary); width: 40%; margin: 15px auto 45px; opacity: 0.3;">
+            
+            <div class="row justify-content-center g-4">
+                <div class="col-12 col-md-4">
+                    <div class="p-4 text-center glass-panel glass-panel-hover h-100 d-flex flex-column justify-content-between">
+                        <div>
+                            <i class="bi bi-calendar-heart-fill text-gold display-3 mb-3 d-inline-block"></i>
+                            <h3 class="text-gold mb-3">To'ylar & Marosimlar</h3>
+                            <p class="text-secondary small">Restoranimiz sizning eng quvonchli kunlaringizni unutilmas qilish uchun xizmat qiladi.</p>
+                        </div>
+                        <span class="p-2 mt-3 d-block text-center rounded-pill bg-dark text-gold small border border-secondary" style="border-color: rgba(206,175,127,0.15) !important;">
+                            150 tagacha mehmon
+                        </span>
+                    </div>
                 </div>
 
-                <div class="col-12 col-md-4 p-3 m-3"
-                     style="background-color: rgba(37,42,43,0.7); border-radius: 20px;">
-                    <i class="bi bi-buildings d-flex justify-content-center"
-                       style="font-size: 80px; color: #CEAF7F;"></i>
-                    <h3 style="color: #CEAF7F; justify-content: center; display: flex">Korporativ tadbirlar</h3>
-                    <h6 class="text-white">Biznes uchrashuvlari va korporativ tadbirlaringizni...</h6>
-                    <span class="p-2 mt-3 d-block text-center"
-                          style="background-color: black; border-radius: 30px; color: antiquewhite;">
-                        100 tagacha mehmon
-                    </span>
+                <div class="col-12 col-md-4">
+                    <div class="p-4 text-center glass-panel glass-panel-hover h-100 d-flex flex-column justify-content-between">
+                        <div>
+                            <i class="bi bi-buildings text-gold display-3 mb-3 d-inline-block"></i>
+                            <h3 class="text-gold mb-3">Korporativ tadbirlar</h3>
+                            <p class="text-secondary small">Biznes uchrashuvlari, konferensiyalar va korporativ tadbirlaringizni yuqori saviyada o'tkazamiz.</p>
+                        </div>
+                        <span class="p-2 mt-3 d-block text-center rounded-pill bg-dark text-gold small border border-secondary" style="border-color: rgba(206,175,127,0.15) !important;">
+                            100 tagacha mehmon
+                        </span>
+                    </div>
                 </div>
 
-                <div class="col-12 col-md-4 p-3 m-3"
-                     style="background-color: rgba(37,42,43,0.7); border-radius: 20px;">
-                    <i class="bi bi-people d-flex justify-content-center"
-                       style="font-size: 80px; color: #CEAF7F;"></i>
-                    <h3 style="color: #CEAF7F; justify-content: center; display: flex">Shaxsiy yig'inlar</h3>
-                    <h6 class="text-white">Do'stlaringiz yoki yaqinlaringiz bilan sokin muhitda...</h6>
-                    <span class="p-2 mt-3 d-block text-center"
-                          style="background-color: black; border-radius: 30px; color: antiquewhite;">
-                        50 tagacha mehmon
-                    </span>
+                <div class="col-12 col-md-4">
+                    <div class="p-4 text-center glass-panel glass-panel-hover h-100 d-flex flex-column justify-content-between">
+                        <div>
+                            <i class="bi bi-people text-gold display-3 mb-3 d-inline-block"></i>
+                            <h3 class="text-gold mb-3">Shaxsiy yig'inlar</h3>
+                            <p class="text-secondary small">Do'stlaringiz yoki yaqinlaringiz bilan sokin va samimiy muhitda suhbat qurish uchun qulay joy.</p>
+                        </div>
+                        <span class="p-2 mt-3 d-block text-center rounded-pill bg-dark text-gold small border border-secondary" style="border-color: rgba(206,175,127,0.15) !important;">
+                            50 tagacha mehmon
+                        </span>
+                    </div>
                 </div>
             </div>
 
-            <h1 style="text-align: center; color: #CEAF7F;" class="fw-bold m-3">Book A Table</h1>
-            <hr style="border: 2px solid #CEAF7F; width: 80%; margin: 25px auto; opacity: 1;">
-            <p class="text-center"
-               style="color: rgba(206,175,127,0.6); margin-bottom: 40px; font-size: 16px;">
-                Please fill the form below to make a reservation
-            </p>
+            <!-- Booking Section -->
+            <div class="text-center mt-5 pt-5">
+                <h2 class="text-gold display-5 fw-bold" style="font-family: var(--font-heading);">Stol Band Qilish</h2>
+                <p class="text-secondary fw-light">Restoranimizda o'z joyingizni oldindan band qiling va qulay xizmatdan bahramand bo'ling</p>
+            </div>
+            <hr style="border: 1px solid var(--gold-primary); width: 40%; margin: 15px auto 45px; opacity: 0.3;">
 
-            <div class="row justify-content-center">
+            <div class="row justify-content-center mb-5">
                 <div class="col-12 col-lg-10">
-                    <div class="p-4 p-md-5"
-                         style="background-color: rgba(37,42,43,0.7); border-radius: 10px; box-shadow: 0 8px 16px rgba(0,0,0,0.2);">
+                    <div class="p-4 p-md-5 glass-panel">
                         <form method="POST" action="{% url 'make_reservation' %}" class="book-form">
                             {% csrf_token %}
                             {% crispy form %}
                             <div class="text-center mt-5">
-                                <button type="submit" class="btn fw-bold px-5 py-3"
-                                        style="background-color: #CEAF7F; color: #1e2220; border-radius: 50px; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;"
-                                        onmouseover="this.style.backgroundColor='white'; this.style.color='#CEAF7F';"
-                                        onmouseout="this.style.backgroundColor='#CEAF7F'; this.style.color='#1e2220';">
+                                <button type="submit" class="btn btn-gold px-5 py-3">
                                     Book Now
                                 </button>
                             </div>
@@ -450,40 +242,39 @@
                 </div>
             </div>
 
-            <div class="container mt-5">
-                <h1 class="text-center" style="color: #CEAF7F;">Bog'lanish</h1>
-                <hr style="border: 2px solid #CEAF7F; width: 80%; margin: 25px auto; opacity: 1;">
-                <div class="row text-white mt-4">
-                    <div class="col-12 col-md-4 mb-3">
-                        <div class="p-3 d-flex align-items-center"
-                             style="background-color: rgba(37,42,43,0.7); border-radius: 30px;">
-                            <i class="bi bi-geo-alt p-3" style="font-size: 40px; color: #CEAF7F;"></i>
+            <!-- Contact Section -->
+            <div class="container my-5">
+                <h2 class="text-gold text-center display-5 fw-bold" style="font-family: var(--font-heading);">Bizning Kontaktlar</h2>
+                <hr style="border: 1px solid var(--gold-primary); width: 40%; margin: 15px auto 45px; opacity: 0.3;">
+                
+                <div class="row text-white mt-4 g-4">
+                    <div class="col-12 col-md-4">
+                        <div class="p-4 d-flex align-items-center glass-panel h-100">
+                            <i class="bi bi-geo-alt text-gold display-5 me-3"></i>
                             <div>
-                                <h4 class="fw-bold">Bizning manzilimiz</h4>
-                                <h6>Amir Temur ko'chasi 108-uy</h6>
+                                <h5 class="fw-bold mb-1">Manzilimiz</h5>
+                                <p class="text-secondary mb-0 small">Amir Temur ko'chasi 108-uy</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-12 col-md-4 mb-3">
-                        <div class="p-3 d-flex align-items-center"
-                             style="background-color: rgba(37,42,43,0.7); border-radius: 30px;">
-                            <i class="bi bi-envelope-at-fill p-3" style="font-size: 40px; color: #CEAF7F;"></i>
+                    <div class="col-12 col-md-4">
+                        <div class="p-4 d-flex align-items-center glass-panel h-100">
+                            <i class="bi bi-envelope-at text-gold display-5 me-3"></i>
                             <div>
-                                <h4 class="fw-bold">Email</h4>
-                                <h6>itolmasov.olmasjon1505@gmail.com</h6>
+                                <h5 class="fw-bold mb-1">Email</h5>
+                                <p class="text-secondary mb-0 small">itolmasov.olmasjon1505@gmail.com</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-12 col-md-4 mb-3">
-                        <div class="p-3 d-flex align-items-center"
-                             style="background-color: rgba(37,42,43,0.7); border-radius: 30px;">
-                            <i class="bi bi-headset p-3" style="font-size: 40px; color: #CEAF7F;"></i>
+                    <div class="col-12 col-md-4">
+                        <div class="p-4 d-flex align-items-center glass-panel h-100">
+                            <i class="bi bi-headset text-gold display-5 me-3"></i>
                             <div>
-                                <h4 class="fw-bold">Ish vaqtimiz</h4>
-                                <h6>Dush - Shan: 9:00 dan 22:00 gacha</h6>
-                                <h6>Yakshanba: 7:00 dan 23:00 gacha</h6>
+                                <h5 class="fw-bold mb-1">Ish Vaqti</h5>
+                                <p class="text-secondary mb-0 small">Dush - Shan: 9:00 - 22:00</p>
+                                <p class="text-secondary mb-0 small">Yakshanba: 7:00 - 23:00</p>
                             </div>
                         </div>
                     </div>
@@ -539,5 +330,4 @@
         }
     </script>
 
-    {% include 'restaurant/logout_confirm.html' %}
 {% endblock %}

@@ -1,153 +1,151 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Detail{% endblock %}
+{% block title %}{{ food.name_of_food }} | Detail{% endblock %}
 
 {% block content %}
-    <div class="container" style="margin-top: 100px; padding-bottom: 60px;">
+<div class="container animate-fade-up" style="margin-top: 130px; padding-bottom: 70px;">
 
-        <!-- Nom -->
-        <h2 class="text-center mb-2" style="color: #CEAF7F;">{{ food.name_of_food }}</h2>
-        <hr style="border: 2px solid #CEAF7F; width: 80%; margin: 16px auto 40px; opacity: 1;">
+    <!-- Title and Divider -->
+    <div class="text-center mb-4">
+        <h1 class="display-4 fw-bold text-gold" style="font-family: var(--font-heading);">{{ food.name_of_food }}</h1>
+        <p class="text-secondary fw-light">Taom tafsilotlari va buyurtma berish</p>
+    </div>
+    <hr style="border: 1px solid var(--gold-primary); width: 30%; margin: 15px auto 45px; opacity: 0.3;">
 
-        <div class="row justify-content-center g-4">
+    <div class="row justify-content-center g-5">
 
-            <!-- Rasm -->
-            <div class="col-12 col-md-5 d-flex justify-content-center">
+        <!-- Food Image -->
+        <div class="col-12 col-md-5 d-flex justify-content-center">
+            <div class="rounded shadow-lg overflow-hidden border border-secondary" style="border-color: rgba(206,175,127,0.2) !important; max-width: 440px; width: 100%;">
                 {% if food.images.first %}
-                    <img src="{{ food.images.first.image.url }}" alt="Food photo"
-                         class="img-fluid shadow-lg"
-                         style="width: 100%; max-width: 420px; height: 320px; object-fit: cover; border-radius: 20px; transition: 0.4s;"
-                         onmouseover="this.style.transform='scale(1.03)'"
+                    <img src="{{ food.images.first.image.url }}" alt="{{ food.name_of_food }}"
+                         class="img-fluid"
+                         style="width: 100%; height: 350px; object-fit: cover; transition: transform 0.5s ease;"
+                         onmouseover="this.style.transform='scale(1.05)'"
                          onmouseout="this.style.transform='scale(1)'">
                 {% elif food.image %}
-                    <img src="{{ food.image.url }}" alt="Food photo"
-                         class="img-fluid shadow-lg"
-                         style="width: 100%; max-width: 420px; height: 320px; object-fit: cover; border-radius: 20px; transition: 0.4s;"
-                         onmouseover="this.style.transform='scale(1.03)'"
+                    <img src="{{ food.image.url }}" alt="{{ food.name_of_food }}"
+                         class="img-fluid"
+                         style="width: 100%; height: 350px; object-fit: cover; transition: transform 0.5s ease;"
+                         onmouseover="this.style.transform='scale(1.05)'"
                          onmouseout="this.style.transform='scale(1)'">
                 {% else %}
-                    <img src="/media/spoon-and-fork.jpg" alt="Food photo"
-                         class="img-fluid shadow-lg"
-                         style="width: 100%; max-width: 420px; height: 320px; object-fit: cover; border-radius: 20px;">
+                    <img src="/media/spoon-and-fork.jpg" alt="No photo available"
+                         class="img-fluid"
+                         style="width: 100%; height: 350px; object-fit: cover;">
                 {% endif %}
             </div>
+        </div>
 
-            <!-- Ma'lumotlar -->
-            <div class="col-12 col-md-5">
-                <div style="background: rgba(37,42,43,0.7); border-radius: 20px; padding: 32px; color: white;">
-
+        <!-- Food Info Details -->
+        <div class="col-12 col-md-6 col-lg-5">
+            <div class="glass-panel p-4 h-100 d-flex flex-column justify-content-between">
+                <div>
+                    <h4 class="text-gold mb-4 fw-light" style="font-family: var(--font-heading); letter-spacing: 1px;">
+                        <i class="bi bi-info-circle me-1"></i> Taom Ma'lumotlari
+                    </h4>
+                    
                     <div class="d-flex align-items-center mb-3">
-                        <span style="font-weight: bold; white-space: nowrap;">Type</span>
-                        <span style="flex:1; border-bottom: 2px dashed #CEAF7F; margin: 0 12px;"></span>
-                        <span style="color: #CEAF7F;">{{ food.type }}</span>
+                        <span class="fw-bold text-white-50">Kategoriya</span>
+                        <span style="flex: 1; border-bottom: 1px dashed rgba(206, 175, 127, 0.25); margin: 0 12px;"></span>
+                        <span class="badge bg-dark border border-secondary text-gold px-3 py-2">{{ food.type }}</span>
                     </div>
 
                     <div class="d-flex align-items-center mb-3">
-                        <span style="font-weight: bold; white-space: nowrap;">Price</span>
-                        <span style="flex:1; border-bottom: 2px dashed #CEAF7F; margin: 0 12px;"></span>
-                        <span style="color: #CEAF7F; font-weight: bold;">{{ food.price }} $</span>
+                        <span class="fw-bold text-white-50">Narxi</span>
+                        <span style="flex: 1; border-bottom: 1px dashed rgba(206, 175, 127, 0.25); margin: 0 12px;"></span>
+                        <span class="fs-5 fw-bold text-gold">{{ food.price }} $</span>
                     </div>
 
                     <div class="d-flex align-items-center mb-4">
-                        <span style="font-weight: bold; white-space: nowrap;">Added</span>
-                        <span style="flex:1; border-bottom: 2px dashed #CEAF7F; margin: 0 12px;"></span>
-                        <span style="color: #aaa; font-size: 0.9rem;">{{ food.created_at|timesince }} ago</span>
+                        <span class="fw-bold text-white-50">Kiritilgan vaqt</span>
+                        <span style="flex: 1; border-bottom: 1px dashed rgba(206, 175, 127, 0.25); margin: 0 12px;"></span>
+                        <span class="text-secondary small">{{ food.created_at|timesince }} oldin</span>
                     </div>
+                </div>
 
-                    <!-- Tugmalar -->
-                    <div class="d-flex flex-column gap-2 mt-3">
-                        <form action="{% url 'cart_add' food_id=food.id %}" method="POST">
-                            {% csrf_token %}
-                            <button type="submit" class="btn w-100"
-                                    style="background: rgba(206,175,127,0.15); border: 1px solid #CEAF7F; color: #CEAF7F;">
-                                🛒 Add to Cart
-                            </button>
-                        </form>
-                        {% if request.user.role == 'admin' or request.user.role == 'manager' %}
-                            <a href="{% url 'update' food.id %}" class="btn w-100"
-                               style="background: rgba(206,175,127,0.08); border: 1px solid rgba(206,175,127,0.4); color: #CEAF7F;">
-                                ✏️ Update Info
-                            </a>
-                        {% else %}
-
-                        {% endif %}
-
-                    </div>
-
+                <!-- Actions -->
+                <div class="d-flex flex-column gap-2 mt-4">
+                    <form action="{% url 'cart_add' food_id=food.id %}" method="POST" style="margin: 0;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-gold w-100 py-3">
+                            <i class="bi bi-cart-plus me-2"></i> Savatchaga qo'shish
+                        </button>
+                    </form>
+                    
+                    {% if request.user.role == 'admin' or request.user.role == 'manager' %}
+                        <a href="{% url 'update' food.id %}" class="btn btn-outline-gold w-100 py-3">
+                            <i class="bi bi-pencil-square me-2"></i> Tahrirlash
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Tavsif -->
-        {% if food.description %}
-            <div class="row mt-4 justify-content-center">
-                <div class="col-12 col-md-10 col-lg-8">
-                    <h5 class="text-center mb-3" style="color: #CEAF7F;">Description</h5>
-                    <div class="p-4 text-white" style="border-radius: 20px; background: rgba(37,42,43,0.7);">
-                        <p style="line-height: 1.8; margin: 0;">{{ food.description }}</p>
-                    </div>
+    <!-- Description -->
+    {% if food.description %}
+        <div class="row mt-5 justify-content-center">
+            <div class="col-12 col-md-11 col-lg-10">
+                <div class="glass-panel p-4">
+                    <h5 class="text-gold mb-3 fw-light" style="font-family: var(--font-heading); letter-spacing: 1px;">
+                        <i class="bi bi-justify-left me-1"></i> Tavsif / Ma'lumot
+                    </h5>
+                    <p class="text-secondary mb-0" style="line-height: 1.8; font-size: 1.05rem;">{{ food.description }}</p>
                 </div>
             </div>
-        {% endif %}
+        </div>
+    {% endif %}
 
-        <h1 class="mt-5 text-center" style="color: #CEAF7F; font-size: 40px;">Suggestions -- {{ food.type }}</h1>
-        <hr style="border: 2px solid #CEAF7F; opacity: 1; margin: 10px;">
-        <div class="row mt-2">
-            {% for food in foods %}
-                <div class="col-12 col-md-6 mb-4">
-                    <div class="d-flex align-items-start"
-                         style="background-color: rgba(37,42,43,0.7); border-radius: 10px; transition: 0.3s; cursor: pointer;"
-                         onclick="window.location.href='{% url 'detail' food.id %}'"
-                         onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.4)';"
-                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+    <!-- Suggestions Grid -->
+    <div class="mt-5 pt-5 text-center">
+        <h2 class="text-gold display-6 fw-bold" style="font-family: var(--font-heading);">Tavsiya etiladigan taomlar</h2>
+        <p class="text-secondary fw-light">Sizga yoqishi mumkin bo'lgan o'xshash taomlar</p>
+    </div>
+    <hr style="border: 1px solid var(--gold-primary); width: 30%; margin: 15px auto 45px; opacity: 0.3;">
 
-                        {% if food.images.first %}
-                            <img class="img-fluid p-2 mt-2"
-                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                                 src="{{ food.images.first.image.url }}" alt="">
-                        {% elif food.image %}
-                            <img class="img-fluid p-2 mt-2"
-                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                                 src="{{ food.image.url }}" alt="">
-                        {% else %}
-                            <img class="img-fluid p-2 mt-2"
-                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                                 src="/media/spoon-and-fork.jpg" alt="">
-                        {% endif %}
+    <div class="row g-4">
+        {% for suggest in foods %}
+            {% if suggest.id != food.id %}
+                <div class="col-12 col-md-6">
+                    <div class="food-card" onclick="window.location.href='{% url 'detail' suggest.id %}'" style="cursor: pointer;">
+                        <div class="food-card-img-wrapper">
+                            {% if suggest.images.first %}
+                                <img class="food-card-img" src="{{ suggest.images.first.image.url }}" alt="{{ suggest.name_of_food }}">
+                            {% elif suggest.image %}
+                                <img class="food-card-img" src="{{ suggest.image.url }}" alt="{{ suggest.name_of_food }}">
+                            {% else %}
+                                <img class="food-card-img" src="/media/spoon-and-fork.jpg" alt="No image">
+                            {% endif %}
+                        </div>
 
-                        <div class="card-body p-2 text-white">
-                            <span class="fw-bold" style="font-size: 25px;">{{ food.name_of_food }}</span>
-                            <span class="p-1" style="font-size: 15px; color: #CEAF7F;">
-                            <i class="bi bi-hash"></i>{{ food.type }}
-                        </span>
-                            <h6>{{ food.description|truncatechars:50 }}</h6>
-                            <p style="color: #CEAF7F; font-weight: bold;">Narxi: {{ food.price }}$</p>
-
-                            <form action="{% url 'cart_add' food_id=food.id %}" method="POST" style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit"
-                                        style="background: none; border: none; color: #CEAF7F; font-weight: bold; transition: 0.3s; cursor: pointer;"
-                                        onmouseover="this.style.color='white'"
-                                        onmouseout="this.style.color='#CEAF7F'">
-                                    <i class="bi bi-basket"></i> Add to cart
-                                </button>
-                            </form>
-                            <form action="{% url 'add_favourite' food_id=food.id %}" method="POST"
-                                  style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit"
-                                        style="background: none; border: none; color: #CEAF7F; font-weight: bold; transition: 0.3s; cursor: pointer;"
-                                        onmouseover="this.style.color='white'"
-                                        onmouseout="this.style.color='#CEAF7F'">
-                                    <i class="bi bi-heart-fill"></i> Favourite
-                                </button>
-                            </form>
+                        <div class="food-card-body">
+                            <div>
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <h4 class="food-card-title">{{ suggest.name_of_food }}</h4>
+                                    <span class="food-card-type">{{ suggest.type }}</span>
+                                </div>
+                                <p class="text-secondary small mt-1 mb-0">{{ suggest.description|truncatechars:70 }}</p>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-secondary" style="border-color: rgba(255,255,255,0.05) !important;">
+                                <span class="food-card-price">{{ suggest.price }} $</span>
+                                <div class="d-flex gap-2">
+                                    <form action="{% url 'cart_add' food_id=suggest.id %}" method="POST" style="margin:0;" onclick="event.stopPropagation();">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-gold py-2 px-3">
+                                            <i class="bi bi-cart-plus me-1"></i> Savatchaga
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            {% endfor %}
-        </div>
-
+            {% endif %}
+        {% endfor %}
     </div>
 
+</div>
 {% endblock %}

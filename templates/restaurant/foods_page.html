@@ -1,88 +1,91 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
-{% block title %}By category{% endblock %}
+{% load static %}
+
+{% block title %}{% if not type %}All Foods{% else %}{{ type }}{% endif %} | NiceRestaurant{% endblock %}
 
 {% block content %}
-
-    <div class="container" style="margin-top: 90px;">
+<div class="container animate-fade-up" style="margin-top: 130px; margin-bottom: 70px;">
+    
+    <!-- Title Header -->
+    <div class="text-center mb-4">
         {% if not type %}
-            <h1 class="mt-5 text-center" style="color: #CEAF7F; font-size: 40px;">All Foods</h1>
+            <h1 class="display-4 fw-bold text-gold" style="font-family: var(--font-heading);">Bizning Menyuyimiz</h1>
+            <p class="text-secondary fw-light">Siz uchun eng tansiq taomlar va ichimliklar katalogi</p>
         {% else %}
-            <h1 class="mt-5 text-center" style="color: #CEAF7F; font-size: 40px;">{{ type }}</h1>
+            <h1 class="display-4 fw-bold text-gold" style="font-family: var(--font-heading);">{{ type }}</h1>
+            <p class="text-secondary fw-light">Kategoriya bo'yicha tanlangan taomlar</p>
         {% endif %}
+    </div>
 
-        <!-- Categories ustida hr -->
-        <div style="position: relative; margin: 25px 0 0;">
-
-            <div class="category-scroll"
-                 style="overflow-x: auto; white-space: nowrap; text-align: center;
-                    position: relative; top: -18px;">
-                <a href="{% url 'by_category' 'Meal' %}" class="category-link">Meals</a>
-                <a href="{% url 'by_category' 'Drink' %}" class="category-link">Drinks</a>
-                <a href="{% url 'by_category' 'Salads' %}" class="category-link">Salads</a>
-                <a href="{% url 'by_category' 'Dessert' %}" class="category-link">Desserts</a>
-                <a href="{% url 'by_category' 'Seafood' %}" class="category-link">Seafoods</a>
-                <a href="{% url 'by_category' 'Icecream' %}" class="category-link">Icecream</a>
-                <a href="{% url 'by_category' 'FastFood' %}" class="category-link">FastFood</a>
-                <a href="{% url 'by_category' 'Vegetarian' %}" class="category-link">Vegetarian</a>
-                <a href="{% url 'by_category' 'Healthy food' %}" class="category-link">Healthy foods</a>
+    <!-- Category Pill Links -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-12 col-lg-10 text-center">
+            <div class="py-2 border-bottom border-top border-secondary d-flex flex-wrap justify-content-center gap-2" style="border-color: rgba(206,175,127,0.15) !important;">
+                <a href="{% url 'food_page' %}" class="category-pill {% if not type %}active{% endif %}">All Foods</a>
+                <a href="{% url 'by_category' 'Meal' %}" class="category-pill {% if type == 'Meal' %}active{% endif %}">Meals</a>
+                <a href="{% url 'by_category' 'Drink' %}" class="category-pill {% if type == 'Drink' %}active{% endif %}">Drinks</a>
+                <a href="{% url 'by_category' 'Salads' %}" class="category-pill {% if type == 'Salads' %}active{% endif %}">Salads</a>
+                <a href="{% url 'by_category' 'Dessert' %}" class="category-pill {% if type == 'Dessert' %}active{% endif %}">Desserts</a>
+                <a href="{% url 'by_category' 'Seafood' %}" class="category-pill {% if type == 'Seafood' %}active{% endif %}">Seafoods</a>
+                <a href="{% url 'by_category' 'Icecream' %}" class="category-pill {% if type == 'Icecream' %}active{% endif %}">Icecream</a>
+                <a href="{% url 'by_category' 'FastFood' %}" class="category-pill {% if type == 'FastFood' %}active{% endif %}">FastFood</a>
+                <a href="{% url 'by_category' 'Vegetarian' %}" class="category-pill {% if type == 'Vegetarian' %}active{% endif %}">Vegetarian</a>
+                <a href="{% url 'by_category' 'Healthy food' %}" class="category-pill {% if type == 'Healthy food' %}active{% endif %}">Healthy foods</a>
             </div>
-            <hr style="border: 2px solid #CEAF7F; opacity: 1; margin: 10px;">
         </div>
+    </div>
 
-        <div class="row mt-2">
-            {% for food in foods %}
-                <div class="col-12 col-md-6 mb-4">
-                    <div class="d-flex align-items-start"
-                         style="background-color: rgba(37,42,43,0.7); border-radius: 10px; transition: 0.3s; cursor: pointer;"
-                         onclick="window.location.href='{% url 'detail' food.id %}'"
-                         onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.4)';"
-                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-
+    <!-- Foods Grid -->
+    <div class="row g-4">
+        {% for food in foods %}
+            <div class="col-12 col-md-6 col-lg-6">
+                <div class="food-card" onclick="window.location.href='{% url 'detail' food.id %}'" style="cursor: pointer;">
+                    <div class="food-card-img-wrapper">
                         {% if food.images.first %}
-                            <img class="img-fluid p-2 mt-2"
-                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                                 src="{{ food.images.first.image.url }}" alt="">
+                            <img class="food-card-img" src="{{ food.images.first.image.url }}" alt="{{ food.name_of_food }}">
                         {% elif food.image %}
-                            <img class="img-fluid p-2 mt-2"
-                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                                 src="{{ food.image.url }}" alt="">
+                            <img class="food-card-img" src="{{ food.image.url }}" alt="{{ food.name_of_food }}">
                         {% else %}
-                            <img class="img-fluid p-2 mt-2"
-                                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 20px;"
-                                 src="/media/spoon-and-fork.jpg" alt="">
+                            <img class="food-card-img" src="/media/spoon-and-fork.jpg" alt="No image">
                         {% endif %}
+                    </div>
 
-                        <div class="card-body p-2 text-white">
-                            <span class="fw-bold" style="font-size: 25px;">{{ food.name_of_food }}</span>
-                            <span class="p-1" style="font-size: 15px; color: #CEAF7F;">
-                            <i class="bi bi-hash"></i>{{ food.type }}
-                        </span>
-                            <h6>{{ food.description|truncatechars:25 }}</h6>
-                            <p style="color: #CEAF7F; font-weight: bold;">Narxi: {{ food.price }}$</p>
-
-                            <form action="{% url 'cart_add' food_id=food.id %}" method="POST" style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit"
-                                        style="background: none; border: none; color: #CEAF7F; font-weight: bold; transition: 0.3s; cursor: pointer;"
-                                        onmouseover="this.style.color='white'"
-                                        onmouseout="this.style.color='#CEAF7F'">
-                                    <i class="bi bi-basket"></i> Add to cart
-                                </button>
-                            </form>
-                            <form action="{% url 'add_favourite' food_id=food.id %}" method="POST" style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit"
-                                        style="background: none; border: none; color: #CEAF7F; font-weight: bold; transition: 0.3s; cursor: pointer;"
-                                        onmouseover="this.style.color='white'"
-                                        onmouseout="this.style.color='#CEAF7F'">
-                                    <i class="bi bi-heart-fill"></i> Favourite
-                                </button>
-                            </form>
+                    <div class="food-card-body">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h4 class="food-card-title">{{ food.name_of_food }}</h4>
+                                <span class="food-card-type">{{ food.type }}</span>
+                            </div>
+                            <p class="text-secondary small mt-1 mb-0">{{ food.description|truncatechars:85 }}</p>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-secondary" style="border-color: rgba(255,255,255,0.05) !important;">
+                            <span class="food-card-price">{{ food.price }} $</span>
+                            <div class="d-flex gap-2">
+                                <form action="{% url 'cart_add' food_id=food.id %}" method="POST" style="margin:0;" onclick="event.stopPropagation();">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-gold py-2 px-3">
+                                        <i class="bi bi-cart-plus me-1"></i> Savatchaga
+                                    </button>
+                                </form>
+                                <form action="{% url 'add_favourite' food_id=food.id %}" method="POST" style="margin:0;" onclick="event.stopPropagation();">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-gold py-2 px-3">
+                                        <i class="bi bi-heart"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center text-secondary py-5">
+                <i class="bi bi-info-circle display-4 mb-3 d-inline-block text-gold"></i>
+                <h5>Ushbu ruknda hozircha taomlar mavjud emas.</h5>
+            </div>
+        {% endfor %}
     </div>
+
+</div>
 {% endblock %}
